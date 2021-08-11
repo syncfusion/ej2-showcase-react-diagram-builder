@@ -188,7 +188,7 @@ export class MindMapSettings {
 }
 
 export class OrgDataSettings {
-    public dataSourceColumns: Array<{ [key: string]: any }> = [];
+    public dataSourceColumns: { [key: string]: any }[] = [];
     public id: string = '';
     public parent: string = '';
     public nameField: string = '';

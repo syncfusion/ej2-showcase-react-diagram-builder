@@ -154,7 +154,7 @@ export class MindMap {
         diagram.commandManager = this.getCommandSettings();
         diagram.tool = DiagramTools.SingleSelect | DiagramTools.ZoomPan;
     }
-    public getShortCutKeys(shortcutKeys: Array<{ [key: string]: any }>): ShapeAnnotationModel[] {
+    public getShortCutKeys(shortcutKeys: { [key: string]: any }[]): ShapeAnnotationModel[] {
         const annotations: ShapeAnnotationModel[] = [];
         let y: number = 0.1;
         for (const key of  shortcutKeys) {
@@ -352,7 +352,7 @@ export abstract class MindMapUtilityMethods {
 
     public static templateType: string;
     
-    public static shortCutkeys: Array<{ [key: string]: any }> = [
+    public static shortCutkeys: { [key: string]: any }[] = [
         { 'key': 'Tab', 'value': 'Add a subtopic to left side' },
         { 'key': 'Shift + Tab', 'value': 'Add a subtopic to right side' },
         { 'key': 'Enter', 'value': 'Add a sibling subtopic to top' },
@@ -415,7 +415,7 @@ export abstract class MindMapUtilityMethods {
     public static addMindMapLevels(level: string): void {
         const mindmap: any = document.getElementById('mindMapLevels') as HTMLElement;
         const dropdownlist: DropDownList = mindmap.ej2_instances[0];
-        const dropdowndatasource: any = dropdownlist.dataSource as Array<{ [key: string]: any }>;
+        const dropdowndatasource: any = dropdownlist.dataSource as { [key: string]: any }[];
         let isExist: boolean = false;
         for (const item of   dropdowndatasource) {
             const data: { [key: string]: any } = item;
@@ -451,7 +451,7 @@ export abstract class MindMapUtilityMethods {
         };
         this.selectedItem.selectedDiagram.add(node1);
         ((document.getElementById('diagram') as HTMLElement).querySelector('#closeIconDiv') as HTMLElement).onclick = this.onHideNodeClick.bind(this);
-        return this.selectedItem.selectedDiagram.getObject('rootNode');
+        return node;
     }
 
     public static onHideNodeClick(): void {

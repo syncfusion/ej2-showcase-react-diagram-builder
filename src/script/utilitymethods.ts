@@ -32,28 +32,28 @@ export class UtilityMethods {
 
     public borderColorCode: string[] = ['#8BC1B7', '#E2C180', '#ACCBAA', '#D1AFDF', '#90C8C2', '#BBBFD6'];
 
-    public flowChartImage: Array<{ [key: string]: string }> = [
+    public flowChartImage: { [key: string]: string }[] = [
         { source: './blank_diagram.svg', name: 'Blank Diagram', type: 'svg_blank' },
         { source: './flowchart_Images/Credit_Card_Processing.svg', name: 'Credit Card Processing', type: 'svg_image' },
         { source: './flowchart_Images/Bank_Teller_Flow.svg', name: 'Banking Teller Process Flow', type: 'svg_image' },
         { source: './flowchart_Images/Developer_Workflow.SVG', name: 'Agile"s Developer Workflow', type: 'svg_image' },
     ];
 
-    public mindMapImage: Array<{ [key: string]: string }> = [
+    public mindMapImage: { [key: string]: string }[] = [
         { source: './common_images/blank_diagram_mind.svg', name: 'Blank Diagram', type: 'svg_image' },
         { source: './mindmap_images/BusinessPlanning.SVG', name: 'Business Planning', type: 'svg_image' },
         { source: './mindmap_images/TQM.SVG', name: 'Quality Management', type: 'svg_image' },
         { source: './mindmap_images/SoftwareLifeCycle.SVG', name: 'Software Life Cycle', type: 'svg_image' },
     ];
 
-    public orgChartImage: Array<{ [key: string]: string }> = [
+    public orgChartImage: { [key: string]: string }[] = [
         { source: './common_images/blank_diagram_org.svg', name: 'Blank Diagram', type: 'svg_image' },
         { source: './orgchart_images/OrgRenderingStyle_1.svg', name: 'Org Template Style - 1', type: 'svg_image' },
         { source: './orgchart_images/OrgRenderingStyle_2.svg', name: 'Org Template Style - 2', type: 'svg_image' },
         { source: './orgchart_images/OrgRenderingStyle_3.svg', name: 'Org Template Style - 3', type: 'svg_image' },
     ];
 
-    public bpmnImage: Array<{ [key: string]: string }> = [
+    public bpmnImage: { [key: string]: string }[] = [
         { source: '../assets/dbstyle/common_images/blank_diagram.svg', name: 'Blank Diagram', type: 'svg_blank' },
         { source: '../assets/dbstyle/bpmn_images/Template1.png', name: 'BPMN Diagram 1' },
         { source: '../assets/dbstyle/bpmn_images/Template1.png', name: 'BPMN Diagram 2' },
@@ -493,52 +493,54 @@ export class UtilityMethods {
     }
 
     public enableMenuItems(itemText: string, selectedItem: SelectorViewModel): boolean {
-        let selectedItems: object[] = selectedItem.selectedDiagram.selectedItems.nodes as object[];
-        selectedItems = selectedItems.concat(selectedItem.selectedDiagram.selectedItems.connectors as ConnectorModel);
-        if (itemText) {
-            const commandType: string = itemText.replace(/[' ']/g, '');
-            if (selectedItems.length === 0 || selectedItem.diagramType !== 'GeneralDiagram') {
-                switch (commandType.toLowerCase()) {
-                    case 'edittooltip':
-                        let disable: boolean = false;
-                        if (!(selectedItems.length === 1)) {
-                            disable = true;
-                        }
-                        return disable;
-                    case 'cut':
-                        return true;
-                    case 'copy':
-                        return true;
-                    case 'delete':
-                        return true;
-                    case 'duplicate':
-                        return true;
+        if(selectedItem && selectedItem.selectedDiagram) {
+            let selectedItems: object[] = selectedItem.selectedDiagram.selectedItems.nodes as object[];
+            selectedItems = selectedItems.concat(selectedItem.selectedDiagram.selectedItems.connectors as ConnectorModel);
+            if (itemText) {
+                const commandType: string = itemText.replace(/[' ']/g, '');
+                if (selectedItems.length === 0 || selectedItem.diagramType !== 'GeneralDiagram') {
+                    switch (commandType.toLowerCase()) {
+                        case 'edittooltip':
+                            let disable: boolean = false;
+                            if (!(selectedItems.length === 1)) {
+                                disable = true;
+                            }
+                            return disable;
+                        case 'cut':
+                            return true;
+                        case 'copy':
+                            return true;
+                        case 'delete':
+                            return true;
+                        case 'duplicate':
+                            return true;
+                    }
                 }
-            }
-            if (selectedItems.length > 1) {
-                switch (commandType.toLowerCase()) {
-                    case 'edittooltip':
-                        return true;
+                if (selectedItems.length > 1) {
+                    switch (commandType.toLowerCase()) {
+                        case 'edittooltip':
+                            return true;
+                    }
                 }
-            }
-            if (selectedItem.pasteData.length === 0 && itemText === 'Paste') {
-                return true;
-            }
-            if (itemText === 'Undo' && (selectedItem.selectedDiagram.historyManager.undoStack as HistoryEntry[]).length === 0) {
-                return true;
-            }
-            if (itemText === 'Redo' && (selectedItem.selectedDiagram.historyManager.redoStack as HistoryEntry[]).length === 0) {
-                return true;
-            }
-            if (itemText === 'Select All') {
-                if (selectedItem.diagramType !== 'GeneralDiagram' || (selectedItem.selectedDiagram.nodes.length === 0 && selectedItem.selectedDiagram.connectors.length === 0)) {
+                if (selectedItem.pasteData.length === 0 && itemText === 'Paste') {
                     return true;
                 }
-            }
-            if (selectedItem.diagramType !== 'GeneralDiagram') {
-                if (itemText === 'Themes' || itemText === 'Paste' || itemText === 'Show Rulers' || itemText === 'Show Guides'
-                    || itemText === 'Show Grid' || itemText === 'Snap To Grid' || itemText === 'Show Stencil') {
+                if (itemText === 'Undo' && (selectedItem.selectedDiagram.historyManager.undoStack as HistoryEntry[]).length === 0) {
                     return true;
+                }
+                if (itemText === 'Redo' && (selectedItem.selectedDiagram.historyManager.redoStack as HistoryEntry[]).length === 0) {
+                    return true;
+                }
+                if (itemText === 'Select All') {
+                    if (selectedItem.diagramType !== 'GeneralDiagram' || (selectedItem.selectedDiagram.nodes.length === 0 && selectedItem.selectedDiagram.connectors.length === 0)) {
+                        return true;
+                    }
+                }
+                if (selectedItem.diagramType !== 'GeneralDiagram') {
+                    if (itemText === 'Themes' || itemText === 'Paste' || itemText === 'Show Rulers' || itemText === 'Show Guides'
+                        || itemText === 'Show Grid' || itemText === 'Snap To Grid' || itemText === 'Show Stencil') {
+                        return true;
+                    }
                 }
             }
         }
@@ -765,7 +767,7 @@ export class UtilityMethods {
 
                 for (const key of keys) {
                     const keyValue: any = nodeInfo[key];
-                    if (keyValue && keyValue.type === 'bindingField') {
+                    if (keyValue.type === 'bindingField') {
                         if (keyValue.checked) {
                             if (bindBindingFields) {
                                 bindingFields.push(key);
@@ -787,7 +789,7 @@ export class UtilityMethods {
                     node.minWidth = 300; node.minHeight = 100; node.maxHeight = 100;
                     selectedItem.selectedDiagram.dataBind();
                     node.shape = {
-                        type: 'Image', source: nodeInfo[propName] && nodeInfo[propName].value ? nodeInfo[propName].value.toString() : './orgchart_images/blank-male.jpg',
+                        type: 'Image', source: nodeInfo[propName] && nodeInfo[propName].value ? nodeInfo[propName].value.toString() : '../assets/dbstyle/orgchart_images/blank-male.jpg',
                         align: 'XMinYMin', scale: 'Meet'
                     };
                     selectedItem.selectedDiagram.dataBind();
