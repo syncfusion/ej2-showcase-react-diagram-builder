@@ -188,7 +188,7 @@ export class MindMapSettings {
 }
 
 export class OrgDataSettings {
-    public dataSourceColumns: { [key: string]: any }[] = [];
+    public dataSourceColumns: Array<{ [key: string]: any }> = [];
     public id: string = '';
     public parent: string = '';
     public nameField: string = '';
@@ -499,7 +499,7 @@ export class SelectorViewModel {
     }
 
     public getColor(colorName: string): string {
-        if (window.navigator.msSaveBlob && colorName.length === 9) {
+        if (window.navigator && colorName.length === 9) {
             return colorName.substring(0, 7);
         }
         return colorName;

@@ -337,7 +337,7 @@ export abstract class OrgChartUtilityMethods {
     public static isUploadSuccess: boolean;
     public static subTreeOrientation: SubTreeOrientation = 'Vertical';
     public static subTreeAlignments: SubTreeAlignments = 'Alternate';
-    public static shortCutkeys: { [key: string]: any }[] = [
+    public static shortCutkeys: Array<{ [key: string]: any }> = [
         { 'key': 'Tab', 'value': 'Add a child to parent' },
         { 'key': 'Enter', 'value': 'Add a child to same level' },
         { 'key': 'Shift + Tab', 'value': 'Move the child parent to next level' },
@@ -427,31 +427,8 @@ export abstract class OrgChartUtilityMethods {
             const element: Element = xmlDom.children[0];
             this.orgDataSource = this.convertXmlToJson(element);
         }
-        const columns: { [key: string]: any }[] = this.getDataSourceColumns();
-        // this.selectedItem.orgDataSettings.dataSourceColumns = columns;
-        let employeeId: any = document.getElementById("employeeId");
-        employeeId = employeeId.ej2_instances[0];
-        employeeId.dataSource = columns;
-
-        let superVisorId: any = document.getElementById("superVisorId");
-        superVisorId = superVisorId.ej2_instances[0];
-        superVisorId.dataSource = columns;
-
-        let orgNameField: any = document.getElementById("orgNameField");
-        orgNameField = orgNameField.ej2_instances[0];
-        orgNameField.dataSource = columns;
-       
-        let orgBindingFields: any = document.getElementById("orgBindingFields");
-        orgBindingFields = orgBindingFields.ej2_instances[0];
-        orgBindingFields.dataSource = columns;
-        
-        let orgImageField: any = document.getElementById("orgImageField");
-        orgImageField = orgImageField.ej2_instances[0];
-        orgImageField.dataSource = columns;
-
-        let orgAdditionalField: any = document.getElementById("orgAdditionalField");
-        orgAdditionalField = orgAdditionalField.ej2_instances[0];
-        orgAdditionalField.dataSource = columns; 
+        const columns: Array<{ [key: string]: any }> = this.getDataSourceColumns();
+        this.selectedItem.orgDataSettings.dataSourceColumns = columns;
     }
 
     public static validateParentChildRelation(): boolean {
@@ -504,7 +481,7 @@ export abstract class OrgChartUtilityMethods {
         };
         node.constraints = NodeConstraints.Default | NodeConstraints.AllowDrop;
         if (parentNode.shape && parentNode.shape.type === 'Image') {
-            node.shape = { type: 'Image', source: './assets/dbstyle/orgchart_images/blank-male.jpg', align: 'XMinYMin', scale: 'Meet' };
+            node.shape = { type: 'Image', source: './orgchart_images/blank-male.jpg', align: 'XMinYMin', scale: 'Meet' };
         } else {
             node.shape = { type: 'Basic', shape: 'Rectangle', cornerRadius: 5 };
         }
@@ -798,8 +775,8 @@ export abstract class OrgChartUtilityMethods {
 
 
 
-    private static getDataSourceColumns(): { [key: string]: any }[] {
-        const columns: { [key: string]: any }[] = [];
+    private static getDataSourceColumns(): Array<{ [key: string]: any }> {
+        const columns: Array<{ [key: string]: any }> = [];
         for (const list of this.columnsList) {
             if (list) {
                 columns.push({

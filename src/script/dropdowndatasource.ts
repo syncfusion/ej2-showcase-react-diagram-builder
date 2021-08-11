@@ -10,20 +10,20 @@ export class DropDownDataSources {
     public windowMenuItems: ItemModel[] = this.getWindowMenuItems();
     public helpMenuItems: ItemModel[] = this.getHelpMenuItems();
 
-    public fileFormats: { [key: string]: any }[] = [
+    public fileFormats: Array<{ [key: string]: any }> = [
         { text: 'JPG', value: 'JPG' }, { text: 'PNG', value: 'PNG' },
         { text: 'BMP', value: 'BMP' }, { text: 'SVG', value: 'SVG' }
     ];
 
-    public diagramRegions: { [key: string]: any }[] = [
+    public diagramRegions: Array<{ [key: string]: any }> = [
         { text: 'Content', value: 'Content' }, { text: 'PageSettings', value: 'PageSettings' }
     ];
 
-    public importFormat: { [key: string]: any }[] = [
+    public importFormat: Array<{ [key: string]: any }> = [
         { text: 'CSV', value: 'CSV' }, { text: 'XML', value: 'XML' }, { text: 'JSON', value: 'JSON' }
     ];
 
-    public borderStyles: { [key: string]: any }[] = [
+    public borderStyles: Array<{ [key: string]: any }> = [
         { text: 'None', value: 'None', className: 'ddl-svg-style ddl_linestyle_none' },
         { text: '1,2', value: '1,2', className: 'ddl-svg-style ddl_linestyle_one_two' },
         { text: '3,3', value: '3,3', className: 'ddl-svg-style ddl_linestyle_three_three' },
@@ -31,7 +31,7 @@ export class DropDownDataSources {
         { text: '4,4,1', value: '4,4,1', className: 'ddl-svg-style ddl_linestyle_four_four_one' }
     ];
 
-    public fontFamilyList: { [key: string]: any }[] = [
+    public fontFamilyList: Array<{ [key: string]: any }> = [
         { text: 'Arial', value: 'Arial' },
         { text: 'Aharoni', value: 'Aharoni' },
         { text: 'Bell MT', value: 'Bell MT' },
@@ -41,7 +41,7 @@ export class DropDownDataSources {
         { text: 'Verdana', value: 'Verdana' },
     ];
 
-    public decoratorList: { [key: string]: any }[] = [
+    public decoratorList: Array<{ [key: string]: any }> = [
         { text: 'None', value: 'None' },
         { text: 'Arrow', value: 'Arrow' },
         { text: 'Diamond', value: 'Diamond' },
@@ -55,12 +55,12 @@ export class DropDownDataSources {
         { text: 'DoubleArrow', value: 'DoubleArrow' }
     ];
 
-    public lineTypes: { [key: string]: any }[] = [
+    public lineTypes: Array<{ [key: string]: any }> = [
         { text: 'Straight', value: 'Straight' }, { text: 'Orthogonal', value: 'Orthogonal' },
         { text: 'Bezier', value: 'Bezier' }
     ];
 
-    public gradientDirections: { [key: string]: any }[] = [
+    public gradientDirections: Array<{ [key: string]: any }> = [
         { text: 'BottomToTop', value: 'BottomToTop' }, { text: 'TopToBottom', value: 'TopToBottom' },
         { text: 'RightToLeft', value: 'RightToLeft' }, { text: 'LeftToRight', value: 'LeftToRight' }
     ];
@@ -84,7 +84,7 @@ export class DropDownDataSources {
         { iconCss: 'sf-icon-BringForward', text: 'Bring Forward' },
     ];
 
-    public mindmapLevels: { [key: string]: any }[] = [
+    public mindmapLevels: Array<{ [key: string]: any }> = [
         { text: 'Root', value: 'Level0' }, { text: 'Level1', value: 'Level1' },
         { text: 'Level2', value: 'Level2' }, { text: 'Level3', value: 'Level3' },
         { text: 'Level4', value: 'Level4' }, { text: 'Level5', value: 'Level5' },
@@ -98,14 +98,14 @@ export class DropDownDataSources {
         // { text: 'Custom' },
     ];
 
-    public paperList: { [key: string]: any }[] = [
+    public paperList: Array<{ [key: string]: any }> = [
         { text: 'Letter (8.5 in x 11 in)', value: 'Letter' }, { text: 'Legal (8.5 in x 14 in)', value: 'Legal' },
         { text: 'Tabloid (279 mm x 432 mm)', value: 'Tabloid' }, { text: 'A3 (297 mm x 420 mm)', value: 'A3' },
         { text: 'A4 (210 mm x 297 mm)', value: 'A4' }, { text: 'A5 (148 mm x 210 mm)', value: 'A5' },
         { text: 'A6 (105 mm x 148 mm)', value: 'A6' }, { text: 'Custom', value: 'Custom' },
     ];
 
-    public listViewData: { [key: string]: any }[] = [
+    public listViewData: Array<{ [key: string]: any }> = [
         { text: 'Flow', id: 'flowShapes', checked: true },
         { text: 'Basic', id: 'basicShapes', checked: true },
         { text: 'BPMN', id: 'bpmnShapes', checked: true },

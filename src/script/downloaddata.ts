@@ -6,7 +6,7 @@ export class DownloadExampleFiles {
     private selectedItem: SelectorViewModel;
    
     
-    private data: { [key: string]: any }[] = [
+    private data: Array<{ [key: string]: any }> = [
         {
             'Name': 'Maria Anders', 'EmployeeID': '1', 'Role': 'Managing Director', 'Department': '',
             'Location': 'US', 'Phone': '(555) 111-1111', 'Email': 'mariaanders@fakecompany.com', 'Supervisor Name': '',
@@ -42,10 +42,10 @@ export class DownloadExampleFiles {
         this.selectedItem = selectedItem;
     }
 
-    public downloadCSV(): void { 
+    public downloadCSV(): void {
         let csv: string = 'Name,EmployeeID,Role,Department,Location,Phone,Email,Supervisor Name,Supervisor ID,Image URL\n';
         this.data.forEach((row: any): void => {
-            for (const prop of Object.keys(row)) {
+            for (const prop of row) {
                 csv += row[prop].toString() + ',';
             }
             csv += '\n';
@@ -108,24 +108,20 @@ export class DownloadExampleFiles {
     public downloadFormatChange(args: ChangeArgs): void {
         if (args.event) {
             const target: HTMLElement = args.event.target as HTMLElement;
-            let btnDownloadFile: any = document.getElementById("btnDownloadFile")
-            btnDownloadFile= btnDownloadFile.ej2_instances[0];
-            let defaultfileupload: any = document.getElementById("defaultfileupload")
-            defaultfileupload = defaultfileupload.ej2_instances[0];
-            if (target.id === 'csvFormat') { 
-                this.selectedItem.orgDataSettings.buttonContent = btnDownloadFile.content = 'Download Example CSV';
-                defaultfileupload.allowedExtensions = '.csv';
+            if (target.id === 'csvFormat') {
+                this.selectedItem.orgDataSettings.buttonContent = 'Download Example CSV';
+                this.selectedItem.orgDataSettings.extensionType = '.csv';
                 (document.getElementById('descriptionText1') as HTMLElement).innerHTML = 'Make sure that each column of the table has a header';
                 (document.getElementById('descriptionText2') as HTMLElement).innerHTML = 'Each employee should have a reporting person (except the top most employee of the organization)' +
                     ', and it should be indicated by any field from the data source.';
             } else if (target.id === 'xmlFormat') {
-                this.selectedItem.orgDataSettings.buttonContent = btnDownloadFile.content = 'Download Example XML';
-                defaultfileupload.allowedExtensions = '.xml';
+                this.selectedItem.orgDataSettings.buttonContent = 'Download Example XML';
+                this.selectedItem.orgDataSettings.extensionType = '.xml';
                 (document.getElementById('descriptionText1') as HTMLElement).innerHTML = 'Make sure that XML document has a unique root element and start-tags have matching end-tags.';
                 (document.getElementById('descriptionText2') as HTMLElement).innerHTML = 'All XML elements will be considered employees and will act as a reporting person for its child XML elements.';
             } else {
-                this.selectedItem.orgDataSettings.buttonContent = btnDownloadFile.content = 'Download Example JSON';
-                defaultfileupload.allowedExtensions = '.json';
+                this.selectedItem.orgDataSettings.buttonContent = 'Download Example JSON';
+                this.selectedItem.orgDataSettings.extensionType = '.json';
                 (document.getElementById('descriptionText1') as HTMLElement).innerHTML = 'Make sure that you have defined a valid JSON format.';
                 (document.getElementById('descriptionText2') as HTMLElement).innerHTML = 'Each employee should have a reporting person (except the top most employee of the organization)' +
                     ', and it should be indicated by any field from the data source.';

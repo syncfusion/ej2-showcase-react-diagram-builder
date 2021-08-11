@@ -255,7 +255,7 @@ export class NodeProperties {
 
 
     private getColor(colorName: string): string {
-        if (window.navigator.msSaveBlob && colorName.length === 9) {
+        if (window.navigator && colorName.length === 9) {
             return colorName.substring(0, 7);
         }
         return colorName;
@@ -448,7 +448,7 @@ export class TextProperties {
 
     public verticalAlign: string;
 
-    public textPositionDataSource: { [key: string]: any }[] = this.getNodeTextPositions();
+    public textPositionDataSource: Array<{ [key: string]: any }> = this.getNodeTextPositions();
     private mTextPosition: string = '';
     private mFontFamily: string = 'Arial';
     private mFontColor: string = '#000000';
@@ -520,7 +520,7 @@ export class TextProperties {
 
 
 
-    public getNodeTextPositions(): { [key: string]: any }[] {
+    public getNodeTextPositions(): Array<{ [key: string]: any }> {
         return [
             { text: 'TopLeft', value: 'TopLeft' }, { text: 'TopCenter', value: 'TopCenter' },
             { text: 'TopRight', value: 'TopRight' }, { text: 'MiddleLeft', value: 'MiddleLeft' },
@@ -530,7 +530,7 @@ export class TextProperties {
         ];
     }
 
-    public getConnectorTextPositions(): { [key: string]: any }[] {
+    public getConnectorTextPositions(): Array<{ [key: string]: any }> {
         return [
             { text: 'Before', value: 'Before' }, { text: 'Center', value: 'Center' },
             { text: 'After', value: 'After' },

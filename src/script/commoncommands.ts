@@ -94,9 +94,9 @@ export abstract class CommonKeyboardCommands {
         return true;
     }
 
-    public static cloneSelectedItems(): (NodeModel | ConnectorModel)[] {
+    public static cloneSelectedItems(): Array<(NodeModel | ConnectorModel)> {
         const diagram: Diagram = this.selectedItem.selectedDiagram;
-        let selectedItems1: (NodeModel | ConnectorModel)[] = diagram.selectedItems.nodes as (NodeModel | ConnectorModel)[];
+        let selectedItems1: Array<(NodeModel | ConnectorModel)> = diagram.selectedItems.nodes as Array<NodeModel | ConnectorModel>;
         selectedItems1 = selectedItems1.concat(diagram.selectedItems.connectors as ConnectorModel[]);
         return selectedItems1;
     }
@@ -105,13 +105,13 @@ export abstract class CommonKeyboardCommands {
         this.selectedItem.selectedDiagram.paste(this.cloneSelectedItems());
     }
 
-    public static cloneSelectedItemswithChildElements(): (NodeModel | ConnectorModel)[] {
+    public static cloneSelectedItemswithChildElements(): Array<(NodeModel | ConnectorModel)> {
 
         return this.cloneChild();
     }
     public static cloneChild(): any {
         const diagram: Diagram = this.selectedItem.selectedDiagram;
-        let selectedItems1: (NodeModel | ConnectorModel)[] = [];
+        let selectedItems1: Array<(NodeModel | ConnectorModel)> = [];
         if (diagram.selectedItems.nodes !== undefined && diagram.selectedItems.nodes.length > 0) {
             const node: Node = diagram.selectedItems.nodes[0] as Node;
             if (node.addInfo) {
@@ -126,7 +126,7 @@ export abstract class CommonKeyboardCommands {
     }
 
     public static sortCollection(select1: any): any {
-        const select: (NodeModel | ConnectorModel)[] = [];
+        const select: Array<(NodeModel | ConnectorModel)> = [];
         for (let i: number = select1.length - 1; i >= 0; i--) {
             if (select1[i] instanceof Node) {
                 select.push(select1[i]);
@@ -142,7 +142,7 @@ export abstract class CommonKeyboardCommands {
 
     private static cloneSubChildSubChild(node: Node, select: any): any {
         const diagram: Diagram = this.selectedItem.selectedDiagram;
-        const select1: (NodeModel | ConnectorModel)[] = select;
+        const select1: Array<(NodeModel | ConnectorModel)> = select;
         for (let i: number = node.outEdges.length - 1; i >= 0; i--) {
             const connector: Connector = diagram.getObject(node.outEdges[i]) as Connector;
             const childNode: Node = diagram.getObject(connector.targetID) as Node;
