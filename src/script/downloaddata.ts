@@ -50,7 +50,7 @@ export class DownloadExampleFiles {
             }
             csv += '\n';
         });
-        if (window.navigator.msSaveBlob) {
+        if (window.navigator) {
             const blob: Blob = new Blob([csv], { type: 'text/plain;charset=utf-8;' });
             window.navigator.msSaveOrOpenBlob(blob, 'people.csv');
         } else {
@@ -66,7 +66,7 @@ export class DownloadExampleFiles {
 
     public downloadJSON(): void {
         let dataStr: string = JSON.stringify(this.data);
-        if (window.navigator.msSaveBlob) {
+        if (window.navigator) {
             const blob: Blob = new Blob([dataStr], { type: 'data:text/json;charset=utf-8,' });
             window.navigator.msSaveOrOpenBlob(blob, 'people.json');
         } else {
@@ -93,7 +93,7 @@ export class DownloadExampleFiles {
             '</people>';
         const filename: string = 'people.xml';
         const bb: Blob = new Blob([xmltext], { type: 'text/plain' });
-        if (window.navigator.msSaveBlob) {
+        if (window.navigator) {
             window.navigator.msSaveOrOpenBlob(bb, filename);
         } else {
             const pom: HTMLAnchorElement = document.createElement('a');

@@ -39,7 +39,7 @@ export abstract class CommonKeyboardCommands {
 
     public static download(data: string, filename: string): void {
         let dataStr: string = data;
-        if (window.navigator.msSaveBlob) {
+        if (window.navigator) {
             const blob: Blob = new Blob([dataStr], { type: 'data:text/json;charset=utf-8,' });
             window.navigator.msSaveOrOpenBlob(blob, filename + '.json');
         } else {

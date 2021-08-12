@@ -255,7 +255,7 @@ export class NodeProperties {
 
 
     private getColor(colorName: string): string {
-        if (window.navigator.msSaveBlob && colorName.length === 9) {
+        if (window.navigator && colorName.length === 9) {
             return colorName.substring(0, 7);
         }
         return colorName;

@@ -493,54 +493,56 @@ export class UtilityMethods {
     }
 
     public enableMenuItems(itemText: string, selectedItem: SelectorViewModel): boolean {
-        let selectedItems: object[] = selectedItem.selectedDiagram.selectedItems.nodes as object[];
-        selectedItems = selectedItems.concat(selectedItem.selectedDiagram.selectedItems.connectors as ConnectorModel);
-        if (itemText) {
-            const commandType: string = itemText.replace(/[' ']/g, '');
-            if (selectedItems.length === 0 || selectedItem.diagramType !== 'GeneralDiagram') {
-                switch (commandType.toLowerCase()) {
-                    case 'edittooltip':
-                        let disable: boolean = false;
-                        if (!(selectedItems.length === 1)) {
-                            disable = true;
-                        }
-                        return disable;
-                    case 'cut':
-                        return true;
-                    case 'copy':
-                        return true;
-                    case 'delete':
-                        return true;
-                    case 'duplicate':
-                        return true;
+        if(selectedItem && selectedItem.selectedDiagram){
+            let selectedItems: object[] = selectedItem.selectedDiagram.selectedItems.nodes as object[];
+            selectedItems = selectedItems.concat(selectedItem.selectedDiagram.selectedItems.connectors as ConnectorModel);
+            if (itemText) {
+                const commandType: string = itemText.replace(/[' ']/g, '');
+                if (selectedItems.length === 0 || selectedItem.diagramType !== 'GeneralDiagram') {
+                    switch (commandType.toLowerCase()) {
+                        case 'edittooltip':
+                            let disable: boolean = false;
+                            if (!(selectedItems.length === 1)) {
+                                disable = true;
+                            }
+                            return disable;
+                        case 'cut':
+                            return true;
+                        case 'copy':
+                            return true;
+                        case 'delete':
+                            return true;
+                        case 'duplicate':
+                            return true;
+                    }
                 }
-            }
-            if (selectedItems.length > 1) {
-                switch (commandType.toLowerCase()) {
-                    case 'edittooltip':
-                        return true;
+                if (selectedItems.length > 1) {
+                    switch (commandType.toLowerCase()) {
+                        case 'edittooltip':
+                            return true;
+                    }
                 }
-            }
-            if (selectedItem.pasteData.length === 0 && itemText === 'Paste') {
-                return true;
-            }
-            if (itemText === 'Undo' && (selectedItem.selectedDiagram.historyManager.undoStack as HistoryEntry[]).length === 0) {
-                return true;
-            }
-            if (itemText === 'Redo' && (selectedItem.selectedDiagram.historyManager.redoStack as HistoryEntry[]).length === 0) {
-                return true;
-            }
-            if (itemText === 'Select All') {
-                if (selectedItem.diagramType !== 'GeneralDiagram' || (selectedItem.selectedDiagram.nodes.length === 0 && selectedItem.selectedDiagram.connectors.length === 0)) {
+                if (selectedItem.pasteData.length === 0 && itemText === 'Paste') {
                     return true;
                 }
-            }
-            if (selectedItem.diagramType !== 'GeneralDiagram') {
-                if (itemText === 'Themes' || itemText === 'Paste' || itemText === 'Show Rulers' || itemText === 'Show Guides'
-                    || itemText === 'Show Grid' || itemText === 'Snap To Grid' || itemText === 'Show Stencil') {
+                if (itemText === 'Undo' && (selectedItem.selectedDiagram.historyManager.undoStack as HistoryEntry[]).length === 0) {
                     return true;
                 }
-            }
+                if (itemText === 'Redo' && (selectedItem.selectedDiagram.historyManager.redoStack as HistoryEntry[]).length === 0) {
+                    return true;
+                }
+                if (itemText === 'Select All') {
+                    if (selectedItem.diagramType !== 'GeneralDiagram' || (selectedItem.selectedDiagram.nodes.length === 0 && selectedItem.selectedDiagram.connectors.length === 0)) {
+                        return true;
+                    }
+                }
+                if (selectedItem.diagramType !== 'GeneralDiagram') {
+                    if (itemText === 'Themes' || itemText === 'Paste' || itemText === 'Show Rulers' || itemText === 'Show Guides'
+                        || itemText === 'Show Grid' || itemText === 'Snap To Grid' || itemText === 'Show Stencil') {
+                        return true;
+                    }
+                }
+            }            
         }
         return false;
     }
