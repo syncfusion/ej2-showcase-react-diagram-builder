@@ -1610,8 +1610,8 @@ class App extends React.Component<{}, {}> {
             }
         }
         this.toolbarEditor.dataBind();
-        (document.getElementById('btnDrawShape') as HTMLElement).classList.remove('tb-item-selected');
-        (document.getElementById('btnDrawConnector') as HTMLElement).classList.remove('tb-item-selected');
+        (document.getElementById('btnDrawShape') as any).classList.remove('tb-item-selected');
+        (document.getElementById('btnDrawConnector') as any).classList.remove('tb-item-selected');
     }
 
     public showColorPicker(propertyName: string, toolbarName: string): void {
@@ -1676,7 +1676,7 @@ class App extends React.Component<{}, {}> {
         }
         diagram.tool = DiagramTools.ContinuousDraw;
         this.removeSelectedToolbarItem();
-        (document.getElementById('btnDrawShape') as HTMLElement).classList.add('tb-item-selected');
+        (document.getElementById('btnDrawShape') as any).classList.add('tb-item-selected');
     }
 
     public drawConnectorChange(args: MenuEventArgs): void {
@@ -1688,6 +1688,9 @@ class App extends React.Component<{}, {}> {
         } else if (args.item.text === 'Bezier') {
             diagram.drawingObject = { type: 'Bezier', style: { strokeWidth: 2 } };
         }
+    //     else if(args.item.text === 'Free Hand'){
+    //     diagram.drawingObject = { type: 'Freehand', style: { strokeWidth: 2 } };
+    // }
         diagram.tool = DiagramTools.ContinuousDraw;
         diagram.clearSelection();
         this.removeSelectedToolbarItem();
