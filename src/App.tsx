@@ -43,7 +43,7 @@ import {
     ToolbarComponent, ItemsDirective, ItemDirective, ClickEventArgs, MenuEventArgs as ContextMenuEventArgs,
     ItemModel as ToolbarItemModel, MenuAnimationSettingsModel, ContextMenuComponent, OpenCloseMenuEventArgs
 } from '@syncfusion/ej2-react-navigations';
-import "../node_modules/@syncfusion/ej2-react-diagrams/styles/diagram/material.css"
+import "../node_modules/@syncfusion/ej2-diagrams/styles/diagram/material.css"
 import "../node_modules/@syncfusion/ej2-popups/styles/material.css";
 import "../node_modules/@syncfusion/ej2-navigations/styles/accordion/material.css";
 import "./assets/index.css";
