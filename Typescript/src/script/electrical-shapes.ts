@@ -28,7 +28,7 @@ export class ElectricalShapes {
     private getElectricalAudioShapes(): NodeModel[] {
         const audioShapes: NodeModel[] = [
             {
-                id: 'SHAPe_BELL2n9D723',
+                id: 'Bell1',
                 shape: {
                     type: 'Path',
                     data: 'M37.5,18.5h0a30,30,0,0,1,30,30v0a30,30,0,0,1-30,30h0a0,0,0,0,1,0,0v-60A0,0,0,0,1,37.5,18.5Z'
@@ -42,7 +42,7 @@ export class ElectricalShapes {
                 offsetX: 52.5,
                 offsetY: 48.5
             }, {
-                id: 'SHAPe_BELL3U7sXks',
+                id: 'Bell2',
                 shape: {
                     type: 'Path',
                     data: 'M 24 , 48.5 L 37.5 , 48.5'
@@ -56,10 +56,10 @@ export class ElectricalShapes {
                 offsetX: 30.75,
                 offsetY: 49
             }, {
-                id: 'SHAPe_BELL',
-                'children': ['SHAPe_BELL2n9D723', 'SHAPe_BELL3U7sXks']
+                id: 'Bell',
+                'children': ['Bell1', 'Bell2']
             }, {
-                id: 'SHAPe_BUZZER2UsJQZn',
+                id: 'Buzzer1',
                 shape: {
                     type: 'Path',
                     data: 'M32.5,18.5h0a30,30,0,0,1,30,30v0a30,30,0,0,1-30,30h0a0,0,0,0,1,0,0v-60A0,0,0,0,1,32.5,18.5Z'
@@ -73,7 +73,7 @@ export class ElectricalShapes {
                 offsetX: 47.50000190734863,
                 offsetY: 48.5
             }, {
-                id: 'SHAPe_BUZZER3yppSXu',
+                id: 'Buzzer2',
                 shape: {
                     type: 'Path',
                     data: 'M 61 , 39.5 L 76 , 39.5'
@@ -87,7 +87,7 @@ export class ElectricalShapes {
                 offsetX: 68.5,
                 offsetY: 40
             }, {
-                id: 'SHAPe_BUZZER4vOlqKB',
+                id: 'Buzzer3',
                 shape: {
                     type: 'Path',
                     data: 'M 61 , 57.5 L 76 , 57.5'
@@ -101,10 +101,10 @@ export class ElectricalShapes {
                 offsetX: 68.5,
                 offsetY: 58
             }, {
-                id: 'SHAPe_BUZZER',
-                'children': ['SHAPe_BUZZER2UsJQZn', 'SHAPe_BUZZER3yppSXu', 'SHAPe_BUZZER4vOlqKB']
+                id: 'Buzzer',
+                'children': ['Buzzer1', 'Buzzer2', 'Buzzer3']
             }, {
-                id: 'SHAPe_DIPOLE2MECcG1',
+                id: 'Dipole1',
                 shape: {
                     type: 'Path',
                     data: 'M0 32.5 36.5 32.5 36.5 70'
@@ -118,7 +118,7 @@ export class ElectricalShapes {
                 offsetX: 18.25,
                 offsetY: 51.25
             }, {
-                id: 'SHAPe_DIPOLE3a3fz0a',
+                id: 'Dipole2',
                 shape: {
                     type: 'Path',
                     data: 'M99.5 32.5 63 32.5 63 70'
@@ -132,10 +132,10 @@ export class ElectricalShapes {
                 offsetX: 81.25,
                 offsetY: 51.25
             }, {
-                id: 'SHAPe_DIPOLE',
-                'children': ['SHAPe_DIPOLE2MECcG1', 'SHAPe_DIPOLE3a3fz0a']
+                id: 'Dipole',
+                'children': ['Dipole1', 'Dipole2']
             }, {
-                id: 'SHAPe_ELECTRETMICROPHONE241cvIF',
+                id: 'ElectretMicrophone1',
                 shape: {
                     type: 'Basic',
                     shape: 'Ellipse'
@@ -149,7 +149,7 @@ export class ElectricalShapes {
                 offsetX: 52.5,
                 offsetY: 51.5
             }, {
-                id: 'SHAPe_ELECTRETMICROPHONE3a4GLsu',
+                id: 'ElectretMicrophone2',
                 shape: {
                     type: 'Path',
                     data: 'M 20.5 , 20 L 20.5 , 84'
@@ -163,7 +163,7 @@ export class ElectricalShapes {
                 offsetX: 21,
                 offsetY: 52
             }, {
-                id: 'SHAPe_ELECTRETMICROPHONE4kETGTq',
+                id: 'ElectretMicrophone3',
                 shape: {
                     type: 'Path',
                     data: 'M 52.5 , 54.5 L 52.5 , 83.5'
@@ -177,7 +177,7 @@ export class ElectricalShapes {
                 offsetX: 53,
                 offsetY: 69
             }, {
-                id: 'SHAPe_ELECTRETMICROPHONE5S00vUm',
+                id: 'ElectretMicrophone4',
                 shape: {
                     type: 'Path',
                     data: 'M 52.5 , 20 L 52.5 , 50'
@@ -191,7 +191,7 @@ export class ElectricalShapes {
                 offsetX: 53,
                 offsetY: 35
             }, {
-                id: 'SHAPe_ELECTRETMICROPHONE6dfESfU',
+                id: 'ElectretMicrophone5',
                 shape: {
                     type: 'Path',
                     data: 'M 44 , 54.5 L 61 , 54.5'
@@ -205,7 +205,7 @@ export class ElectricalShapes {
                 offsetX: 52.5,
                 offsetY: 55
             }, {
-                id: 'SHAPe_ELECTRETMICROPHONE76KqQNE',
+                id: 'ElectretMicrophone6',
                 shape: {
                     type: 'Path',
                     data: 'M 44 , 49.5 L 61 , 49.5'
@@ -219,10 +219,10 @@ export class ElectricalShapes {
                 offsetX: 52.5,
                 offsetY: 50
             }, {
-                id: 'SHAPe_ELECTRETMICROPHONE',
-                'children': ['SHAPe_ELECTRETMICROPHONE241cvIF', 'SHAPe_ELECTRETMICROPHONE3a4GLsu', 'SHAPe_ELECTRETMICROPHONE4kETGTq', 'SHAPe_ELECTRETMICROPHONE5S00vUm', 'SHAPe_ELECTRETMICROPHONE6dfESfU', 'SHAPe_ELECTRETMICROPHONE76KqQNE']
+                id: 'ElectretMicrophone',
+                'children': ['ElectretMicrophone1', 'ElectretMicrophone2', 'ElectretMicrophone3', 'ElectretMicrophone4', 'ElectretMicrophone5', 'ElectretMicrophone6']
             }, {
-                id: 'SHAPe_HEADPHONES2hBnFJM',
+                id: 'Headphone1',
                 shape: {
                     type: 'Path',
                     data: 'M29.5,51.91c0-13.53,11-23.41,24.5-23.41s24.5,9.85,24.5,23.38'
@@ -236,7 +236,7 @@ export class ElectricalShapes {
                 offsetX: 54,
                 offsetY: 40.204999923706055
             }, {
-                id: 'SHAPe_HEADPHONES3gk1MsY',
+                id: 'Headphone2',
                 shape: {
                     type: 'Basic',
                     shape: 'Ellipse'
@@ -250,7 +250,7 @@ export class ElectricalShapes {
                 offsetX: 32.5,
                 offsetY: 61.5
             }, {
-                id: 'SHAPe_HEADPHONES4Cy5ceS',
+                id: 'Headphone3',
                 shape: {
                     type: 'Basic',
                     shape: 'Ellipse'
@@ -264,10 +264,10 @@ export class ElectricalShapes {
                 offsetX: 75.5,
                 offsetY: 61.5
             }, {
-                id: 'SHAPe_HEADPHONES',
-                'children': ['SHAPe_HEADPHONES2hBnFJM', 'SHAPe_HEADPHONES3gk1MsY', 'SHAPe_HEADPHONES4Cy5ceS']
+                id: 'Headphone',
+                'children': ['Headphone1', 'Headphone2', 'Headphone3']
             }, {
-                id: 'SHAPe_LOUDSPEAKER2m0JVbP',
+                id: 'LoudSpeaker1',
                 shape: {
                     type: 'Path',
                     data: 'M49.5 41.5 44.5 41.5 44.5 57.5 49.5 57.5 58.5 68.66 58.5 29.41 49.5 41.5'
@@ -281,7 +281,7 @@ export class ElectricalShapes {
                 offsetX: 51.5,
                 offsetY: 49.03500175476074
             }, {
-                id: 'SHAPe_LOUDSPEAKER3HjVQee',
+                id: 'LoudSpeaker2',
                 shape: {
                     type: 'Path',
                     data: 'M 37 , 44.5 L 44.5 , 44.5'
@@ -295,7 +295,7 @@ export class ElectricalShapes {
                 offsetX: 40.75,
                 offsetY: 45
             }, {
-                id: 'SHAPe_LOUDSPEAKER4GxEBGB',
+                id: 'LoudSpeaker3',
                 shape: {
                     type: 'Path',
                     data: 'M 37 , 54.5 L 44.5 , 54.5'
@@ -309,7 +309,7 @@ export class ElectricalShapes {
                 offsetX: 40.75,
                 offsetY: 55
             }, {
-                id: 'SHAPe_LOUDSPEAKER5I0Btfg',
+                id: 'LoudSpeaker4',
                 shape: {
                     type: 'Path',
                     data: 'M 49.5 , 41.5 L 49.5 , 57.5'
@@ -323,10 +323,10 @@ export class ElectricalShapes {
                 offsetX: 50,
                 offsetY: 49.5
             }, {
-                id: 'SHAPe_LOUDSPEAKER',
-                'children': ['SHAPe_LOUDSPEAKER2m0JVbP', 'SHAPe_LOUDSPEAKER3HjVQee', 'SHAPe_LOUDSPEAKER4GxEBGB', 'SHAPe_LOUDSPEAKER5I0Btfg']
+                id: 'LoudSpeaker',
+                'children': ['LoudSpeaker1', 'LoudSpeaker2', 'LoudSpeaker3', 'LoudSpeaker4']
             }, {
-                id: 'SHAPe_MICROPHONE2PZQ7Oa',
+                id: 'Microphone_1',
                 shape: {
                     type: 'Path',
                     data: 'M31.5,17.5h0a30,30,0,0,1,30,30v0a30,30,0,0,1-30,30h0a0,0,0,0,1,0,0v-60A0,0,0,0,1,31.5,17.5Z'
@@ -340,7 +340,7 @@ export class ElectricalShapes {
                 offsetX: 46.500003814697266,
                 offsetY: 47.500003814697266
             }, {
-                id: 'SHAPe_MICROPHONE3ZltMeQ',
+                id: 'Microphone_2',
                 shape: {
                     type: 'Path',
                     data: 'M 61 , 41.5 L 67 , 41.5'
@@ -354,7 +354,7 @@ export class ElectricalShapes {
                 offsetX: 64,
                 offsetY: 42
             }, {
-                id: 'SHAPe_MICROPHONE457BPdI',
+                id: 'Microphone_3',
                 shape: {
                     type: 'Path',
                     data: 'M 61 , 53.5 L 67 , 53.5'
@@ -368,10 +368,10 @@ export class ElectricalShapes {
                 offsetX: 64,
                 offsetY: 54
             }, {
-                id: 'SHAPe_MICROPHONE',
-                'children': ['SHAPe_MICROPHONE2PZQ7Oa', 'SHAPe_MICROPHONE3ZltMeQ', 'SHAPe_MICROPHONE457BPdI']
+                id: 'Microphone',
+                'children': ['Microphone_1', 'Microphone_2', 'Microphone_3']
             }, {
-                id: 'SHAPe_MICROPHONE12yRRYxh',
+                id: 'Microphone_21',
                 shape: {
                     type: 'Path',
                     data: 'M 21.5 , 20 L 21.5 , 84'
@@ -385,7 +385,7 @@ export class ElectricalShapes {
                 offsetX: 22,
                 offsetY: 52
             }, {
-                id: 'SHAPe_MICROPHONE13k846hj',
+                id: 'Microphone_22',
                 shape: {
                     type: 'Basic',
                     shape: 'Ellipse'
@@ -399,10 +399,10 @@ export class ElectricalShapes {
                 offsetX: 53.5,
                 offsetY: 51.5
             }, {
-                id: 'SHAPe_MICROPHONE1',
-                'children': ['SHAPe_MICROPHONE12yRRYxh', 'SHAPe_MICROPHONE13k846hj']
+                id: 'Microphone2',
+                'children': ['Microphone_21', 'Microphone_22']
             }, {
-                id: 'SHAPe_PIEZOSOUNDER2NmWkyZ',
+                id: 'PiezoSounder1',
                 shape: {
                     type: 'Basic',
                     shape: 'Rectangle'
@@ -416,7 +416,7 @@ export class ElectricalShapes {
                 offsetX: 50.5,
                 offsetY: 50.5
             }, {
-                id: 'SHAPe_PIEZOSOUNDER3zf1oj8',
+                id: 'PiezoSounder2',
                 shape: {
                     type: 'Path',
                     data: 'M 62.5 , 29 L 62.5 , 72'
@@ -430,7 +430,7 @@ export class ElectricalShapes {
                 offsetX: 63,
                 offsetY: 50.5
             }, {
-                id: 'SHAPe_PIEZOSOUNDER40Xl7mx',
+                id: 'PiezoSounder3',
                 shape: {
                     type: 'Path',
                     data: 'M 100 , 50.5 L 62 , 50.5'
@@ -444,7 +444,7 @@ export class ElectricalShapes {
                 offsetX: 81,
                 offsetY: 51
             }, {
-                id: 'SHAPe_PIEZOSOUNDER55SxVPv',
+                id: 'PiezoSounder4',
                 shape: {
                     type: 'Path',
                     data: 'M 39 , 50.5 L 1 , 50.5'
@@ -458,7 +458,7 @@ export class ElectricalShapes {
                 offsetX: 19.5,
                 offsetY: 51
             }, {
-                id: 'SHAPe_PIEZOSOUNDER6gYGtF2',
+                id: 'PiezoSounder5',
                 shape: {
                     type: 'Path',
                     data: 'M 38.5 , 29 L 38.5 , 72'
@@ -472,8 +472,8 @@ export class ElectricalShapes {
                 offsetX: 39,
                 offsetY: 50.5
             }, {
-                id: 'SHAPe_PIEZOSOUNDER',
-                'children': ['SHAPe_PIEZOSOUNDER2NmWkyZ', 'SHAPe_PIEZOSOUNDER3zf1oj8', 'SHAPe_PIEZOSOUNDER40Xl7mx', 'SHAPe_PIEZOSOUNDER55SxVPv', 'SHAPe_PIEZOSOUNDER6gYGtF2']
+                id: 'PiezoSounder',
+                'children': ['PiezoSounder1', 'PiezoSounder2', 'PiezoSounder3', 'PiezoSounder4', 'PiezoSounder5']
             }
         ];
         for (const auto of audioShapes) {
@@ -1262,7 +1262,7 @@ export class ElectricalShapes {
                 offsetX: 29.5,
                 offsetY: 32
             }, {
-                id: 'SHAPE_ELECTROLYTICCAPACITORUS',
+                id: 'SHAPE_ELECTROLYTICCAPACITORUS2',
                 'children': ['SHAPE_ELECTROLYTICCAPACITORUS2epIuhH', 'SHAPE_ELECTROLYTICCAPACITORUS32bb7AM', 'SHAPE_ELECTROLYTICCAPACITORUS4ob8tSN', 'SHAPE_ELECTROLYTICCAPACITORUS5QsLOBr', 'SHAPE_ELECTROLYTICCAPACITORUS6gXctyr', 'SHAPE_ELECTROLYTICCAPACITORUS7GFfSuO']
             }, {
                 id: 'SHAPE_FEEDTHROUGHCAPACITOR2uV7eFp',

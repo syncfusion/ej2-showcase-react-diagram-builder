@@ -5,7 +5,12 @@
 
 import {
     NodeModel, NodeConstraints, PointModel, ConnectorModel,
-    Diagram, ConnectorConstraints, Node, TextStyle, TextStyleModel, SelectorConstraints, TextAlign, HorizontalAlignment, VerticalAlignment, Connector, ShapeAnnotationModel, HistoryEntry, DecoratorModel, StrokeStyle, ShapeStyle, Gradient, LinearGradient
+    Diagram, ConnectorConstraints, Node, TextStyle, TextStyleModel, SelectorConstraints, TextAlign, HorizontalAlignment, VerticalAlignment, Connector, ShapeAnnotationModel, HistoryEntry, DecoratorModel, StrokeStyle, ShapeStyle, Gradient, LinearGradient,
+    SelectorModel,
+    SnapConstraints,
+    SnapSettingsModel,
+    DiagramConstraints,
+    DiagramTools,
 } from '@syncfusion/ej2-diagrams';
 import { SelectorViewModel } from './selectedItem';
 import { Dialog } from '@syncfusion/ej2-react-popups';
@@ -15,84 +20,131 @@ import { Ajax } from '@syncfusion/ej2-base';
 import { Toolbar, MenuItemModel, ContextMenuComponent } from '@syncfusion/ej2-react-navigations';
 import { PageCreation } from './pages';
 import { CommonKeyboardCommands } from './commoncommands';
-// import { getCreditCardFlow } from "./../../public/CreditCardFlow.json"
+
 
 export class PaperSize {
-    public pageWidth: number;
-    public pageHeight: number;
+    public pageWidth!: number;
+    public pageHeight!: number;
 }
 
 export class UtilityMethods {
 
-    public page: PageCreation;
-    public tempDialog: Dialog;
-    public toolbarEditor: Toolbar;
-    public arrangeContextMenu: ContextMenuComponent;
+    public page!: PageCreation;
+    public tempDialog!: Dialog;
+    public toolbarEditor!: Toolbar;
+    public arrangeContextMenu!: ContextMenuComponent;
     public fillColorCode: string[] = ['#C4F2E8', '#F7E0B3', '#E5FEE4', '#E9D4F1', '#D4EFED', '#DEE2FF'];
 
     public borderColorCode: string[] = ['#8BC1B7', '#E2C180', '#ACCBAA', '#D1AFDF', '#90C8C2', '#BBBFD6'];
 
-    public flowChartImage: Array<{ [key: string]: string }> = [
-        { source: './blank_diagram.svg', name: 'Blank Diagram', type: 'svg_blank' },
-        { source: './flowchart_Images/Credit_Card_Processing.svg', name: 'Credit Card Processing', type: 'svg_image' },
-        { source: './flowchart_Images/Bank_Teller_Flow.svg', name: 'Banking Teller Process Flow', type: 'svg_image' },
-        { source: './flowchart_Images/Developer_Workflow.SVG', name: 'Agile"s Developer Workflow', type: 'svg_image' },
+    public flowChartImage: { [key: string]: string }[] = [
+        { source: 'assets/dbstyle/common_images/blank_diagram.svg', name: 'Blank Diagram', type: 'svg_blank' },
+        { source: 'assets/dbstyle/flowchart_Images/Credit_Card_Processing.svg', name: 'Credit Card Processing', type: 'svg_image' },
+        { source: 'assets/dbstyle/flowchart_Images/Bank_Teller_Flow.svg', name: 'Banking Teller Process Flow', type: 'svg_image' },
+        { source: 'assets/dbstyle/flowchart_Images/Developer_Workflow.SVG', name: "Agile's Developer Workflow", type: 'svg_image' },
     ];
 
-    public mindMapImage: Array<{ [key: string]: string }> = [
-        { source: './common_images/blank_diagram_mind.svg', name: 'Blank Diagram', type: 'svg_image' },
-        { source: './mindmap_images/BusinessPlanning.SVG', name: 'Business Planning', type: 'svg_image' },
-        { source: './mindmap_images/TQM.SVG', name: 'Quality Management', type: 'svg_image' },
-        { source: './mindmap_images/SoftwareLifeCycle.SVG', name: 'Software Life Cycle', type: 'svg_image' },
+    public mindMapImage: { [key: string]: string }[] = [
+        { source: 'assets/dbstyle/common_images/blank_diagram_mind.svg', name: 'Blank Diagram', type: 'svg_image' },
+        { source: 'assets/dbstyle/mindmap_images/BusinessPlanning.SVG', name: 'Business Planning', type: 'svg_image' },
+        { source: 'assets/dbstyle/mindmap_images/TQM.SVG', name: 'Quality Management', type: 'svg_image' },
+        { source: 'assets/dbstyle/mindmap_images/SoftwareLifeCycle.SVG', name: 'Software Life Cycle', type: 'svg_image' },
     ];
 
-    public orgChartImage: Array<{ [key: string]: string }> = [
-        { source: './common_images/blank_diagram_org.svg', name: 'Blank Diagram', type: 'svg_image' },
-        { source: './orgchart_images/OrgRenderingStyle_1.svg', name: 'Org Template Style - 1', type: 'svg_image' },
-        { source: './orgchart_images/OrgRenderingStyle_2.svg', name: 'Org Template Style - 2', type: 'svg_image' },
-        { source: './orgchart_images/OrgRenderingStyle_3.svg', name: 'Org Template Style - 3', type: 'svg_image' },
+    public orgChartImage: { [key: string]: string }[] = [
+        { source: 'assets/dbstyle/common_images/blank_diagram_org.svg', name: 'Blank Diagram', type: 'svg_image' },
+        { source: 'assets/dbstyle/orgchart_images/OrgRenderingStyle_1.svg', name: 'Org Template Style - 1', type: 'svg_image' },
+        { source: 'assets/dbstyle/orgchart_images/OrgRenderingStyle_2.svg', name: 'Org Template Style - 2', type: 'svg_image' },
+        { source: 'assets/dbstyle/orgchart_images/OrgRenderingStyle_3.svg', name: 'Org Template Style - 3', type: 'svg_image' },
     ];
 
-    public bpmnImage: Array<{ [key: string]: string }> = [
-        { source: '../assets/dbstyle/common_images/blank_diagram.svg', name: 'Blank Diagram', type: 'svg_blank' },
-        { source: '../assets/dbstyle/bpmn_images/Template1.png', name: 'BPMN Diagram 1' },
-        { source: '../assets/dbstyle/bpmn_images/Template1.png', name: 'BPMN Diagram 2' },
-        { source: '../assets/dbstyle/bpmn_images/Template1.png', name: 'BPMN Diagram 3' },
+    public bpmnImage: { [key: string]: string }[] = [
+        { source: 'assets/dbstyle/common_images/blank_diagram.svg', name: 'Blank Diagram', type: 'svg_blank' },
+        { source: 'assets/dbstyle/bpmn_images/Template1.png', name: 'BPMN Diagram 1' },
+        { source: 'assets/dbstyle/bpmn_images/Template1.png', name: 'BPMN Diagram 2' },
+        { source: 'assets/dbstyle/bpmn_images/Template1.png', name: 'BPMN Diagram 3' },
     ];
-
-    public bindNodeProperties(node: NodeModel, selectedItem: SelectorViewModel): void {
+    
+    public bindNodeProperties(node: Node, selectedItem: any, isMultiSelect: boolean): void {
         selectedItem.preventPropertyChange = true;
-        (selectedItem.nodeProperties.offsetX as any).value = (Math.round((node as Node).offsetX * 100) / 100);
-        (selectedItem.nodeProperties.offsetY as any).value = (Math.round((node as Node).offsetY * 100) / 100);
-        (selectedItem.nodeProperties.width as any).value = node.width ? (Math.round(node.width * 100) / 100) : (Math.round(node.minWidth as number * 100) / 100);
-        (selectedItem.nodeProperties.height as any).value = node.height ? (Math.round(node.height * 100) / 100) : (Math.round(node.minHeight as number * 100) / 100);
-        (selectedItem.nodeProperties.rotateAngle as any).value = node.rotateAngle as number;
-        (selectedItem.nodeProperties.strokeColor as any).value = this.getHexColor((node.style as ShapeStyle).strokeColor as string);
-        (selectedItem.nodeProperties.strokeStyle as any).value = (node.style as ShapeStyle).strokeDashArray ? (node.style as ShapeStyle).strokeDashArray : 'None';
-        (selectedItem.nodeProperties.strokeWidth as any).value = (node.style as ShapeStyle).strokeWidth;
-        (selectedItem.nodeProperties.fillColor as any).value = this.getHexColor((node.style as ShapeStyle).fill);
-        (selectedItem.nodeProperties.opacity as any).value = (node.style as ShapeStyle).opacity * 100;
-        selectedItem.nodeProperties.opacityText = (selectedItem.nodeProperties.opacity as any).value + '%';
-        (selectedItem.nodeProperties.aspectRatio as any).checked = (node.constraints as NodeConstraints) & NodeConstraints.AspectRatio ? true : false;
-        selectedItem.nodeProperties.gradient = (node.style as ShapeStyle).gradient.type !== 'None' ? true : false;
-        const gradientElement: HTMLElement = document.getElementById('gradientStyle') as HTMLElement;
-        if (selectedItem.nodeProperties.gradient) {
-            gradientElement.className = 'row db-prop-row db-gradient-style-show';
-            (selectedItem.nodeProperties.gradientColor as any).value = ((node.style as ShapeStyle).gradient as Gradient).stops[1].color as string;
-            const gradient: LinearGradient = (node.style as ShapeStyle).gradient as LinearGradient;
-            if (gradient.x1) {
-                (selectedItem.nodeProperties.gradientDirection as any).value = 'North';
-            } else if (gradient.x2) {
-                (selectedItem.nodeProperties.gradientDirection as any).value = 'East';
-            } else if (gradient.y1) {
-                (selectedItem.nodeProperties.gradientDirection as any).value = 'West';
-            } else if (gradient.y2) {
+        (selectedItem.nodeProperties.opacity as any).value = ((node as any).style.opacity * 100);
+
+        if (node.children && node.children.length > 0) {
+            const childNode = selectedItem.selectedDiagram.nameTable[node.children[0]] as Node;
+            selectedItem.preventPropertyChange = true;
+            (selectedItem.nodeProperties.offsetX as any).value = (Math.round((node as Node).offsetX * 100) / 100);
+            (selectedItem.nodeProperties.offsetY as any).value = (Math.round((node as Node).offsetY * 100) / 100);
+            (selectedItem.nodeProperties.width as any).value = node.width ? (Math.round(node.width * 100) / 100) : (Math.round(node.minWidth as number * 100) / 100);
+            (selectedItem.nodeProperties.height as any).value = node.height ? (Math.round(node.height * 100) / 100) : (Math.round(node.minHeight as number * 100) / 100);
+            if (selectedItem.selectedDiagram.selectedItems?.nodes?.length === 1) {
+                (selectedItem.nodeProperties.rotateAngle as any).value = node.rotateAngle as number;
+            }
+            (selectedItem.nodeProperties.strokeColor as any).value = this.getHexColor((childNode.style as ShapeStyle).strokeColor as string);
+            (selectedItem.nodeProperties.strokeStyle as any).value = (childNode.style as ShapeStyle).strokeDashArray ? (node.style as ShapeStyle).strokeDashArray : 'None';
+            (selectedItem.nodeProperties.strokeWidth as any).value = (childNode.style as ShapeStyle).strokeWidth;
+            (selectedItem.nodeProperties.fillColor as any).value = this.getHexColor((childNode.style as ShapeStyle).fill);
+            (selectedItem.nodeProperties.opacity as any).value = (childNode.style as ShapeStyle).opacity * 100;
+            selectedItem.nodeProperties.opacityText = (selectedItem.nodeProperties.opacity as any).value + '%';
+            (selectedItem.nodeProperties.aspectRatio as any).checked = (node.constraints as NodeConstraints) & NodeConstraints.AspectRatio ? true : false;
+            selectedItem.nodeProperties.gradient = (childNode.style as ShapeStyle).gradient.type !== 'None' ? true : false;
+            const gradientElement: HTMLElement = document.getElementById('gradientStyle') as HTMLElement;
+            if (selectedItem.nodeProperties.gradient) {
+                gradientElement.className = 'row db-prop-row db-gradient-style-show';
+                (document.getElementById('gradient') as any).ej2_instances[0].checked = true;
+                (selectedItem.nodeProperties.gradientColor as any).value = ((childNode.style as ShapeStyle).gradient as Gradient).stops[1].color as string;
+                const gradient: LinearGradient = (childNode.style as ShapeStyle).gradient as LinearGradient;
+                if (gradient.x1) {
+                    (selectedItem.nodeProperties.gradientDirection as any).value = 'North';
+                } else if (gradient.x2) {
+                    (selectedItem.nodeProperties.gradientDirection as any).value = 'East';
+                } else if (gradient.y1) {
+                    (selectedItem.nodeProperties.gradientDirection as any).value = 'West';
+                } else if (gradient.y2) {
+                    (selectedItem.nodeProperties.gradientDirection as any).value = 'South';
+                }
+            } else {
+                gradientElement.className = 'row db-prop-row db-gradient-style-hide';
+                (document.getElementById('gradient') as any).ej2_instances[0].checked = false;
+                (selectedItem.nodeProperties.gradientColor as any).value = '#ffffff';
                 (selectedItem.nodeProperties.gradientDirection as any).value = 'South';
             }
-        } else {
-            gradientElement.className = 'row db-prop-row db-gradient-style-hide';
-            (selectedItem.nodeProperties.gradientColor as any).value = '#ffffff';
-            (selectedItem.nodeProperties.gradientDirection as any).value = 'South';
+        } else if (!isMultiSelect) {
+            (selectedItem.nodeProperties.offsetX as any).value = (Math.round((node as Node).offsetX * 100) / 100);
+            (selectedItem.nodeProperties.offsetY as any).value = (Math.round((node as Node).offsetY * 100) / 100);
+            (selectedItem.nodeProperties.width as any).value = node.width ? (Math.round(node.width * 100) / 100) : (Math.round(node.minWidth as number * 100) / 100);
+            (selectedItem.nodeProperties.height as any).value = node.height ? (Math.round(node.height * 100) / 100) : (Math.round(node.minHeight as number * 100) / 100);
+            if (selectedItem.selectedDiagram.selectedItems?.nodes?.length === 1) {
+                (selectedItem.nodeProperties.rotateAngle as any).value = node.rotateAngle as number;
+            }
+            (selectedItem.nodeProperties.strokeColor as any).value = this.getHexColor((node.style as ShapeStyle).strokeColor as string);
+            (selectedItem.nodeProperties.strokeStyle as any).value = (node.style as ShapeStyle).strokeDashArray ? (node.style as ShapeStyle).strokeDashArray : 'None';
+            (selectedItem.nodeProperties.strokeWidth as any).value = (node.style as ShapeStyle).strokeWidth;
+            (selectedItem.nodeProperties.fillColor as any).value = this.getHexColor((node.style as ShapeStyle).fill);
+            (selectedItem.nodeProperties.opacity as any).value = (node.style as ShapeStyle).opacity * 100;
+            selectedItem.nodeProperties.opacityText = (selectedItem.nodeProperties.opacity as any).value + '%';
+            (selectedItem.nodeProperties.aspectRatio as any).checked = (node.constraints as NodeConstraints) & NodeConstraints.AspectRatio ? true : false;
+            selectedItem.nodeProperties.gradient = (node.style as ShapeStyle).gradient.type !== 'None' ? true : false;
+            const gradientElement: HTMLElement = document.getElementById('gradientStyle') as HTMLElement;
+            if (selectedItem.nodeProperties.gradient) {
+                gradientElement.className = 'row db-prop-row db-gradient-style-show';
+                (document.getElementById('gradient') as any).ej2_instances[0].checked = true;
+                (selectedItem.nodeProperties.gradientColor as any).value = ((node.style as ShapeStyle).gradient as Gradient).stops[1].color as string;
+                const gradient: LinearGradient = (node.style as ShapeStyle).gradient as LinearGradient;
+                if (gradient.x1) {
+                    (selectedItem.nodeProperties.gradientDirection as any).value = 'North';
+                } else if (gradient.x2) {
+                    (selectedItem.nodeProperties.gradientDirection as any).value = 'East';
+                } else if (gradient.y1) {
+                    (selectedItem.nodeProperties.gradientDirection as any).value = 'West';
+                } else if (gradient.y2) {
+                    (selectedItem.nodeProperties.gradientDirection as any).value = 'South';
+                }
+            } else {
+                gradientElement.className = 'row db-prop-row db-gradient-style-hide';
+                (document.getElementById('gradient') as any).ej2_instances[0].checked = false;
+                (selectedItem.nodeProperties.gradientColor as any).value = '#ffffff';
+                (selectedItem.nodeProperties.gradientDirection as any).value = 'South';
+            }
         }
         selectedItem.preventPropertyChange = false;
     }
@@ -104,14 +156,21 @@ export class UtilityMethods {
         (selectedItem.mindmapSettings.strokeWidth as any).value = (node.style as ShapeStyle).strokeWidth;
         (selectedItem.mindmapSettings.fill as any).value = (node.style as ShapeStyle).fill;
         (selectedItem.mindmapSettings.opacity as any).value = ((node.style as ShapeStyle).opacity || 1) * 100;
-        selectedItem.mindmapSettings.opacityText = (selectedItem.mindmapSettings.opacity || '100') + '%';
+        selectedItem.mindmapSettings.opacityText = ((selectedItem.mindmapSettings.opacity as any).value || '100') + '%';
+        (document.getElementById('mindmapOpacityText') as any).value = selectedItem.mindmapSettings.opacityText;
         if ((node.annotations as ShapeAnnotationModel[]).length > 0) {
             const annotation: TextStyle = (node.annotations as ShapeAnnotationModel[])[0].style as TextStyle;
             (selectedItem.mindmapSettings.fontFamily as any).value = annotation.fontFamily;
             (selectedItem.mindmapSettings.fontColor as any).value = annotation.color;
             (selectedItem.mindmapSettings.fontSize as any).value = annotation.fontSize;
             (selectedItem.mindmapSettings.textOpacity as any).value = (annotation.opacity || 1) * 100;
-            selectedItem.mindmapSettings.textOpacityText = (selectedItem.mindmapSettings.textOpacity || '100') + '%';
+            selectedItem.mindmapSettings.textOpacityText = ((selectedItem.mindmapSettings.textOpacity as any).value || '100') + '%';
+            (document.getElementById('mindmapOpacitySliderText') as any).value = selectedItem.mindmapSettings.textOpacityText;
+             //Bind text style toolbar with mindmap.
+            let mindmapTextStyleToolbar = (document.getElementById('mindmapTextStyleToolbar') as any).ej2_instances[0];
+            mindmapTextStyleToolbar.items[0].cssClass = annotation.bold ? 'tb-item-start tb-item-selected' : 'tb-item-start';
+            mindmapTextStyleToolbar.items[1].cssClass = annotation.italic ? 'tb-item-middle tb-item-selected' : 'tb-item-middle';
+            mindmapTextStyleToolbar.items[2].cssClass = annotation.textDecoration === 'Underline' ? 'tb-item-end tb-item-selected' : 'tb-item-end';
         }
         selectedItem.preventPropertyChange = false;
     }
@@ -189,15 +248,15 @@ export class UtilityMethods {
     }
 
     public getHexColor(colorStr: string): string {
-        const colors: number[] = [];
-        // let a: HTMLDivElement = document.createElement('div');
-        // a.style.color = colorStr;
-        // let colors: number[] = window.getComputedStyle(document.body.appendChild(a)).color.match(/\d+/g).map(
-        //     (a: string): number => {
-        //         return parseInt(a, 10);
-        //     }
-        // );
-        // document.body.removeChild(a);
+        // const colors: number[] = [];
+        let a: HTMLDivElement = document.createElement('div');
+        a.style.color = colorStr;
+        let colors: number[] = window.getComputedStyle(document.body.appendChild(a)).color.match(/\d+/g).map(
+            (a: string): number => {
+                return parseInt(a, 10);
+            }
+        );
+        document.body.removeChild(a);
         return (colors.length >= 3) ? '#' + (((1 << 24) + (colors[0] << 16) + (colors[1] << 8) + colors[2]).toString(16).substr(1)) : '';
     }
 
@@ -402,6 +461,7 @@ export class UtilityMethods {
                 selectedItem.selectedDiagram.selectedItems.userHandles = OrgChartUtilityMethods.handle;
                 selectedItem.selectedDiagram.selectedItems.constraints = SelectorConstraints.UserHandle;
                 selectedItem.selectedDiagram.dataBind();
+                selectedItem.selectedDiagram.fitToPage();
             }
             selectedItem.preventSelectionChange = false;
             (document.getElementsByClassName('sb-content-overlay')[0] as HTMLDivElement).style.display = 'none';
@@ -468,9 +528,9 @@ export class UtilityMethods {
             if (selectedItems[0] instanceof Node) {
                 if ((selectedItems[0] as Node).children) {
                     if ((selectedItems[0] as Node).children.length > 2) {
-                        toolbarContainer.className = toolbarContainer.className + ' db-select db-double db-multiple db-node db-group';
+                        toolbarContainer.className = toolbarContainer.className + ' db-select db-multiple db-node db-group';
                     } else {
-                        toolbarContainer.className = toolbarContainer.className + ' db-select db-double db-node db-group';
+                        toolbarContainer.className = toolbarContainer.className + ' db-select db-node db-group';
                     }
                 } else {
                     toolbarContainer.className = toolbarContainer.className + ' db-select db-node';
@@ -493,7 +553,7 @@ export class UtilityMethods {
     }
 
     public enableMenuItems(itemText: string, selectedItem: SelectorViewModel): boolean {
-        if(selectedItem && selectedItem.selectedDiagram){
+        if(selectedItem && selectedItem.selectedDiagram) {
             let selectedItems: object[] = selectedItem.selectedDiagram.selectedItems.nodes as object[];
             selectedItems = selectedItems.concat(selectedItem.selectedDiagram.selectedItems.connectors as ConnectorModel);
             if (itemText) {
@@ -536,13 +596,47 @@ export class UtilityMethods {
                         return true;
                     }
                 }
+                if (['Align Objects', 'Distribute Objects', 'Match Size', 'Group'].includes(itemText)) {
+                if (selectedItems.length < 2) {
+                    return true;
+                }
+            }
+            if (['Bring To Front', 'Send To Back', 'Bring Forward', 'Send Backward'].includes(itemText)) {
+                if (selectedItems.length !== 1) {
+                    return true;
+                }
+            }
+            if (['Lock', 'Unlock'].includes(itemText)) {
+                if (selectedItems.length < 1) {
+                    return true;
+                } else {
+                    if (itemText === 'Lock') {
+                        for (let i = 0; i < selectedItems.length; i++) {
+                            if ((selectedItems[i] as any).constraints !== NodeConstraints.Default) {
+                                return true;
+                            }
+                        }
+                    } else {
+                        for (let i = 0; i < selectedItems.length; i++) {
+                            if ((selectedItems[i] as any).constraints === NodeConstraints.Default) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            if (itemText === 'Ungroup') {
+                if (selectedItems.length !== 1 || !(selectedItems[0] instanceof Node) || !selectedItems[0].children || selectedItems[0].children.length === 0) {
+                    return true;
+                }
+            }
                 if (selectedItem.diagramType !== 'GeneralDiagram') {
-                    if (itemText === 'Themes' || itemText === 'Paste' || itemText === 'Show Rulers' || itemText === 'Show Guides'
-                        || itemText === 'Show Grid' || itemText === 'Snap To Grid' || itemText === 'Show Stencil') {
+                     if (['Themes', 'Paste', 'Show Rulers', 'Show Guides', 'Show Grid', 'Snap To Grid', 'Show Layers', 'Show Stencil','Align Objects', 'Distribute Objects', 'Match Size', 'Group',
+                    'Bring To Front', 'Send To Back', 'Bring Forward', 'Send Backward','Lock', 'Unlock','Ungroup'].includes(itemText)) {
                         return true;
                     }
                 }
-            }            
+            }
         }
         return false;
     }
@@ -559,6 +653,16 @@ export class UtilityMethods {
         if (selectedItem.diagramType === 'GeneralDiagram') {
             if (selectedItems.length > 1) {
                 contextMenu.enableItems(['Align Objects', 'Distribute Objects', 'Match Size', 'Lock', 'Unlock', 'Group'], true);
+                for (let i = 0; i < 1; i++) {
+                    if((selectedItems[i] as any).constraints & NodeConstraints.Drag) {
+                        contextMenu.enableItems(['Lock'], true);
+                        contextMenu.enableItems(['Unlock'], false);
+                    }
+                    else {
+                        contextMenu.enableItems(['Lock'], false);
+                        contextMenu.enableItems(['Unlock'], true);
+                    }
+                }
             } else if (selectedItems.length === 1) {
                 contextMenu.enableItems(['Send To Back', 'Bring To Front', 'Send Backward', 'Bring Forward']);
                 const object: object = selectedItems[0];
@@ -568,8 +672,10 @@ export class UtilityMethods {
                     }
                     if (object.constraints & NodeConstraints.Drag) {
                         contextMenu.enableItems(['Lock'], true);
+                        contextMenu.enableItems(['Unlock'], false);
                     } else {
                         contextMenu.enableItems(['Unlock'], true);
+                        contextMenu.enableItems(['Lock'], false);
                     }
                 }
             }
@@ -629,6 +735,7 @@ export class UtilityMethods {
 
     public generateDiagram(selectedItem: SelectorViewModel, evt: MouseEvent): void {
         const diagramContainer: HTMLElement = document.getElementsByClassName('diagrambuilder-container')[0] as HTMLElement;
+        const diagram: Diagram = selectedItem.selectedDiagram;
         const target: HTMLDivElement = evt.target as HTMLDivElement;
         if (target.id.startsWith('mindmap')) {
             selectedItem.diagramType = 'MindMap';
@@ -636,18 +743,22 @@ export class UtilityMethods {
             const mindMapObject: MindMap = new MindMap(selectedItem);
             if (target.id === 'mindmap_child0') {
                 mindMapObject.createMindMap(true);
+                selectedItem.selectedDiagram.refresh();
                 MindMapUtilityMethods.templateType = 'template1';
             } else if (target.id === 'mindmap_child1') {
+               diagram.clear();
                 mindMapObject.createMindMap(false);
-                this.readTextFile('./BusinessPlanning.json', selectedItem);
+                this.readTextFile('assets/dbstyle/mindmap_images/BusinessPlanning.json', selectedItem);
                 MindMapUtilityMethods.templateType = 'template1';
             } else if (target.id === 'mindmap_child2') {
+                diagram.clear();
                 mindMapObject.createMindMap(false);
-                this.readTextFile('./TQM.json', selectedItem);
+                this.readTextFile('assets/dbstyle/mindmap_images/TQM.json', selectedItem);
                 MindMapUtilityMethods.templateType = 'template2';
             } else if (target.id === 'mindmap_child3') {
+                diagram.clear();
                 mindMapObject.createMindMap(false);
-                this.readTextFile('./SoftwareDevelopmentLifeCycle.json', selectedItem);
+                this.readTextFile('assets/dbstyle/mindmap_images/SoftwareDevelopmentLifeCycle.json', selectedItem);
                 MindMapUtilityMethods.templateType = 'template1';
             }
             this.hideMenuItems();
@@ -664,26 +775,33 @@ export class UtilityMethods {
                 if (target.id === 'orgchart_child1') {
                     orgChartObject.createOrgChart(false);
 
-                    this.readTextFile('./OrgTemplateStyle1.json', selectedItem);
+                    this.readTextFile('assets/dbstyle/orgchart_images/OrgTemplateStyle1.json', selectedItem);
                 } else if (target.id === 'orgchart_child2') {
                     orgChartObject.createOrgChart(false);
-                    this.readTextFile('./OrgTemplateStyle2.json', selectedItem);
+                    this.readTextFile('assets/dbstyle/orgchart_images/OrgTemplateStyle2.json', selectedItem);
                 } else if (target.id === 'orgchart_child3') {
                     orgChartObject.createOrgChart(false);
-                    this.readTextFile('./OrgTemplateStyle3.json', selectedItem);
+                    this.readTextFile('assets/dbstyle/orgchart_images/OrgTemplateStyle3.json', selectedItem);
                 }
             }
             this.hideMenuItems();
             diagramContainer.classList.add('custom-diagram');
         } else if (target.id.startsWith('flowchart')) {
             if (target.id === 'flowchart_child0') {
+                this.hideShortcutVisibility();
+                let selectedItemSettings: SelectorModel = { constraints: SelectorConstraints.All & ~SelectorConstraints.ToolTip };
+                selectedItem.selectedDiagram.snapSettings = this.getSnapSettings();
+                selectedItem.selectedDiagram.selectedItems = selectedItemSettings;
+                selectedItem.selectedDiagram.selectedItems.userHandles = [];
+                selectedItem.selectedDiagram.tool = DiagramTools.SingleSelect | DiagramTools.MultipleSelect;
                 selectedItem.selectedDiagram.clear();
+                this.updatePalette(selectedItem.selectedDiagram);
             } else if (target.id === 'flowchart_child1') {
-                this.readTextFile("./CreditCardFlow.json", selectedItem);
+                this.readTextFile("assets/dbstyle/flowchart_Images/CreditCardFlow.json", selectedItem);
             } else if (target.id === 'flowchart_child2') {
-                this.readTextFile('./BankingTellerProcess.json', selectedItem);
+                this.readTextFile('assets/dbstyle/flowchart_Images/BankingTellerProcess.json', selectedItem);
             } else if (target.id === 'flowchart_child3') {
-                this.readTextFile('./Developer_Workflow.json', selectedItem);
+                this.readTextFile('assets/dbstyle/flowchart_Images/Developer_Workflow.json', selectedItem);
             }
             selectedItem.diagramType = 'GeneralDiagram';
             diagramContainer.classList.add('general-diagram');
@@ -697,6 +815,22 @@ export class UtilityMethods {
             (document.getElementById('diagramName') as HTMLElement).innerHTML = diagramName;
         }
         this.tempDialog.hide();
+    }
+
+    public getSnapSettings() {
+        let snapSettings: SnapSettingsModel = {
+            horizontalGridlines: {
+                lineIntervals: [1, 9, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75],
+                lineColor: '#EEEEEE'
+            },
+            verticalGridlines: {
+                lineIntervals: [1, 9, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75],
+                lineColor: '#EEEEEE'
+            },
+            constraints: (SnapConstraints.All & ~SnapConstraints.SnapToLines)
+        };
+        return snapSettings;
+
     }
 
     public cutLayout(selectedItem: SelectorViewModel): void {
@@ -753,6 +887,7 @@ export class UtilityMethods {
 
 
     public updateLayout(selectedItem: SelectorViewModel, bindBindingFields?: boolean, imageField?: boolean): void {
+        selectedItem.selectedDiagram.constraints = selectedItem.selectedDiagram.constraints &= ~DiagramConstraints.UndoRedo;
         for (let i: number = 0; i < selectedItem.selectedDiagram.nodes.length; i++) {
             const node: Node = selectedItem.selectedDiagram.nodes[i] as Node;
             if (node.id !== 'textNode') {
@@ -781,35 +916,39 @@ export class UtilityMethods {
                 selectedItem.selectedDiagram.removeLabels(node, node.annotations);
                 propName = 'Image URL';
                 if (!imageField) {
-                    node.minWidth = 150; node.minHeight = 50; node.maxHeight = 50;
+                    node.minWidth = 150; node.minHeight = 50; node.maxHeight = 50;node.maxWidth = 150;
                     selectedItem.selectedDiagram.dataBind();
                     node.shape = { type: 'Basic', shape: 'Rectangle', cornerRadius: 5 };
                     selectedItem.selectedDiagram.dataBind();
                 } else if (imageField) {
-                    node.minWidth = 300; node.minHeight = 100; node.maxHeight = 100;
+                    node.minWidth = 300; node.minHeight = 100; node.maxHeight = 100;node.maxWidth = 300;
                     selectedItem.selectedDiagram.dataBind();
                     node.shape = {
-                        type: 'Image', source: nodeInfo[propName] && nodeInfo[propName].value ? nodeInfo[propName].value.toString() : './orgchart_images/blank-male.jpg',
+                        type: 'Image', source: nodeInfo[propName] && nodeInfo[propName].value ? nodeInfo[propName].value.toString() : 'assets/dbstyle/orgchart_images/blank-male.jpg',
                         align: 'XMinYMin', scale: 'Meet'
                     };
+                    node.addInfo[propName].value = node.shape.source;
                     selectedItem.selectedDiagram.dataBind();
                 }
                 const annotations: ShapeAnnotationModel[] = [];
                 let startY: number = 0.5 - ((bindingFields.length - 1) / 10);
-                for (const binding of bindingFields) {
+                let count: number = 0;
+                for (let b = 0; b < bindingFields.length; b++) {
+                    let binding = bindingFields[b];
                     const annotation1: ShapeAnnotationModel = {
-                        content: nodeInfo[binding].value.toString(), offset: { x: 0.5, y: startY }
+                        content: nodeInfo[binding].value.toString() || binding, addInfo: binding as any, offset: { x: 0.5, y: startY }
                     };
                     if (node.shape && node.shape.type === 'Image') {
                         (annotation1.offset as PointModel).x = 0;
                         annotation1.margin = { left: 110 };
                         annotation1.horizontalAlignment = 'Left';
                     }
-                    if (i === 0) {
+                    if (count === 0) {
                         annotation1.style = { fontSize: 14, bold: true };
                     }
                     startY += 0.2;
                     annotations.push(annotation1);
+                    count++;
                 }
                 if (annotations.length > 0) {
                     selectedItem.selectedDiagram.addLabels(node, annotations);
@@ -833,14 +972,14 @@ export class UtilityMethods {
         selectedItem.selectedDiagram.dataBind();
         selectedItem.selectedDiagram.doLayout();
         selectedItem.isModified = true;
+        selectedItem.selectedDiagram.constraints = selectedItem.selectedDiagram.constraints |= DiagramConstraints.UndoRedo;
     }
 
     private hideMenuItems(): void {
-        const btnWindow: any = document.getElementById('btnWindowMenu');
-        btnWindow.ej2_instances[0].items[1].iconCss = '';
-
-        const btnView: any = document.getElementById('btnViewMenu');
-        btnView.ej2_instances[0].items[7].iconCss = '';
+        const btnWindow = (document.getElementById('diagram-menu') as any).ej2_instances[0].items[4];
+        btnWindow.items[1].iconCss = '';
+        const btnView = (document.getElementById('diagram-menu') as any).ej2_instances[0].items[2]
+        btnView.items[7].iconCss = '';
     }
 
     private removeSubChild(node: Node, selectedItem: SelectorViewModel): void {
@@ -873,6 +1012,153 @@ export class UtilityMethods {
         diagram.remove(node);
     }
 
+     createShortCutDiv(diagramType: string) {
+        let shortCut = document.getElementById('customShortcutDiv');
+        if (!shortCut) {
+            let div: HTMLDivElement = document.createElement('div');
+            div.id = 'customShortcutDiv';
+            div.innerHTML = this.getShortCutDiv(diagramType);
+            div.style.zIndex = '10000';
+            div.style.position = 'absolute';
+            div.style.userSelect = 'none';
+            div.style.cursor = 'move';
+            document.body.appendChild(div);
+            // Make the div draggable
+            let isDragging = false;
+            let offsetX: number, offsetY: number;
+            div.addEventListener('mousedown', function (e) {
+                isDragging = true;
+                offsetX = e.clientX - div.offsetLeft;
+                offsetY = e.clientY - div.offsetTop;
+            });
+            document.addEventListener('mousemove', function (e) {
+                if (isDragging) {
+                    div.style.left = (e.clientX - offsetX) + 'px';
+                    div.style.top = (e.clientY - offsetY) + 'px';
+                }
+            });
+            document.addEventListener('mouseup', function () {
+                isDragging = false;
+            });
+            ((document.getElementById('customShortcutDiv') as HTMLElement).querySelector('#closeIconDiv') as HTMLElement).onclick = this.toggleShortcutVisibility.bind(this);
+        } else if (shortCut && shortCut.style.display !== 'block') {
+            shortCut.style.display = 'block';
+        }
+    }
+    getShortCutDiv(diagramType: string): string {
+        let shortcuts =[];
+        if (diagramType === 'orgchart-diagram') {
+            shortcuts = [
+                { key: 'Tab', text: 'Add a child to parent' },
+                { key: 'Enter', text: 'Add a child to the same level' },
+                { key: 'Shift + Tab', text: 'Move the child parent to the next level' },
+                { key: 'Delete', text: 'Delete a topic' },
+                { key: 'F2', text: 'Edit a topic' },
+                { key: 'Esc', text: 'End text editing' },
+                { key: 'Arrow (Up, Down, Left, Right)', text: 'Navigate between topics' },
+                { key: 'F1', text: 'Show/Hide shortcut Key' }
+            ];
+        }
+        else {
+            shortcuts = [
+                { key: 'Tab', text: 'Add a child to parent' },
+                { key: 'Enter', text: 'Add a child to the same level' },
+                { key: 'Shift + Tab', text: 'Add a child to parent in right side' },
+                { key: 'Delete', text: 'Delete a topic' },
+                { key: 'F2', text: 'Edit a topic' },
+                { key: 'Esc', text: 'End text editing' },
+                { key: 'Arrow (Up, Down, Left, Right)', text: 'Navigate between topics' },
+                { key: 'F1', text: 'Show/Hide shortcut Key' }
+            ];
+        }
 
+        return `
+            <div style="width: 400px; height: 300px; padding: 10px; background-color: #FFF7B5; border: 1px solid #FFF7B5">
+                <div id="closeIconDiv" style="float: right; width: 22px; height: 22px; border: 1px solid #FFF7B5">
+                    <span class="sf-icon-Close" style="font-size:14px;cursor:pointer;"></span>
+                </div>
+                <div>
+                    <span class="db-html-font-medium">Quick shortcuts</span>
+                </div>
+                <div style="padding-top:10px">
+                    ${shortcuts
+                    .map(({ key, text }) => `
+                        <div>
+                            <ul>
+                                <li>
+                                    <span class="db-html-font-medium">${key} : </span>
+                                    <span class="db-html-font-normal">${text}</span>
+                                </li>
+                            </ul>
+                        </div>`)
+                    .join('')}
+                </div>
+            </div>
+        `;
+    }
+    toggleShortcutVisibility() {
+        const shortcutDiv = document.getElementById('customShortcutDiv');
+        if (shortcutDiv) {
+            shortcutDiv.style.display = (shortcutDiv.style.display === 'block' || shortcutDiv.style.display === '') ? 'none' : 'block';
+        }
+    }
+    hideShortcutVisibility() {
+        const shortcutDiv = document.getElementById('customShortcutDiv');
+        if (shortcutDiv) {
+            shortcutDiv.style.display = 'none';
+        }
+    }
+    showShortcutVisibility() {
+        const shortcutDiv = document.getElementById('customShortcutDiv');
+        if (shortcutDiv) {
+            shortcutDiv.style.display = 'block';
+        }
+    }
+
+    updatePalette(diagram: Diagram) {
+        const diagramContainer = document.getElementsByClassName('diagrambuilder-container')[0];
+        const propertyContainer = document.getElementsByClassName('db-property-editor-container')[0];
+        if (diagramContainer.classList.contains('hide-palette')) {
+            diagramContainer.classList.remove('hide-palette');
+            diagramContainer.classList.remove('custom-diagram');
+            diagram.updateViewPort();
+        }
+        if (propertyContainer.classList.contains('orgchart-diagram')) {
+            propertyContainer.classList.remove('orgchart-diagram');
+        } else if (propertyContainer.classList.contains('mindmap-diagram')) {
+            propertyContainer.classList.remove('mindmap-diagram')
+        }
+    }
+
+    resetZoomTo100(diagram: Diagram) {
+        const currentZoom: number = diagram.scrollSettings.currentZoom as number;
+        if (currentZoom !== 1) {
+            const zoom = { zoomFactor: (1 / currentZoom) - 1 };
+            diagram.zoomTo(zoom);
+            let zoomCurrentValue = (document.getElementById("btnZoomIncrement") as any).ej2_instances[0];
+            zoomCurrentValue.content = ((diagram.scrollSettings.currentZoom as number)* 100).toFixed() + '%';
+        }
+    }
+
+     updatePages(selectedItem: SelectorViewModel, type: string) {
+        let page = new PageCreation(selectedItem);
+        let diagramString = selectedItem.selectedDiagram.saveDiagram();
+        let diagramObject = JSON.parse(diagramString);
+        let pageOption = { text: 'Page1', name: 'page1', diagram: JSON.parse(selectedItem.selectedDiagram.saveDiagram()) };
+        diagramObject.activePage = 'page1';
+        diagramObject.pageOptionList = [pageOption];
+        diagramObject.diagramType = type;
+        page.loadPage(JSON.stringify(diagramObject));
+    }
+
+    updateDiagramViews(selectedItem: SelectorViewModel){
+        // While calling diagram refresh, the overview is removed from the diagram views causing diagram not visible after load or creating new page.
+        const diagram = selectedItem.selectedDiagram;
+        const overview = (document.getElementById('overview') as any).ej2_instances[0];
+        if (diagram.views.length === 1 && diagram.views[0] !== 'overview') {
+            diagram.views.push(overview.element.id);
+            diagram.views[overview.element.id] = overview;
+        }
+    }
 
 }

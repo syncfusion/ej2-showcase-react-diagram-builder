@@ -41,7 +41,7 @@ export class CustomTool {
 }
 
 class LeftExtendTool extends ToolBase {
-    public selectedItem: SelectorViewModel;
+    public selectedIte!: SelectorViewModel;
     public mouseDown(args: MouseEventArgs): void {
         this.inAction = true;
         super.mouseDown(args);
@@ -60,7 +60,7 @@ class LeftExtendTool extends ToolBase {
 }
 
 class RightExtendTool extends ToolBase {
-    public selectedItem: SelectorViewModel;
+    public selectedItem!: SelectorViewModel;
     public mouseDown(args: MouseEventArgs): void {
         this.inAction = true;
         super.mouseDown(args);
@@ -79,7 +79,7 @@ class RightExtendTool extends ToolBase {
 }
 
 class RemoveTool extends ToolBase {
-    public selectedItem: SelectorViewModel;
+    public selectedItem!: SelectorViewModel;
     public mouseDown(args: MouseEventArgs): void {
         this.inAction = true;
         super.mouseDown(args);
@@ -98,7 +98,7 @@ class RemoveTool extends ToolBase {
 }
 
 class OrgAddHandleTool extends ToolBase {
-    public selectedItem: SelectorViewModel;
+    public selectedItem!: SelectorViewModel;
     public mouseDown(args: MouseEventArgs): void {
         this.inAction = true;
         super.mouseDown(args);

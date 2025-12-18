@@ -2068,7 +2068,7 @@
 
 .e-toolbar .e-toolbar-items.e-toolbar-multirow {
   margin-bottom: 1px;
-  margin-left: 18px;
+  margin-left: 1px;
   margin-right: 18px;
   white-space: normal;
 }
@@ -12015,9 +12015,12 @@ label.e-float-text,
 
 .e-input-group .e-input-group-icon,
 .e-input-group.e-control-wrapper .e-input-group-icon {
-  margin-bottom: 8px;
+  /* margin-bottom: 8px; */
   margin-right: 4px;
   margin-top: 4px;
+}
+#exportFormat {
+  margin-top: -5px;
 }
 
 .e-float-input.e-input-group .e-input-group-icon,
@@ -20559,7 +20562,7 @@ ejs-multiselect {
 
 .e-checkbox-wrapper .e-frame + .e-label,
 .e-css.e-checkbox-wrapper .e-frame + .e-label {
-  margin-left: 10px;
+  margin-left: 7px;
 }
 
 .e-checkbox-wrapper .e-frame + .e-ripple-container,
@@ -24366,6 +24369,10 @@ ejs-multiselect {
   content: '\e578';
 }
 
+.e-icons.e-folder-open:before {
+    ontent: "\e65f";
+}
+
 .e-diagram-menu .e-ungroup::before {
   content: '\e579';
 }
@@ -24438,9 +24445,6 @@ ejs-multiselect {
   content: '\e58b';
 }
 
-.e-symbolpalette .e-clear-searchtext::before {
-  content: '\e58c';
-}
 
 .e-icons {
   font-family: 'e-icons';
@@ -24545,7 +24549,7 @@ ejs-multiselect {
 }
 
 .e-symbolpalette .e-clear-searchtext::before {
-  content: '\e58c';
+  content: '\ec0f';
 }
 
 .e-diagram {
@@ -24683,4 +24687,11 @@ ejs-multiselect {
 
 .e-diagram-rotate {
   cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAACXBIWXMAAAsSAAALEgHS3X78AAAA60lEQVQ4jZ1SwQ2DMBAzlfLJI2KEjJAVukG7ARsxQkfoKHQDugHdgOoqh14oCaGWIpSTudzZRg2MdYOxrq0il2Csm411o7Eu5GinTN0D6AGMAGZVux9p1LGBrHIF0LD+4l3ql70thDABSFZYaeTJ6UqNWhL3ELhyyhUR98TcwI06Lk1aNonO1NocqGWy/6zOcGCq6OjiSCw22/wUfEzL8ND2P9duFXBmHMDvWVN7CliFkkGe69VM5RmVLDqG7ZMPOroWP5BTle5WjR6dkQayutyLqU6gsiU/ypHMiI41yf+CE01qov+R0egXAN5x6jng51I3yAAAAABJRU5ErkJggg==), auto !important;
+}
+.diagram-menu-control {
+  margin-left: 10px;
+}
+.diagram-menu-control .e-menu-wrapper ul .e-menu-item.e-menu-caret-icon {
+  padding-right:10px;
+  padding-left:10px; /* To position the menu item header properly with equal space*/
 }

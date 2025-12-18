@@ -21,7 +21,7 @@ import { NodeProperties, TextProperties, ConnectorProperties, ExportSettings, Pr
 export class PageSettings {
     public pageWidth: number = 1056;
     public pageHeight: number = 816;
-    public showPageBreaks: boolean;
+    public showPageBreaks!: boolean;
     public backgroundColor: string = '#ffffff';
     public isPortrait: boolean = false;
     public isLandscape: boolean = true;
@@ -30,24 +30,24 @@ export class PageSettings {
 }
 
 export class ScrollSettings {
-    public currentZoom: string = '100%';
+    public currentZoom: string = '100 %';
 }
 
 export class MindMapSettings {
     public opacityText: string = '100%';
-    public textOpacityText: string;
+    public textOpacityText: string = '100%';
 
-    public propertyChange: () => {};
+    public propertyChange!: () => {};
     private mLevelType: string = 'Level0';
     private mFill: string = 'white';
     private mStroke: string = 'white';
     private mStrokeStyle: string = 'None';
     private mStrokeWidth: number = 1;
-    private mOpacity: number;
+    private mOpacity!: number;
     private mFontFamily: string = 'Arial';
     private mFontSize: number = 12;
     private mFontColor: string = '#ffffff';
-    private mTextOpacity: number;
+    private mTextOpacity!: number;
 
     public get levelType(): string {
         return this.mLevelType;
@@ -188,7 +188,7 @@ export class MindMapSettings {
 }
 
 export class OrgDataSettings {
-    public dataSourceColumns: Array<{ [key: string]: any }> = [];
+    public dataSourceColumns: { [key: string]: any }[] = [];
     public id: string = '';
     public parent: string = '';
     public nameField: string = '';
@@ -203,15 +203,15 @@ export class OrgDataSettings {
 export class SelectorViewModel {
 
 
-    public selectedDiagram: Diagram;
+    public selectedDiagram!: Diagram;
     public isCopyLayoutElement: boolean = false;
-    public themeStyle: string;
-    public pastedFirstItem: Node;
+    public themeStyle!: string;
+    public pastedFirstItem!: Node;
     public currentDiagramName: string = '';
     public preventPropertyChange: boolean = false;
-    public diagramType: string;
+    public diagramType!: string;
     public isModified: boolean = false;
-    public uniqueId: string;
+    public uniqueId!: string;
     public preventSelectionChange: boolean = false;
     public pasteData: any[] = [];
     public isLoading: boolean = false;
@@ -359,7 +359,7 @@ export class SelectorViewModel {
                             (document.getElementById('connectorOpacitySliderText') as any).value = (this.connectorProperties.opacity as any).value + '%';
                             break;
                         case 'linejump':
-                            if ((this.connectorProperties.lineJump as any).value) {
+                            if (args.propertyValue.checked) {
                                 connector.constraints = connector.constraints | ConnectorConstraints.Bridging;
                             } else {
                                 connector.constraints = connector.constraints & ~ConnectorConstraints.Bridging;
@@ -483,7 +483,9 @@ export class SelectorViewModel {
                     annotation.fontFamily = (this.mindmapSettings.fontFamily as any).value;
                     break;
                 case 'fontsize':
-                    annotation.fontSize = (this.mindmapSettings.fontSize as any).value;
+                    if ('fontSize' in node.style) {
+                        annotation.fontSize = (this.mindmapSettings.fontSize as any).value ?? node.style.fontSize;
+                    }
                     break;
                 case 'fontcolor':
                     annotation.color = this.getColor((this.mindmapSettings.fontColor as any).value);
@@ -499,7 +501,7 @@ export class SelectorViewModel {
     }
 
     public getColor(colorName: string): string {
-        if (window.navigator && colorName.length === 9) {
+        if (window.navigator.msSaveBlob && colorName.length === 9) {
             return colorName.substring(0, 7);
         }
         return colorName;
@@ -507,11 +509,11 @@ export class SelectorViewModel {
 
 
     private applyNodeStyle(propertyName: string, node: Node, value: any): void {
-        // const addInfo: any = node.addInfo || {};
+
         switch (propertyName) {
             case 'fillcolor':
                 node.style.fill = this.getColor(value);
-                if (this.nodeProperties.gradient) {
+                if ( (node.style.gradient as Gradient).type != 'None') {
                     this.nodeProperties.getGradient(node);
                 }
                 break;

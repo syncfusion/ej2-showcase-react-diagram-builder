@@ -143,18 +143,20 @@ input, button, select, textarea {
 
 .sidebar {
   position: absolute;
-  bottom: 0;
-  width: 255px;
+  top: 108px;  /* header + menu area */
+  bottom: 72px;  /* leave space for fixed footer */
   left: 0px;
-  height: calc(100% - 112px);
+  height: auto;
+  width: 255px;
 }
 
 .main-content {
   margin: 0;
-  left:255px;
-  height: calc(100% - 112px);
-  position:absolute;
-  width:calc(100% - 255px);
+  left: 255px;
+  top: 115px;  /* header + menu area */
+  bottom: 72px;  /* footer height */
+  position: absolute;
+  width: calc(100% - 255px);
 }
 
 .db-palette-parent {
@@ -380,7 +382,7 @@ input, button, select, textarea {
 }
 
 .diagrambuilder-container.custom-diagram .db-more-diagram-options-container {
-  width: calc(100% - 298px);
+  width: 100%;
   position: absolute;
   left: 28px;
 }
@@ -1297,7 +1299,6 @@ input[type="color"]::-moz-color-swatch {
   height: 28px;
   font-weight: normal;
   text-indent: 5px;
-  border: 1px solid #D5D5D5;
 }
 
 .e-dialog .e-footer-content {
@@ -2420,3 +2421,192 @@ input.e-input::selection,
 #shortCutDialog .col-xs-6 {
   padding: 0px;
 } */
+
+.diagram-menu-control {
+    text-align: left;
+    }  
+  #diagram-menu {
+    float: left;
+    margin-right: 0px;
+    background-color: #046AE5;
+    color:#ffffff;
+  }
+  
+  #diagram-menu li {
+  transition: color 0.2s ease; /* Smooth transition for color change */
+  }
+
+  #diagram-menu li:hover {
+  color: #046AE5; /* Text turns blue when hovered over */
+  cursor: pointer; /* Changes cursor to hand pointer on hover */
+  }
+.e-menu-wrapper .e-menu{
+  margin-top: -5px!important;
+  color: white !important;
+  }
+  .e-menu-wrapper ul .e-menu-item .e-caret, .e-menu-container ul .e-menu-item .e-caret {
+  visibility: collapse !important;
+  }
+  
+/* Footer styles scoped to the sample root */
+.footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(90.4deg, #154db9 0.03%, #081b3f 11.56%, #081b3f 85.56%, #154db9 99.97%);
+  border: 1px solid #D8DEE9;
+  z-index: 100;
+  padding: 12px;
+  height: 72px;
+  font-family: sans-serif;;
+}
+.footer-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+.diagram-icon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+}
+.footer-content {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+.footer-content .title span {
+  font-weight: 400;
+  font-size: 16px;
+  color: #e1e3e7;
+}
+.footer-content .title span .main-title {
+  font-weight: 700;
+  font-size: 16px;
+  color: #ffffff;
+}
+.footer-content .buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.footer-content .e-trial-btn::before {
+  content: 'Start Free Trial';
+  font-family: sans-serif;;
+}
+.footer-content .e-trial-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #FFF30F;
+  color: #0F172A;
+  border: transparent;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  height: 40px;
+  box-shadow: none;
+}
+.footer-content .e-demo-btn {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: transparent;
+  color: white;
+  border-radius: 6px;
+  gap: 10px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: .7px;
+  height: 40px;
+  box-shadow: none;
+  text-transform: none;
+}
+.footer-content .e-demo-btn:hover {
+  background-color: #173D87;
+}
+.footer-content .e-trial-btn::after {
+  content: "\e85f";
+  font-family: 'e-icons';
+}
+.footer-content .e-primary:hover {
+  background: #F1E50B;
+  color: #0F172A;
+}
+.footer-content .e-primary:focus {
+  background: #F1E50B;
+  color: #0F172A;
+}
+.promotion-text {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  margin-right: 1.5rem;
+}
+/* Responsive handling for footer */
+@media screen and (max-width: 1140px), screen and (max-device-width: 1140px) {
+  .footer-content .title {
+    display: flex;
+    flex-direction: column;
+  }
+  .footer-content .title span,
+  .footer-content .title span .main-title {
+    font-size: 14px;
+  }
+}
+/* Hide extra footer text on smaller screens */
+@media screen and (max-width: 900px), screen and (max-device-width: 900px) {
+  .e-ribbon .help-pane-content,
+  .footer-content .title span:last-child {
+    display: none;
+  }
+}
+@media screen and (max-width: 730px) {
+  .footer-content .buttons .e-demo-btn {
+    display: none;
+  }
+  .footer-content .buttons .e-trial-btn::before {
+    content: 'Free Trial';
+  }
+  .footer-content .buttons .e-trial-btn::after {
+    content: none;
+  }
+}
+/* Hide Request Demo button on small screens + increase footer size */
+@media screen and (max-device-width: 730px) {
+  .footer {
+    height: 90px; /* Increased footer height */
+  }
+  .footer-content .buttons .e-demo-btn {
+    display: none;
+  }
+  .footer-content .buttons .e-trial-btn::before {
+    content: 'Free Trial';
+    font-size: 20px;
+  }
+  .footer-content .buttons .e-trial-btn::after {
+    content: none;
+  }
+  .footer-content .title span,
+  .footer-content .title span .main-title {
+    font-size: 26px; /* Bigger font for mobile */
+  }
+}
+/* Hide the promotion text */
+@media screen and (max-width: 620px), screen and (max-device-width: 620px) {
+  .promotion-text {
+    display: none;
+  }
+}

@@ -255,7 +255,7 @@ export class NodeProperties {
 
 
     private getColor(colorName: string): string {
-        if (window.navigator && colorName.length === 9) {
+        if (window.navigator.msSaveBlob && colorName.length === 9) {
             return colorName.substring(0, 7);
         }
         return colorName;
@@ -265,18 +265,18 @@ export class NodeProperties {
 export class ConnectorProperties {
 
     public opacityText: string = '100%';
-    public propertyChange: () => {};
+    public propertyChange!: () => {};
     private mLineColor: string = '#ffffff';
-    private mLineWidth: number;
-    private mLineStyle: string;
-    private mLineType: string;
-    private mLineJump: boolean;
-    private mLineJumpSize: number;
-    private mSourceType: string;
-    private mTargetType: string;
-    private mSourceSize: number;
-    private mTargetSize: number;
-    private mOpacity: number;
+    private mLineWidth!: number;
+    private mLineStyle!: string;
+    private mLineType!: string;
+    private mLineJump!: boolean;
+    private mLineJumpSize!: number;
+    private mSourceType!: string;
+    private mTargetType!: string;
+    private mSourceSize!: number;
+    private mTargetSize!: number;
+    private mOpacity!: number;
     public get lineColor(): string {
         return this.mLineColor;
     }
@@ -434,26 +434,26 @@ export class ConnectorProperties {
 export class TextProperties {
 
     public opacityText: string = '100%';
-    public propertyChange: () => {};
+    public propertyChange!: () => {};
 
-    public textDecoration: boolean;
+    public textDecoration!: boolean;
 
-    public bold: boolean;
+    public bold!: boolean;
 
-    public italic: boolean;
+    public italic!: boolean;
 
-    public textAlign: string;
+    public textAlign!: string;
 
-    public horizontalAlign: string;
+    public horizontalAlign!: string;
 
-    public verticalAlign: string;
+    public verticalAlign!: string;
 
-    public textPositionDataSource: Array<{ [key: string]: any }> = this.getNodeTextPositions();
+    public textPositionDataSource: { [key: string]: any }[] = this.getNodeTextPositions();
     private mTextPosition: string = '';
     private mFontFamily: string = 'Arial';
     private mFontColor: string = '#000000';
-    private mFontSize: number;
-    private mOpacity: number;
+    private mFontSize!: number;
+    private mOpacity!: number;
     public get textPosition(): string {
         return this.mTextPosition;
     }
@@ -520,7 +520,7 @@ export class TextProperties {
 
 
 
-    public getNodeTextPositions(): Array<{ [key: string]: any }> {
+    public getNodeTextPositions(): { [key: string]: any }[] {
         return [
             { text: 'TopLeft', value: 'TopLeft' }, { text: 'TopCenter', value: 'TopCenter' },
             { text: 'TopRight', value: 'TopRight' }, { text: 'MiddleLeft', value: 'MiddleLeft' },
@@ -530,7 +530,7 @@ export class TextProperties {
         ];
     }
 
-    public getConnectorTextPositions(): Array<{ [key: string]: any }> {
+    public getConnectorTextPositions(): { [key: string]: any }[] {
         return [
             { text: 'Before', value: 'Before' }, { text: 'Center', value: 'Center' },
             { text: 'After', value: 'After' },

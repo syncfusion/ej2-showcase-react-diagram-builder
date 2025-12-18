@@ -4,23 +4,23 @@
 import { Button } from '@syncfusion/ej2-buttons';
 import { SelectorViewModel } from './selectedItem';
 import { Ajax } from '@syncfusion/ej2-base';
-import { Diagram, SnapConstraints } from '@syncfusion/ej2-diagrams';
+import { Diagram, PortConstraints, PortVisibility, SnapConstraints } from '@syncfusion/ej2-diagrams';
 import { MindMapUtilityMethods, MindMap } from './mindmap';
 import { OrgChartUtilityMethods, OrgChartData } from './orgchart';
 
 export class PageOptions {
-    public name: string;
+    public name!: string;
     public diagram?: any;
-    public text: string;
-    public templateDiagramType: string;
-    public mindmapTemplateType: string;
-    public orgChartTemplateType: string;
+    public text!: string;
+    public templateDiagramType!: string;
+    public mindmapTemplateType!: string;
+    public orgChartTemplateType!: string;
 }
 
 export class PageCreation {
 
     public pageOptionList: PageOptions[] = [];
-    public activePage: PageOptions;
+    public activePage!: PageOptions;
     public selectedItem: SelectorViewModel;
     public pageSwitch: boolean = false;
     constructor(selectedItem: SelectorViewModel) {
@@ -96,6 +96,7 @@ export class PageCreation {
     public addNewPage(): void {
         if (this.activePage) {
             this.saveDiagramSettings();
+            this.selectedItem.utilityMethods.resetZoomTo100(this.selectedItem.selectedDiagram);
             this.selectedItem.selectedDiagram.clear();
         }
         if (this.selectedItem.diagramType === 'MindMap') {
@@ -138,12 +139,20 @@ export class PageCreation {
 
     public loadDiagramSettings(): void {
         const diagram: Diagram = this.selectedItem.selectedDiagram;
-        document.getElementsByClassName('sidebar')[0].className = 'sidebar show-overview';
+        if (this.selectedItem.diagramType === "GeneralDiagram") {
+            this.selectedItem.utilityMethods.hideShortcutVisibility();
+            this.selectedItem.utilityMethods.updatePalette(diagram);
+        }
+        // document.getElementsByClassName('sidebar')[0].className = 'sidebar show-overview';
         this.selectedItem.isLoading = true;
         diagram.loadDiagram(JSON.stringify(this.activePage.diagram));
         diagram.clearSelection();
+        diagram.fitToPage({ mode: 'Page', region: 'Content', margin: { left: 0, top: 0, right: 0, bottom: 0 } });
+        this.selectedItem.utilityMethods.updateDiagramViews(this.selectedItem);
+        const zoomValue = (document.getElementById('btnZoomIncrement') as any).ej2_instances[0];
+        zoomValue.content = ((this.selectedItem.selectedDiagram.scrollSettings.currentZoom as number) * 100).toFixed() + '%';
         this.selectedItem.isLoading = false;
-        document.getElementsByClassName('sidebar')[0].className = 'sidebar';
+        // document.getElementsByClassName('sidebar')[0].className = 'sidebar';
         if (this.selectedItem.diagramType === 'MindMap') {
             MindMapUtilityMethods.templateType = this.activePage.mindmapTemplateType;
             if (!this.pageSwitch && !this.selectedItem.isTemplateLoad) {
@@ -151,9 +160,9 @@ export class PageCreation {
                 const map: MindMap = new MindMap(this.selectedItem);
                 map.createMindMap(false);
             }
-            const closeIconDiv: HTMLElement = ((document.getElementById('diagram') as HTMLElement).querySelector('#closeIconDiv') as HTMLElement);
+            const closeIconDiv: HTMLElement = ((document.getElementById('customShortcutDiv') as HTMLElement).querySelector('#closeIconDiv') as HTMLElement);
             if (closeIconDiv) {
-                closeIconDiv.onclick = MindMapUtilityMethods.onHideNodeClick.bind(MindMapUtilityMethods);
+                closeIconDiv.onclick = MindMapUtilityMethods.toggleShortcutVisibility.bind(MindMapUtilityMethods);
             }
         }
         if (this.selectedItem.diagramType === 'OrgChart') {
@@ -162,13 +171,12 @@ export class PageCreation {
                 const org: OrgChartData = new OrgChartData(this.selectedItem);
                 org.createOrgChart(false);
             }
-            const closeIconDiv: HTMLElement = ((document.getElementById('diagram') as HTMLElement).querySelector('#closeIconDiv') as HTMLElement);
+            const closeIconDiv: HTMLElement = ((document.getElementById('customShortcutDiv') as HTMLElement).querySelector('#closeIconDiv') as HTMLElement);
             if (closeIconDiv) {
-                closeIconDiv.onclick = OrgChartUtilityMethods.onHideNodeClick.bind(OrgChartUtilityMethods);
+                closeIconDiv.onclick = OrgChartUtilityMethods.toggleShortcutVisibility.bind(OrgChartUtilityMethods);
             }
         }
-        let btnView: any = document.getElementById('btnViewMenu');
-        btnView = btnView.ej2_instances[0];
+        const btnView = (document.getElementById('diagram-menu') as any).ej2_instances[0].items[2];
         if (diagram.rulerSettings) {
             btnView.items[5].iconCss = diagram.rulerSettings.showRulers ? 'sf-icon-Selection' : '';
             const containerDiv: HTMLElement = document.getElementById('diagramContainerDiv') as HTMLElement;

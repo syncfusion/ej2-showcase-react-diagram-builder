@@ -57,7 +57,7 @@ export class NetworkShapes {
                     "type": "CustomShapes"
                 }
             }, {
-                "id": "uKVMSwitch",
+                "id": "KVMSwitch",
                 "children": ["uKVMSwitch30z1R8xr", "uKVMSwitch31QyxzS2", "uKVMSwitch323JvJrL", "uKVMSwitch33Lrv2dW"]
             }, {
                 "id": "uSpacer30y2nTj3",
@@ -99,7 +99,7 @@ export class NetworkShapes {
                     "type": "CustomShapes"
                 }
             }, {
-                "id": "uSpacer",
+                "id": "Spacer",
                 "children": ["uSpacer30y2nTj3", "uSpacer31xnuDNS", "uSpacer329MsnQt"]
             }, {
                 "id": "uTray30smW1y7",
@@ -141,7 +141,7 @@ export class NetworkShapes {
                     "type": "CustomShapes"
                 }
             }, {
-                "id": "uTray",
+                "id": "Tray",
                 "children": ["uTray30smW1y7", "uTray31Th8epP", "uTray32IIe3jF"]
             }, {
                 "id": "uLCDCopy30uoFdFq",
@@ -183,7 +183,7 @@ export class NetworkShapes {
                     "type": "CustomShapes"
                 }
             }, {
-                "id": "uLCDCopy",
+                "id": "LCDPanelCopy",
                 "children": ["uLCDCopy30uoFdFq", "uLCDCopy31p8ISNr", "uLCDCopy32V8Xbvp"]
             }, {
                 "id": "uLCD30OmjBvU",
@@ -225,7 +225,7 @@ export class NetworkShapes {
                     "type": "CustomShapes"
                 }
             }, {
-                "id": "uLCD",
+                "id": "LCD",
                 "children": ["uLCD30OmjBvU", "uLCD31S6Y7Ns", "uLCD32fFub5e"]
             }, {
                 "id": "CommLink30GjUawE",
@@ -580,7 +580,7 @@ export class NetworkShapes {
                     "type": "CustomShapes"
                 }
             }, {
-                "id": "Flatscreentv",
+                "id": "FlatScreenTv",
                 "children": ["Flatscreentv30b89uOQ", "Flatscreentv31kbLJdl"]
             }, {
                 "id": "GamepadConsole30DULq4P",
@@ -1055,7 +1055,7 @@ export class NetworkShapes {
                 "id": "Modem",
                 "children": ["Modem30QoaGPJ", "Modem31Y347hb", "Modem32QyexgQ", "Modem33DwCAmt", "Modem34lYOcO1"]
             }, {
-                "id": "Mointor30DCJtio",
+                "id": "Monitor30DCJtio",
                 "shape": {
                     "type": "Path",
                     "data": "M21.0714286,41.7857143 L27.2857143,41.7857143 L27.2857143,35.5714286 L21.0714286,35.5714286 L21.0714286,41.7857143 Z M19.0714286,41.7857143 L19.0714286,35.5714286 L2.1,35.5714286 C1.49248678,35.5714286 1,35.0789418 1,34.4714286 L1,5.1 C1,4.49248678 1.49248678,4 2.1,4 L47.9,4 C48.5075132,4 49,4.49248678 49,5.1 L49,34.4714286 C49,35.0789418 48.5075132,35.5714286 47.9,35.5714286 L29.2857143,35.5714286 L29.2857143,41.7857143 L33.2142857,41.7857143 C33.7665705,41.7857143 34.2142857,42.2334295 34.2142857,42.7857143 C34.2142857,43.337999 33.7665705,43.7857143 33.2142857,43.7857143 L15.1428571,43.7857143 C14.5905724,43.7857143 14.1428571,43.337999 14.1428571,42.7857143 C14.1428571,42.2334295 14.5905724,41.7857143 15.1428571,41.7857143 L19.0714286,41.7857143 Z"
@@ -1068,7 +1068,7 @@ export class NetworkShapes {
                     "type": "CustomShapes"
                 }
             }, {
-                "id": "Mointor31KdJXXU",
+                "id": "Monitor31KdJXXU",
                 "shape": {
                     "type": "Path",
                     "data": "M3 33.5714286 47 33.5714286 47 6 3 6"
@@ -1081,10 +1081,10 @@ export class NetworkShapes {
                     "type": "CustomShapes"
                 }
             }, {
-                "id": "Mointor",
-                "children": ["Mointor30DCJtio", "Mointor31KdJXXU"]
+                "id": "Monitor",
+                "children": ["Monitor30DCJtio", "Monitor31KdJXXU"]
             }, {
-                "id": "Multiuserver30jrWV1n",
+                "id": "MultiServer30jrWV1n",
                 "shape": {
                     "type": "Path",
                     "data": "M6.06666667,9 L43.9333333,9 L47.2233333,9 C48.0072371,9.2260962 48.0072371,9.2260962 48.2333333,10.01 L48.2333333,14.59 C48.0072371,15.3739038 48.0072371,15.3739038 47.2233333,15.6 L45.9333333,15.6 L45.9333333,30.4666667 L47.2233333,30.4666667 C48.0072371,30.6927629 48.0072371,30.6927629 48.2333333,31.4766667 L48.2333333,36.0566667 C48.0072371,36.8405705 48.0072371,36.8405705 47.2233333,37.0666667 L43.9333333,37.0666667 L6.06666667,37.0666667 L2.77666667,37.0666667 C1.99276287,36.8405705 1.99276287,36.8405705 1.76666667,36.0566667 L1.76666667,31.4766667 C1.99276287,30.6927629 1.99276287,30.6927629 2.77666667,30.4666667 L4.06666667,30.4666667 L4.06666667,15.6 L2.77666667,15.6 C1.99276287,15.3739038 1.99276287,15.3739038 1.76666667,14.59 L1.76666667,10.01 C1.99276287,9.2260962 1.99276287,9.2260962 2.77666667,9 L6.06666655,9 Z"
@@ -1097,7 +1097,7 @@ export class NetworkShapes {
                     "type": "CustomShapes"
                 }
             }, {
-                "id": "Multiuserver31x74ZhW",
+                "id": "MultiServer31x74ZhW",
                 "shape": {
                     "type": "Path",
                     "data": "M6.06666667,35.0666667 L6.06666667,11 L43.9333333,11 L43.9333333,35.0666667 L6.06666667,35.0666667 Z M12.7333333,29.9333333 C12.7333333,29.0869333 12.0464,28.4 11.2,28.4 C10.3525778,28.4 9.66666667,29.0869333 9.66666667,29.9333333 C9.66666667,30.7797333 10.3525778,31.4666667 11.2,31.4666667 C12.0464,31.4666667 12.7333333,30.7797333 12.7333333,29.9333333 Z M31.1333333,29.9333333 C31.1333333,29.0869333 30.4464,28.4 29.6,28.4 C28.7525778,28.4 28.0666667,29.0869333 28.0666667,29.9333333 C28.0666667,30.7797333 28.7525778,31.4666667 29.6,31.4666667 C30.4464,31.4666667 31.1333333,30.7797333 31.1333333,29.9333333 Z M17.3333333,29.9333333 C17.3333333,29.0869333 16.6464,28.4 15.8,28.4 C14.9525778,28.4 14.2666667,29.0869333 14.2666667,29.9333333 C14.2666667,30.7797333 14.9525778,31.4666667 15.8,31.4666667 C16.6464,31.4666667 17.3333333,30.7797333 17.3333333,29.9333333 Z M35.7333333,29.9333333 C35.7333333,29.0869333 35.0464,28.4 34.2,28.4 C33.3525778,28.4 32.6666667,29.0869333 32.6666667,29.9333333 C32.6666667,30.7797333 33.3525778,31.4666667 34.2,31.4666667 C35.0464,31.4666667 35.7333333,30.7797333 35.7333333,29.9333333 Z M20.4,31.4666667 C21.2464,31.4666667 21.9333333,30.7797333 21.9333333,29.9333333 C21.9333333,29.0869333 21.2464,28.4 20.4,28.4 C19.5525778,28.4 18.8666667,29.0869333 18.8666667,29.9333333 C18.8666667,30.7797333 19.5525778,31.4666667 20.4,31.4666667 Z M38.8,31.4666667 C39.6464,31.4666667 40.3333333,30.7797333 40.3333333,29.9333333 C40.3333333,29.0869333 39.6464,28.4 38.8,28.4 C37.9525778,28.4 37.2666667,29.0869333 37.2666667,29.9333333 C37.2666667,30.7797333 37.9525778,31.4666667 38.8,31.4666667 Z"
@@ -1110,7 +1110,7 @@ export class NetworkShapes {
                     "type": "CustomShapes"
                 }
             }, {
-                "id": "Multiuserver32KLmOgX",
+                "id": "MultiServer32KLmOgX",
                 "shape": {
                     "type": "Path",
                     "data": "M12.7333333,29.9333333 C12.7333333,30.7797333 12.0464,31.4666667 11.2,31.4666667 C10.3525778,31.4666667 9.66666667,30.7797333 9.66666667,29.9333333 C9.66666667,29.0869333 10.3525778,28.4 11.2,28.4 C12.0464,28.4 12.7333333,29.0869333 12.7333333,29.9333333"
@@ -1123,7 +1123,7 @@ export class NetworkShapes {
                     "type": "CustomShapes"
                 }
             }, {
-                "id": "Multiuserver33whQlQL",
+                "id": "MultiServer33whQlQL",
                 "shape": {
                     "type": "Path",
                     "data": "M31.1333333,29.9333333 C31.1333333,30.7797333 30.4464,31.4666667 29.6,31.4666667 C28.7525778,31.4666667 28.0666667,30.7797333 28.0666667,29.9333333 C28.0666667,29.0869333 28.7525778,28.4 29.6,28.4 C30.4464,28.4 31.1333333,29.0869333 31.1333333,29.9333333"
@@ -1136,7 +1136,7 @@ export class NetworkShapes {
                     "type": "CustomShapes"
                 }
             }, {
-                "id": "Multiuserver343o9HXF",
+                "id": "MultiServer343o9HXF",
                 "shape": {
                     "type": "Path",
                     "data": "M17.3333333,29.9333333 C17.3333333,30.7797333 16.6464,31.4666667 15.8,31.4666667 C14.9525778,31.4666667 14.2666667,30.7797333 14.2666667,29.9333333 C14.2666667,29.0869333 14.9525778,28.4 15.8,28.4 C16.6464,28.4 17.3333333,29.0869333 17.3333333,29.9333333"
@@ -1149,7 +1149,7 @@ export class NetworkShapes {
                     "type": "CustomShapes"
                 }
             }, {
-                "id": "Multiuserver358XzYeb",
+                "id": "MultiServer358XzYeb",
                 "shape": {
                     "type": "Path",
                     "data": "M35.7333333,29.9333333 C35.7333333,30.7797333 35.0464,31.4666667 34.2,31.4666667 C33.3525778,31.4666667 32.6666667,30.7797333 32.6666667,29.9333333 C32.6666667,29.0869333 33.3525778,28.4 34.2,28.4 C35.0464,28.4 35.7333333,29.0869333 35.7333333,29.9333333"
@@ -1162,7 +1162,7 @@ export class NetworkShapes {
                     "type": "CustomShapes"
                 }
             }, {
-                "id": "Multiuserver36BedJx6",
+                "id": "MultiServer36BedJx6",
                 "shape": {
                     "type": "Path",
                     "data": "M10.2,17.6666667 L12.2,17.6666667 L12.2,26.8666667 L10.2,26.8666667 L10.2,17.6666667 Z M37.8,17.6666667 L39.8,17.6666667 L39.8,26.8666667 L37.8,26.8666667 L37.8,17.6666667 Z M24,17.6666667 L26,17.6666667 L26,26.8666667 L24,26.8666667 L24,17.6666667 Z M17.6132894,17.6666667 L18.6132894,17.6666667 L18.6132894,26.8666667 L17.6132894,26.8666667 L17.6132894,17.6666667 Z M20.6410238,17.6666667 L21.6410238,17.6666667 L21.6410238,26.8666667 L20.6410238,26.8666667 L20.6410238,17.6666667 Z M14.5922933,17.6470133 L15.5922933,17.6470133 L15.5922933,26.8470133 L14.5922933,26.8470133 L14.5922933,17.6470133 Z M31.4132894,17.6666667 L32.4132894,17.6666667 L32.4132894,26.8666667 L31.4132894,26.8666667 L31.4132894,17.6666667 Z M28.3466227,17.6666667 L29.3466227,17.6666667 L29.3466227,26.8666667 L28.3466227,26.8666667 L28.3466227,17.6666667 Z M34.4410238,17.6666667 L35.4410238,17.6666667 L35.4410238,26.8666667 L34.4410238,26.8666667 L34.4410238,17.6666667 Z M25,31.4666667 C24.1525778,31.4666667 23.4666667,30.7797333 23.4666667,29.9333333 C23.4666667,29.0869333 24.1525778,28.4 25,28.4 C25.8464,28.4 26.5333333,29.0869333 26.5333333,29.9333333 C26.5333333,30.7797333 25.8464,31.4666667 25,31.4666667 Z M25,16.1333333 C24.1525778,16.1333333 23.4666667,15.4464 23.4666667,14.6 C23.4666667,13.7536 24.1525778,13.0666667 25,13.0666667 C25.8464,13.0666667 26.5333333,13.7536 26.5333333,14.6 C26.5333333,15.4464 25.8464,16.1333333 25,16.1333333 Z"
@@ -1175,8 +1175,8 @@ export class NetworkShapes {
                     "type": "CustomShapes"
                 }
             }, {
-                "id": "Multiuserver",
-                "children": ["Multiuserver30jrWV1n", "Multiuserver31x74ZhW", "Multiuserver32KLmOgX", "Multiuserver33whQlQL", "Multiuserver343o9HXF", "Multiuserver358XzYeb", "Multiuserver36BedJx6"]
+                "id": "MultiServer",
+                "children": ["MultiServer30jrWV1n", "MultiServer31x74ZhW", "MultiServer32KLmOgX", "MultiServer33whQlQL", "MultiServer343o9HXF", "MultiServer358XzYeb", "MultiServer36BedJx6"]
             }, {
                 "id": "Nasfilter30zhh0DF",
                 "shape": {
@@ -1269,7 +1269,7 @@ export class NetworkShapes {
                     "type": "CustomShapes"
                 }
             }, {
-                "id": "Nasfilter",
+                "id": "NasFilter",
                 "children": ["Nasfilter30zhh0DF", "Nasfilter31bvBOtA", "Nasfilter32jUqRG1", "Nasfilter33HYjo0X", "Nasfilter343Ta9RS", "Nasfilter35qsfQru", "Nasfilter36JSJj47"]
             }, {
                 "id": "NetworkCloud305ZAUad",
@@ -1673,7 +1673,7 @@ export class NetworkShapes {
                     "type": "CustomShapes"
                 }
             }, {
-                "id": "Rackserver1u",
+                "id": "RackServerSingleUnit",
                 "children": ["Rackserver1u30gCtLgj", "Rackserver1u31pY0zwl", "Rackserver1u323D6xyo", "Rackserver1u33vXB4cE", "Rackserver1u349BNEwp", "Rackserver1u35uzTRrz", "Rackserver1u367UY0bv", "Rackserver1u37Gupk3U"]
             }, {
                 "id": "RackServer30kRM67b",
@@ -1967,7 +1967,7 @@ export class NetworkShapes {
                     "type": "CustomShapes"
                 }
             }, {
-                "id": "Securitycamera",
+                "id": "SecurityCamera",
                 "children": ["Securitycamera30nETa4n", "Securitycamera31tjSyD9"]
             }, {
                 "id": "Server30VWwYea",
@@ -2307,7 +2307,7 @@ export class NetworkShapes {
                     "type": "CustomShapes"
                 }
             }, {
-                "id": "Subwoofer",
+                "id": "SubWoofer",
                 "children": ["Subwoofer30dZk3R3", "Subwoofer31bxL5cZ"]
             }, {
                 "id": "Switch30x7IKIV",
@@ -2711,7 +2711,7 @@ export class NetworkShapes {
                     "type": "CustomShapes"
                 }
             }, {
-                "id": "Videoscreen",
+                "id": "VideoScreen",
                 "children": ["Videoscreen30s1pyKz", "Videoscreen31nKCML8"]
             }, {
                 "id": "VirtualServerCopy30qBsM0I",

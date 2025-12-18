@@ -9,7 +9,7 @@ import { Diagram, Node, Connector, FlowShapes, BasicShapes, FlowShapeModel, Basi
 export class DiagramTheme {
     public isThemeApplied: boolean = false;
     public selectedItem: SelectorViewModel;
-    public colorList: Array<{ [key: string]: any }> = [
+    public colorList: { [key: string]: any }[] = [
         {
             themeName: 'theme1', themeStyle: [
                 { fillColor: '#F0F0F0', borderColor: '#D2D2D2', textColor: '#000000', type: 'shapeType1' },
@@ -107,8 +107,8 @@ export class DiagramTheme {
             ], lineColor: '#054F96', lineType: 'Bezier'
         }
     ];
-    private nodeOldStyles: Array<{ [key: string]: string }> = [];
-    private connectorOldStyles: Array<{ [key: string]: string }> = [];
+    private nodeOldStyles: { [key: string]: string }[] = [];
+    private connectorOldStyles: { [key: string]: string }[] = [];
 
 
     constructor(selectedItem: SelectorViewModel) {
@@ -133,7 +133,7 @@ export class DiagramTheme {
         }
     }
 
-    public getShapeStyle(shapeType: string, themeStyle: Array<{ [key: string]: string }>): object {
+    public getShapeStyle(shapeType: string, themeStyle: { [key: string]: string }[]): object {
         let style = null;
         for (const theme of  themeStyle) {
             if (theme.type === shapeType) {
@@ -155,7 +155,7 @@ export class DiagramTheme {
 
     public themeMouseOver(args: MouseEvent): void {
         const target: HTMLDivElement = args.target as HTMLDivElement;
-        // const diagram: Diagram = this.selectedItem.selectedDiagram;
+       
         if (target.className === 'db-theme-style-div') {
             const themeName: string = target.children[0].className.replace('db-theme-style ', '');
             this.applyStyle(themeName);
@@ -209,6 +209,8 @@ export class DiagramTheme {
             }
             this.selectedItem.isModified = true;
         }
+        let themeDialog = (document.getElementById('themeDialog') as any).ej2_instances[0];
+        themeDialog.hide();
     }
 
     public setNodeOldStyles(): void {
@@ -276,7 +278,7 @@ export class DiagramTheme {
                 let shapeStyle: { [key: string]: string };
                 if (node.shape.type === 'Flow' || node.shape.type === 'Basic') {
                     const shapeModel: FlowShapeModel | BasicShapeModel = node.shape as (FlowShapeModel | BasicShapeModel);
-                    shapeStyle = this.getShapeStyle(this.getShapeType(shapeModel.shape as FlowShapes), themeType.themeStyle as Array<{ [key: string]: string }>) as { [key: string]: string };
+                    shapeStyle = this.getShapeStyle(this.getShapeType(shapeModel.shape as FlowShapes), themeType.themeStyle as { [key: string]: string }[]) as { [key: string]: string };
                     if (shapeStyle) {
                         node.style.fill = shapeStyle.fillColor;
                         node.style.strokeColor = shapeStyle.borderColor;

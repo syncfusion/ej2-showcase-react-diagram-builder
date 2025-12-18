@@ -12,8 +12,8 @@ export class DiagramBuilderLayer {
     
     public selectedItem: SelectorViewModel;
     public layerDialog: Dialog;
-    // public selectionLayer: Button;
-    private removeLayer: Button;
+
+    private removeLayer!: Button;
     private isEditing: boolean = false;
     private layerCount1: number = 0;
     constructor(selectedItem: SelectorViewModel, layerDialog: Dialog) {
@@ -59,13 +59,12 @@ export class DiagramBuilderLayer {
 
         const layerNameElement: HTMLSpanElement =
             layerTemplate.getElementsByClassName('db-layer-name')[0] as HTMLSpanElement;
-        layerNameElement.innerHTML = (layer.addInfo as { [key: string]: any }).name as string;
+        layerNameElement.innerHTML = layer.addInfo ? (layer.addInfo as { [key: string]: any }).name as string : 'default_layer';
         layerNameElement.className = 'db-layer-name ' + layer.id;
-
+        (layer.addInfo as any) = {name:layerNameElement.innerHTML};
         (layerNameElement.parentNode as HTMLDivElement).style.width = 'calc(100% - ' + 88 + 'px)';
         return layerTemplate;
     }
-
     public triggerEvents(): void {
         const visibleElements: HTMLCollectionOf<HTMLButtonElement> =
             document.getElementsByClassName('db-layer-visible') as HTMLCollectionOf<HTMLButtonElement>;
@@ -75,11 +74,15 @@ export class DiagramBuilderLayer {
         const layers: LayerModel[] = this.getLayers();
         for (i = 0; i < layers.length; i++) {
             const layer: LayerModel = layers[i];
+            const visibleElement: HTMLButtonElement = visibleElements[layers.length - i];
+            if (visibleElement && visibleElement.childNodes.length > 0) {
+                visibleElement.childNodes[0].remove();
+            }
             const visibleLayer: Button = new Button({
                 iconCss: layer.visible ? 'sf-icon-View' : 'sf-icon-Invisible',
                 cssClass: layer.id
             });
-            const visibleElement: HTMLButtonElement = visibleElements[layers.length - i];
+
             visibleElement.title = layer.visible ? 'Visible' : 'Invisible';
             visibleLayer.appendTo(visibleElement);
             visibleElement.onclick = this.changeLayerVisibility.bind(this);
@@ -88,6 +91,9 @@ export class DiagramBuilderLayer {
             }
 
             const lockElement: HTMLButtonElement = lockElements[layers.length - i];
+            if (lockElement && lockElement.childNodes.length > 0) {
+                lockElement.childNodes[0].remove();
+            }
             const lockLayer: Button = new Button({
                 iconCss: layer.lock ? 'sf-icon-Lock' : 'sf-icon-Unlock',
                 cssClass: layer.id,
@@ -120,23 +126,23 @@ export class DiagramBuilderLayer {
     }
 
     public getLayerBottomPanel(): string {
-
-        const bottomPanel: string = '<div class="db-layer-bottom-panel">' +
-        '<div class="row" style="margin-top: 6px;">' +
-        '<div class="col-xs-2">' +
-        '<button id="btnAdd" style="right:16px;position:absolute"></button>' +
-        '</div>' +
-        '<div class="col-xs-2">' +
-        '<button id="btnDuplicate" style="right:14px;position:absolute"></button>' +
-        '</div>' +
-        '<div class="col-xs-2">' +
-        '<button id="btnRemove" style="right:12px;position:absolute"></button>' +
-        '</div>' +
-        '<div class="col-xs-2">' +
-        '<button id="btnCloseLayer" style="right:10px;position:absolute"></button>' +
-        '</div>' +
-        '</div>' +
-        '</div>';
+        const bottomPanel =`
+            <div class="db-layer-bottom-panel">
+                <div class="row" style="margin-top: 6px;">
+                    <div class="col-xs-2">
+                        <button id="btnAdd" style="right:16px;position:absolute"></button>
+                    </div>
+                    <div class="col-xs-2">
+                        <button id="btnDuplicate" style="right:14px;position:absolute"></button>
+                    </div>
+                    <div class="col-xs-2">
+                        <button id="btnRemove" style="right:12px;position:absolute"></button>
+                    </div>
+                    <div class="col-xs-2">
+                        <button id="btnCloseLayer" style="right:10px;position:absolute"></button>
+                    </div>
+                </div>
+            </div>`;
         return bottomPanel;
     }
 
@@ -145,10 +151,6 @@ export class DiagramBuilderLayer {
         this.removeLayer = new Button({ iconCss: 'sf-icon-Delete' });
         this.removeLayer.appendTo('#btnRemove');
         (document.getElementById('btnRemove') as HTMLElement).onclick = this.btnRemoveLayer.bind(this);
-
-        // this.selectionLayer = new Button({ content: 'M.Selection', disabled: true });
-        // this.selectionLayer.appendTo('#btnSelection');
-        // document.getElementById('btnSelection').onclick = this.btnSelectionLayer;
 
         const duplicateLayer: Button = new Button({ iconCss: 'sf-icon-Copy' });
         duplicateLayer.appendTo('#btnDuplicate');
@@ -165,7 +167,7 @@ export class DiagramBuilderLayer {
 
     public changeLayerSelection(args: MouseEvent): void {
         const element: any = args.target;
-        const layerName: string = element.className.replace('db-layer-lock e-control e-btn ', '').replace(' e-icon-btn', '').replace(' e-ripple', '');
+        const layerName: string = element.className.replace('db-layer-lock e-control e-btn ', '').replace(' e-icon-btn', '').replace(' e-ripple', '').replace('e-lib ', '');
         const layer: LayerModel = this.findLayer(layerName);
         layer.lock = !layer.lock;
         element.ej2_instances[0].iconCss = layer.lock ? 'sf-icon-Lock' : 'sf-icon-Unlock';
@@ -176,7 +178,7 @@ export class DiagramBuilderLayer {
 
     public changeLayerVisibility(args: MouseEvent): void {
         const element: any = args.target;
-        const layerName: string = element.className.replace('db-layer-visible e-control e-btn ', '').replace(' e-icon-btn', '').replace(' e-ripple', '');
+        const layerName: string = element.className.replace('db-layer-visible e-control e-btn ', '').replace(' e-icon-btn', '').replace(' e-ripple', '').replace('e-lib ', '');
         const layer: LayerModel = this.findLayer(layerName);
         layer.visible = !layer.visible;
         element.ej2_instances[0].iconCss = layer.visible ? 'sf-icon-View' : 'sf-icon-Invisible';
@@ -242,21 +244,9 @@ export class DiagramBuilderLayer {
 
     public btnCloseDialog(): void {
         this.layerDialog.hide();
-        const btnWindow: any = document.getElementById('btnWindowMenu');
-        btnWindow.ej2_instances[0].items[3].iconCss = '';
+        const btnWindow = (document.getElementById('diagram-menu') as any).ej2_instances[0].items[4];
+        btnWindow.items[3].iconCss = '';
     }
-
-    // public btnSelectionLayer(): void {
-    //     const diagram: Diagram = this.selectedItem.selectedDiagram;
-    //     const objects: string[] = [];
-    //     for (const i: number = 0; i < diagram.selectedItems.nodes.length; i++) {
-    //         objects.push(diagram.selectedItems.nodes[i].id);
-    //     }
-    //     for (const i: number = 0; i < diagram.selectedItems.connectors.length; i++) {
-    //         objects.push(diagram.selectedItems.connectors[i].id);
-    //     }
-    //     diagram.moveObjects(objects, diagram.activeLayer.id);
-    // }
 
     public btnDuplicateLayer(): void {
         const name: string = (this.selectedItem.selectedDiagram.activeLayer.addInfo as { [key: string]: string }).name;

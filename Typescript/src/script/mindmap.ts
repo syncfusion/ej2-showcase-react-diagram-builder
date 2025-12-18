@@ -5,22 +5,25 @@
 import {
     Diagram, CommandManagerModel, Keys, NodeModel, ConnectorModel, Node, Rect,
     Connector, DiagramTools, ShapeAnnotationModel, ConnectorConstraints, SnapConstraints,
-    SelectorConstraints, UserHandleModel, KeyModifiers, DiagramConstraints, NodeConstraints, INodeInfo, CommandModel, Container, StrokeStyle, ShapeStyle, StrokeStyleModel
+    SelectorConstraints, UserHandleModel, KeyModifiers, DiagramConstraints, NodeConstraints, INodeInfo, CommandModel, Container, StrokeStyle, ShapeStyle, StrokeStyleModel,
+    Annotation
 } from '@syncfusion/ej2-diagrams';
 import { SelectorViewModel } from './selectedItem';
+import { MindMapPropertyBinding } from './events';
 import { CommonKeyboardCommands } from './commoncommands';
 import { DropDownList } from '@syncfusion/ej2-dropdowns';
 
 export class MindMap {
 
-    
+    private mindMapPropertybinding:MindMapPropertyBinding;
     private selectedItem: SelectorViewModel;
     constructor(selectedItem: SelectorViewModel) {
         this.selectedItem = selectedItem;
+        this.mindMapPropertybinding = new MindMapPropertyBinding(selectedItem);
+
     }
     
     public getCommandSettings(): CommandManagerModel {
-
         const commandManager: CommandManagerModel = {
             commands: [{
                 gesture: { key: Keys.Tab }, canExecute: this.canExecute,
@@ -40,7 +43,7 @@ export class MindMap {
             },
             {
                 gesture: { key: Keys.Delete }, canExecute: this.canExecute,
-                execute: this.removeChild.bind(this), name: 'deleteChid'
+                execute: this.removeChild.bind(this), name: 'deleteChild'
             },
             {
                 gesture: { key: Keys.Down }, canExecute: this.canExecute,
@@ -68,32 +71,55 @@ export class MindMap {
             },
             {
                 gesture: { key: Keys.F1 }, canExecute: this.canExecute,
-                execute: MindMapUtilityMethods.onHideNodeClick.bind(MindMapUtilityMethods), name: 'showShortCut'
+                execute: MindMapUtilityMethods.toggleShortcutVisibility.bind(MindMapUtilityMethods), name: 'showShortCut'
             },
             {
-                gesture: { key: Keys.Z, keyModifiers: KeyModifiers.Control }, canExecute: this.canExecute,
+                gesture: { key: Keys.Z, keyModifiers: KeyModifiers.Control }, canExecute: this.preventExecute,
                 execute: this.undoMindMap.bind(this), name: 'undo'
             },
             {
-                gesture: { key: Keys.Y, keyModifiers: KeyModifiers.Control }, canExecute: this.canExecute,
+                gesture: { key: Keys.Y, keyModifiers: KeyModifiers.Control }, canExecute: this.preventExecute,
                 execute: this.redoMindMap.bind(this), name: 'redo'
             },
             {
-                gesture: { key: Keys.X, keyModifiers: KeyModifiers.Control }, canExecute: this.canExecute,
+                gesture: { key: Keys.X, keyModifiers: KeyModifiers.Control }, canExecute: this.preventExecute,
                 execute: this.cutMindMap.bind(this), name: 'cutObject'
             },
             {
-                gesture: { key: Keys.C, keyModifiers: KeyModifiers.Control }, canExecute: this.canExecute,
+                gesture: { key: Keys.C, keyModifiers: KeyModifiers.Control }, canExecute: this.preventExecute,
                 execute: this.copyMindMap.bind(this), name: 'copyObject'
             },
             {
-                gesture: { key: Keys.V, keyModifiers: KeyModifiers.Control }, canExecute: this.canExecute,
+                gesture: { key: Keys.V, keyModifiers: KeyModifiers.Control }, canExecute: this.preventExecute,
                 execute: this.pasteMindMap.bind(this), name: 'pasteObject'
-            }
+            },
+                {
+                    gesture: { key: Keys.B, keyModifiers: KeyModifiers.Control }, canExecute: this.canExecute,
+                    execute: this.applyBoldLevel.bind(this), name: 'bold'
+                },
+                {
+                    gesture: { key: Keys.I, keyModifiers: KeyModifiers.Control }, canExecute: this.canExecute,
+                    execute: this.applyItalicLevel.bind(this), name: 'italic'
+                },
+                {
+                    gesture: { key: Keys.U, keyModifiers: KeyModifiers.Control }, canExecute: this.canExecute,
+                    execute: this.applyUnderlineLevel.bind(this), name: 'underline'
+                }
             ]
         };
         commandManager.commands = CommonKeyboardCommands.addCommonCommands(commandManager.commands as CommandModel[]);
         return commandManager;
+    }
+    public applyBoldLevel(): void {
+        this.mindMapPropertybinding.updateMindMapTextStyle('bold', true);
+    }
+
+    public applyItalicLevel(): void {
+        this.mindMapPropertybinding.updateMindMapTextStyle('italic', true);
+    }
+
+    public applyUnderlineLevel(): void {
+        this.mindMapPropertybinding.updateMindMapTextStyle('underline', true);
     }
 
     public copyMindMap(): void {
@@ -107,9 +133,12 @@ export class MindMap {
         this.selectedItem.utilityMethods.currentDiagramVisibility('mindmap-diagram', this.selectedItem);
         diagram.updateViewPort();
         if (isNew) {
+            diagram.clearSelection();
+            diagram.refresh();
             diagram.clear();
             diagram.constraints = diagram.constraints & ~DiagramConstraints.UndoRedo;
             const rootNode: NodeModel = MindMapUtilityMethods.createEmptyMindMap();
+            this.selectedItem.utilityMethods.updatePages(this.selectedItem,'MindMap');
             diagram.layout = {
                 horizontalSpacing: 100,
                 verticalSpacing: 50,
@@ -117,7 +146,7 @@ export class MindMap {
                 getBranch: (node: Node): string => {
                     if (node.addInfo) {
                         const addInfo: { [key: string]: any } = node.addInfo as { [key: string]: any };
-                        return addInfo.orientation.toString();
+                        return addInfo.orientation ? addInfo.orientation.toString() : '';
                     }
                     return 'Left';
                 },
@@ -126,25 +155,28 @@ export class MindMap {
             diagram.pageSettings = {};
             diagram.selectedItems = { userHandles: MindMapUtilityMethods.handle, constraints: SelectorConstraints.UserHandle };
             diagram.commandManager = this.getCommandSettings();
-            // diagram.tool = DiagramTools.SingleSelect | DiagramTools.ZoomPan;
+           
             diagram.snapSettings.constraints = (diagram.snapSettings.constraints as SnapConstraints) & ~SnapConstraints.ShowLines;
             diagram.constraints = diagram.constraints | DiagramConstraints.UndoRedo;
-            diagram.tool = DiagramTools.SingleSelect | DiagramTools.ZoomPan;
+            diagram.tool = DiagramTools.SingleSelect;
             diagram.dataBind();
+            diagram.fitToPage({ mode: 'Page', region: 'Content', margin: { left: 0, top: 0, right: 0, bottom: 0 } });
             this.selectedItem.utilityMethods.bindMindMapProperties(rootNode, this.selectedItem);
         } else {
             this.updateMindMap();
         }
         diagram.contextMenuSettings.show = false;
         diagram.dataBind();
+        this.selectedItem.utilityMethods.createShortCutDiv("mindmap-diagram");
     }
     public updateMindMap(): void {
         const diagram: Diagram = this.selectedItem.selectedDiagram;
         diagram.layout = {
+            type: 'MindMap',
             getBranch: (node: Node): string => {
                 if (node.addInfo) {
                     const addInfo: { [key: string]: any } = node.addInfo as { [key: string]: any };
-                    return addInfo.orientation.toString();
+                    return addInfo.orientation ? addInfo.orientation.toString() : '';
                 }
                 return 'Left';
             },
@@ -152,9 +184,9 @@ export class MindMap {
         diagram.pageSettings = {};
         diagram.selectedItems = { userHandles: MindMapUtilityMethods.handle, constraints: SelectorConstraints.UserHandle };
         diagram.commandManager = this.getCommandSettings();
-        diagram.tool = DiagramTools.SingleSelect | DiagramTools.ZoomPan;
+        diagram.tool = DiagramTools.SingleSelect;
     }
-    public getShortCutKeys(shortcutKeys: Array<{ [key: string]: any }>): ShapeAnnotationModel[] {
+    public getShortCutKeys(shortcutKeys: { [key: string]: any }[]): ShapeAnnotationModel[] {
         const annotations: ShapeAnnotationModel[] = [];
         let y: number = 0.1;
         for (const key of  shortcutKeys) {
@@ -168,6 +200,9 @@ export class MindMap {
         return annotations;
     }
 
+    private preventExecute(): boolean {
+        return false;
+    }
     private canExecute(): boolean {
         return true;
     }
@@ -186,11 +221,11 @@ export class MindMap {
   
 
     private addChild(args: { [key: string]: any }): void {
-        MindMapUtilityMethods.addNode('Left');
+        MindMapUtilityMethods.addNode('Right');
     }
 
     private addRightChild(args: { [key: string]: any }): void {
-        MindMapUtilityMethods.addNode('Right');
+        MindMapUtilityMethods.addNode('Left');
     }
 
     private addSibilingChildTop(): void {
@@ -243,9 +278,11 @@ export class MindMap {
         const diagram: Diagram = this.selectedItem.selectedDiagram;
         let node: Node;
         if (direction === 'top' || direction === 'bottom') {
-            const sameLevelNodes: Node[] = this.getSameLevelNodes();
-            const index: number = sameLevelNodes.indexOf((diagram.selectedItems.nodes as NodeModel[])[0] as Node);
-            node = direction === 'top' ? sameLevelNodes[index - 1] : sameLevelNodes[index + 1];
+            if (diagram.selectedItems.nodes.length > 0 && ((diagram.selectedItems.nodes as NodeModel[])[0] as Node).id !== 'rootNode') {
+                const sameLevelNodes: Node[] = this.getSameLevelNodes();
+                const index: number = sameLevelNodes.indexOf((diagram.selectedItems.nodes as NodeModel[])[0] as Node);
+                node = direction === 'top' ? sameLevelNodes[index - 1] : sameLevelNodes[index + 1];
+            }
         } else {
             node = this.getMinDistanceNode(diagram, direction);
         }
@@ -352,7 +389,7 @@ export abstract class MindMapUtilityMethods {
 
     public static templateType: string;
     
-    public static shortCutkeys: Array<{ [key: string]: any }> = [
+    public static shortCutkeys: { [key: string]: any }[] = [
         { 'key': 'Tab', 'value': 'Add a subtopic to left side' },
         { 'key': 'Shift + Tab', 'value': 'Add a subtopic to right side' },
         { 'key': 'Enter', 'value': 'Add a sibling subtopic to top' },
@@ -415,7 +452,7 @@ export abstract class MindMapUtilityMethods {
     public static addMindMapLevels(level: string): void {
         const mindmap: any = document.getElementById('mindMapLevels') as HTMLElement;
         const dropdownlist: DropDownList = mindmap.ej2_instances[0];
-        const dropdowndatasource: any = dropdownlist.dataSource as Array<{ [key: string]: any }>;
+        const dropdowndatasource: any = dropdownlist.dataSource as { [key: string]: any }[];
         let isExist: boolean = false;
         for (const item of   dropdowndatasource) {
             const data: { [key: string]: any } = item;
@@ -436,28 +473,18 @@ export abstract class MindMapUtilityMethods {
     public static createEmptyMindMap(): NodeModel {
         const node: NodeModel = {
             id: 'rootNode', width: 150, minHeight: 50,
-            annotations: [{ content: 'MindMap', style: { color: '#000000' } }],
+            annotations: [{ content: 'MindMap', style: { color: '#000000', fontFamily:'Arial', fontSize: 12 } }],
             shape: { type: 'Basic', shape: 'Rectangle', cornerRadius: 5 },
             ports: [{ id: 'leftPort', offset: { x: 0, y: 0.5 } }, { id: 'rightPort', offset: { x: 1, y: 0.5 } }],
             addInfo: { level: 0 }, style: { fill: '#D0ECFF', strokeColor: '#80BFEA', strokeWidth: 1 },
             constraints: NodeConstraints.Default & ~NodeConstraints.Delete
         };
         this.selectedItem.selectedDiagram.add(node);
-        const node1: NodeModel = {
-            id: 'textNode', width: 400, height: 280, offsetX: this.selectedItem.selectedDiagram.scrollSettings.viewPortWidth as number - 200, offsetY: 140,
-            shape: { type: 'HTML', content: this.getShortCutString() }, style: { strokeWidth: 0 },
-            excludeFromLayout: true,
-            constraints: NodeConstraints.Default & ~NodeConstraints.Delete
-        };
-        this.selectedItem.selectedDiagram.add(node1);
-        ((document.getElementById('diagram') as HTMLElement).querySelector('#closeIconDiv') as HTMLElement).onclick = this.onHideNodeClick.bind(this);
-        return this.selectedItem.selectedDiagram.getObject('rootNode');
+        return node;
     }
 
-    public static onHideNodeClick(): void {
-        const node1: NodeModel = MindMapUtilityMethods.getNode(this.selectedItem.selectedDiagram.nodes, 'textNode') as Node;
-        node1.visible = !node1.visible;
-        this.selectedItem.selectedDiagram.dataBind();
+    public static toggleShortcutVisibility(): void {
+        this.selectedItem.utilityMethods.toggleShortcutVisibility();
     }
 
     public static getShortCutString(): string {
@@ -492,14 +519,7 @@ export abstract class MindMapUtilityMethods {
             '</li>' +
             '</ul>' +
             '</div>' +
-            // '<div>' +
-            // '<ul>' +
-            // '<li>' +
-            // '<span class="db-html-font-medium">Shift + Enter - </span>' +
-            // '<span class="db-html-font-normal">Add a sibling subtopic to bottom</span>' +
-            // '</li>' +
-            // '</ul>' +
-            // '</div>' +
+           
             '<div>' +
             '<ul>' +
             '<li>' +
@@ -550,11 +570,11 @@ export abstract class MindMapUtilityMethods {
         const addInfo: { [key: string]: any } = parentNode.addInfo as { [key: string]: any };
         if (this.templateType === 'template1') {
             const annotations: ShapeAnnotationModel = {
-                // verticalAlignment: 'Bottom', offset: { x: 0.5, y: 0 },
+                style: { color: '#000000'},
                 content: ''
             };
             node = {
-                minWidth: 100, maxWidth: 100, minHeight: 20, shape: { type: 'Basic', shape: 'Rectangle' },
+                width: 100, height:20, shape: { type: 'Basic', shape: 'Rectangle' },
                 annotations: [annotations], style: { fill: '#000000', strokeColor: '#000000' },
                 addInfo: { level: (addInfo.level as number) + 1 },
                 offsetX: 200, offsetY: 200
@@ -562,8 +582,8 @@ export abstract class MindMapUtilityMethods {
             connector = { type: 'Bezier', style: { strokeWidth: 3 } };
         } else {
             node = {
-                minWidth: 100, maxWidth: 100, minHeight: 50, shape: { type: 'Basic', shape: 'Rectangle' },
-                annotations: [{ content: '' }],
+                width: 100, height: 50, shape: { type: 'Basic', shape: 'Rectangle' },
+                annotations: [{ content: '' ,  style: { color: '#000000'},}],
                 style: { fill: '#000000', strokeColor: '#000000' },
                 addInfo: { level: (addInfo.level as number) + 1 },
                 offsetX: 200, offsetY: 200
@@ -600,33 +620,49 @@ export abstract class MindMapUtilityMethods {
     public static addNode(orientation: string): void {
         const diagram: Diagram = this.selectedItem.selectedDiagram;
         const selectedNode: Node = (diagram.selectedItems.nodes as NodeModel[])[0] as Node;
-        if (selectedNode.id !== 'rootNode') {
-            const selectedNodeOrientation: string = (selectedNode.addInfo as { [key: string]: any }).orientation.toString();
-            orientation = selectedNodeOrientation;
+        if (selectedNode) {
+            if (selectedNode.id !== 'rootNode') {
+                const selectedNodeOrientation: string = (selectedNode.addInfo as { [key: string]: any }).orientation.toString();
+                orientation = selectedNodeOrientation;
+            }
+            diagram.startGroupAction();
+            const mindmapData: { [key: string]: any } = this.getMindMapShape(selectedNode);
+            const node: NodeModel = mindmapData.node;
+            this.addMindMapLevels('Level' + (node.addInfo as { [key: string]: any }).level);
+            node.id = 'node' + this.selectedItem.randomIdGenerator();
+            if (node.addInfo) {
+                (node.addInfo as { [key: string]: any }).orientation = orientation;
+            } else {
+                node.addInfo = { 'orientation': orientation };
+            }
+            let sameLevelNode = diagram.nodes.find((data: any)=>(data.addInfo as any).level === (node.addInfo as any).level);
+            if (sameLevelNode) {
+                (node.style as any).opacity = (sameLevelNode.style as any).opacity
+            }
+            diagram.add(node);
+            const connector: ConnectorModel = this.setConnectorDefault(diagram, orientation, mindmapData.connector, selectedNode.id, node.id);
+            diagram.add(connector);
+            const node1: NodeModel = this.getNode(diagram.nodes, node.id) as Node;
+            diagram.doLayout();
+            diagram.endGroupAction();
+            this.selectedItem.preventPropertyChange = true;
+            diagram.select([node1]);
+            this.selectedItem.preventPropertyChange = false;
+            diagram.dataBind();
+            diagram.bringIntoView((node1.wrapper as Container).bounds);
+            diagram.startTextEdit(node1, (node1.annotations as ShapeAnnotationModel[])[0].id);
+            if (node1.annotations && node1.annotations.length > 0 && sameLevelNode) {
+                const annot: ShapeAnnotationModel = node1.annotations[0];
+                (annot.style as any).bold = (sameLevelNode.annotations as any)[0].style.bold;
+                (annot.style as any).italic = (sameLevelNode.annotations as any)[0].style.italic;
+                (annot.style as any).textDecoration = (sameLevelNode.annotations as any)[0].style.textDecoration;
+                (annot.style as any).opacity = (sameLevelNode.annotations as any)[0].style.opacity;
+                (annot.style as any).fontSize = (sameLevelNode.annotations as any)[0].style.fontSize;
+                (annot.style as any).fontFamily = (sameLevelNode.annotations as any)[0].style.fontFamily;
+                (annot.style as any).color = (sameLevelNode.annotations as any)[0].style.color;
+            }
+            this.selectedItem.isModified = true;
         }
-        diagram.startGroupAction();
-        const mindmapData: { [key: string]: any } = this.getMindMapShape(selectedNode);
-        const node: NodeModel = mindmapData.node;
-        this.addMindMapLevels('Level' + (node.addInfo as { [key: string]: any }).level);
-        node.id = 'node' + this.selectedItem.randomIdGenerator();
-        if (node.addInfo) {
-            (node.addInfo as { [key: string]: any }).orientation = orientation;
-        } else {
-            node.addInfo = { 'orientation': orientation };
-        }
-        diagram.add(node);
-        const connector: ConnectorModel = this.setConnectorDefault(diagram, orientation, mindmapData.connector, selectedNode.id, node.id);
-        diagram.add(connector);
-        const node1: NodeModel = this.getNode(diagram.nodes, node.id) as Node;
-        diagram.doLayout();
-        diagram.endGroupAction();
-        this.selectedItem.preventPropertyChange = true;
-        diagram.select([node1]);
-        this.selectedItem.preventPropertyChange = false;
-        diagram.dataBind();
-        diagram.bringIntoView((node1.wrapper as Container).bounds);
-        diagram.startTextEdit(node1, (node1.annotations as ShapeAnnotationModel[])[0].id);
-        this.selectedItem.isModified = true;
     }
 
     public static addSibilingChild(position: string): void {

@@ -20,7 +20,7 @@ import { PaperSize } from './utilitymethods';
 export class DiagramClientSideEvents {
 
     public page: PageCreation;
-    public ddlTextPosition: DropDownListComponent;
+    public ddlTextPosition!: DropDownListComponent;
     private selectedItem: SelectorViewModel;
     constructor(selectedItem: SelectorViewModel, page: PageCreation) {
         this.selectedItem = selectedItem;
@@ -85,8 +85,18 @@ export class DiagramClientSideEvents {
                 } else {
                     this.selectedItem.utilityMethods.objectTypeChange('diagram');
                 }
+                let insertImageDiv = (document.getElementById("toolbarNodeInsert") as any).ej2_instances[0];
+                if (insertImageDiv && selectedItems[0] && selectedItems[0].children && selectedItems[0].children.length > 0) {
+                    insertImageDiv.items[1].disabled = true;
+                }
+                else if (insertImageDiv) {
+                    insertImageDiv.items[1].disabled = false;
+                }
             }
         }
+    }
+    public diagramLoad(){
+        (document.getElementsByClassName('diagrambuilder-container')[0] as HTMLElement).style.display = 'block';
     }
 
     public nodePositionChange(args: IDraggingEventArgs): void {
@@ -97,12 +107,18 @@ export class DiagramClientSideEvents {
             this.selectedItem.isModified = true;
             this.selectedItem.preventPropertyChange = false;
         }
+        const diagram = this.selectedItem.selectedDiagram;
+        if (diagram && diagram.tooltipObject) {
+            diagram.tooltipObject.close(); // hide any open tooltip
+        }
     }
 
     public nodeSizeChange(args: ISizeChangeEventArgs): void {
         this.selectedItem.preventPropertyChange = true;
         (this.selectedItem.nodeProperties.width as any).value = (Math.round(args.newValue.width as number * 100) / 100);
         (this.selectedItem.nodeProperties.height as any).value = (Math.round(args.newValue.height as number * 100) / 100);
+        (this.selectedItem.nodeProperties.offsetX as any).value = (Math.round((args.source as any).offsetX * 100) / 100);
+        (this.selectedItem.nodeProperties.offsetY as any).value = (Math.round((args.source as any).offsetY * 100) / 100);
         if (args.state === 'Completed') {
             this.selectedItem.isModified = true;
             this.selectedItem.preventPropertyChange = false;
@@ -118,7 +134,11 @@ export class DiagramClientSideEvents {
     };
 
     public scrollChange(args: IScrollChangeEventArgs): void {
-        this.selectedItem.scrollSettings.currentZoom = (args.newValue.CurrentZoom * 100).toFixed() + '%';
+        const diagram: Diagram = this.selectedItem.selectedDiagram;
+        if (args.panState !== 'Start' && diagram.scrollSettings && diagram.scrollSettings.currentZoom !== undefined) {
+            var btnZoomIncrement = (document.getElementById("btnZoomIncrement") as any).ej2_instances[0];
+            btnZoomIncrement.content = Math.round(diagram.scrollSettings.currentZoom * 100) + ' %';
+        }
     }
 
     public nodeRotationChange(args: IRotationEventArgs): void {
@@ -206,7 +226,12 @@ export class DiagramClientSideEvents {
             if (showConnectorPanel) {
                 nodeContainer.classList.add('connector');
             }
-            this.selectedItem.utilityMethods.bindNodeProperties((selectItem1.nodes as NodeModel[])[0], this.selectedItem);
+            this.selectedItem.utilityMethods.bindNodeProperties((selectItem1.nodes as NodeModel[])[0], this.selectedItem, true);
+            let firstNodeWithAnnotation = selectItem1.nodes?.find(node => node.annotations?.length > 0);
+            if (firstNodeWithAnnotation) {
+                this.selectedItem.utilityMethods.bindTextProperties(firstNodeWithAnnotation?.annotations[0]?.style, this.selectedItem);
+                this.selectedItem.utilityMethods.updateHorVertAlign(firstNodeWithAnnotation.annotations[0].horizontalAlignment as HorizontalAlignment, firstNodeWithAnnotation.annotations[0].verticalAlignment as VerticalAlignment);
+            }
         }
         if (showConnectorPanel && !showNodePanel) {
             (document.getElementById('connectorPropertyContainer') as HTMLElement).style.display = '';
@@ -222,10 +247,10 @@ export class DiagramClientSideEvents {
                 (document.getElementById('textColorDiv') as HTMLElement).className = 'col-xs-6 db-col-right';
                 if (showConTextPanel) {
                     this.ddlTextPosition.dataSource = this.selectedItem.textProperties.getConnectorTextPositions();
-                    // this.selectedItem.utilityMethods.bindTextProperties(selectItem1.connectors[0].annotations[0].style, this.selectedItem);
+                   
                 } else {
                     this.ddlTextPosition.dataSource = this.selectedItem.textProperties.getNodeTextPositions();
-                    // this.selectedItem.utilityMethods.bindTextProperties(selectItem1.connectors[0].annotations[0].style, this.selectedItem);
+                    
                 }
                 this.ddlTextPosition.dataBind();
             }
@@ -237,7 +262,7 @@ export class DiagramClientSideEvents {
         if (selectedObject instanceof Node) {
             this.selectedItem.utilityMethods.objectTypeChange('node');
             object = selectedObject as Node;
-            this.selectedItem.utilityMethods.bindNodeProperties(object, this.selectedItem);
+            this.selectedItem.utilityMethods.bindNodeProperties(object, this.selectedItem, false);
         } else if (selectedObject instanceof Connector) {
             this.selectedItem.utilityMethods.objectTypeChange('connector');
             object = selectedObject as Connector;
@@ -248,6 +273,10 @@ export class DiagramClientSideEvents {
             (document.getElementById('toolbarTextAlignmentDiv') as HTMLElement).style.display = 'none';
             (document.getElementById('textPositionDiv') as HTMLElement).style.display = 'none';
             (document.getElementById('textColorDiv') as HTMLElement).className = 'col-xs-6 db-col-left';
+            const opacitySlider = document.getElementById('textOpacityProp');
+            if (opacitySlider) {
+                opacitySlider.style.visibility = 'hidden';
+            }
             this.selectedItem.utilityMethods.bindTextProperties(object.style, this.selectedItem);
         } else if (object.annotations.length > 0 && object.annotations[0].content) {
             (document.getElementById('textPropertyContainer') as HTMLElement).style.display = '';
@@ -255,19 +284,22 @@ export class DiagramClientSideEvents {
             (document.getElementById('toolbarTextAlignmentDiv') as HTMLElement).style.display = '';
             (document.getElementById('textPositionDiv') as HTMLElement).style.display = '';
             (document.getElementById('textColorDiv') as HTMLElement).className = 'col-xs-6 db-col-right';
+             const opacitySlider = document.getElementById('textOpacityProp');
+            if (opacitySlider) {
+                opacitySlider.style.visibility = 'visible';
+            }
             this.selectedItem.utilityMethods.bindTextProperties(object.annotations[0].style as TextStyleModel, this.selectedItem);
             this.selectedItem.utilityMethods.updateHorVertAlign(object.annotations[0].horizontalAlignment as HorizontalAlignment, object.annotations[0].verticalAlignment as VerticalAlignment);
             if (object.annotations[0] instanceof ShapeAnnotation) {
                 annotation = object.annotations[0] as ShapeAnnotation;
                 this.ddlTextPosition.dataSource = this.selectedItem.textProperties.getNodeTextPositions();
-                this.ddlTextPosition.value = this.selectedItem.textProperties.textPosition;
+                this.ddlTextPosition.value = this.selectedItem.textProperties.textPosition || 'Center';
                 this.ddlTextPosition.dataBind();
                 this.ddlTextPosition.value = this.selectedItem.textProperties.textPosition = this.selectedItem.utilityMethods.getPosition(annotation.offset);
                 this.ddlTextPosition.dataBind();
             } else if (object.annotations[0] instanceof PathAnnotation) {
                 annotation = object.annotations[0] as PathAnnotation;
                 this.ddlTextPosition.dataSource = this.selectedItem.textProperties.getConnectorTextPositions();
-                this.ddlTextPosition.value = this.selectedItem.textProperties.textPosition;
                 this.ddlTextPosition.dataBind();
                 this.ddlTextPosition.value = this.selectedItem.textProperties.textPosition = annotation.alignment;
                 this.ddlTextPosition.dataBind();
@@ -363,8 +395,7 @@ export class DiagramPropertyBinding {
 
     public pageOrientationChange(args: ButtonChangeArgs): void {
         if (args.event) {
-            // const pageWidth: number = Number(this.selectedItem.pageSettings.pageWidth);
-            //  const pageHeight: number = Number(this.selectedItem.pageSettings.pageHeight);
+          
             const target: HTMLElement = args.event.target as HTMLElement;
             const diagram: Diagram = this.selectedItem.selectedDiagram;
             switch (target.id) {
@@ -386,8 +417,7 @@ export class DiagramPropertyBinding {
     }
 
     public pageBackgroundChange1(args: ColorPickerEventArgs): void {
-        if (args.currentValue) {
-            // const target: HTMLInputElement = args.target as HTMLInputElement; 
+        if (args.currentValue) { 
             const diagram: Diagram = this.selectedItem.selectedDiagram;
             diagram.pageSettings.background = {
                 color: args.currentValue.rgba
@@ -412,7 +442,9 @@ export class DiagramPropertyBinding {
     }
 
     public toolbarTextAlignChange(args: ToolbarClickEventArgs): void {
-        const propertyName: string = (args.item.tooltipText as string).replace('Align ', '');
+        let propertyName: string = (args.item.tooltipText as string).replace('Align ', '');
+        const flipMap: {} = { Left: 'Right', Right: 'Left', Top: 'Bottom', Bottom: 'Top' };
+        propertyName = flipMap[propertyName] || propertyName;
         this.textPropertyChange(propertyName, propertyName);
     }
 
@@ -517,6 +549,7 @@ export class MindMapPropertyBinding {
 
     public updateMindMapTextStyle(propertyName: string, propertyValue: any): void {
         const diagram: Diagram = this.selectedItem.selectedDiagram;
+         diagram.startGroupAction();
         if (diagram.nodes.length > 0) {
             for (const value of diagram.nodes) {
                 const node: Node = value as Node;
@@ -524,16 +557,20 @@ export class MindMapPropertyBinding {
                     const annotation: TextStyleModel = node.annotations[0].style as TextStyleModel;
                     const addInfo: { [key: string]: any } = node.addInfo as { [key: string]: any };
                     const levelType: string = (this.selectedItem.mindmapSettings.levelType as any).value;
+                    const mindmapTextStyleToolbar = (document.getElementById('mindmapTextStyleToolbar') as any).ej2_instances[0];
                     if ('Level' + addInfo.level === levelType || addInfo.level === levelType) {
                         switch (propertyName) {
                             case 'bold':
                                 annotation.bold = !annotation.bold;
+                                mindmapTextStyleToolbar.items[0].cssClass = annotation.bold ? 'tb-item-start tb-item-selected' : 'tb-item-start';
                                 break;
                             case 'italic':
                                 annotation.italic = !annotation.italic;
+                                mindmapTextStyleToolbar.items[1].cssClass = annotation.italic ? 'tb-item-middle tb-item-selected' : 'tb-item-middle';
                                 break;
                             case 'underline':
                                 annotation.textDecoration = annotation.textDecoration === 'None' || !annotation.textDecoration ? 'Underline' : 'None';
+                                mindmapTextStyleToolbar.items[2].cssClass = annotation.textDecoration === 'Underline' ? 'tb-item-end tb-item-selected' : 'tb-item-end';
                                 break;
                         }
                     }
@@ -542,6 +579,7 @@ export class MindMapPropertyBinding {
                 this.selectedItem.isModified = true;
             }
         }
+        diagram.endGroupAction();
     }
 
     public mindmapPatternChange(args: MouseEvent): void {

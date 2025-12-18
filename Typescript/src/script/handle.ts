@@ -5,7 +5,7 @@ import {} from'./userhandles';
 
 
 export class OrgRemoveHandleTool extends ToolBase {
-    public selectedItem: SelectorViewModel;
+    public selectedItem!: SelectorViewModel;
     public mouseDown(args: MouseEventArgs): void {
         this.inAction = true;
         super.mouseDown(args);
@@ -24,7 +24,7 @@ export class OrgRemoveHandleTool extends ToolBase {
 }
 
 export class OrgEditHandleTool extends ToolBase {
-    public selectedItem: SelectorViewModel;
+    public selectedItem!: SelectorViewModel;
     public mouseDown(args: MouseEventArgs): void {
         this.inAction = true;
         super.mouseDown(args);

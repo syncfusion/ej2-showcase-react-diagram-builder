@@ -7,11 +7,11 @@ import { Button, CheckBox, ChangeEventArgs } from '@syncfusion/ej2-buttons';
 import { SelectorViewModel } from './selectedItem';
 import { Dialog } from '@syncfusion/ej2-react-popups';
 
-
+let deleteFieldObj: any;
 export class CustomProperties {
     public selectedItem: SelectorViewModel;
     public customPropertyDialog: Dialog;
-    public deleteField: string;
+    public deleteField!: string;
 
     constructor(selectedItem: SelectorViewModel, customPropertyDialog: Dialog) {
         this.selectedItem = selectedItem;
@@ -39,7 +39,7 @@ export class CustomProperties {
             const node: Node = selectedNode as Node;
             if (node.id !== 'textNode') {
                 const nodeInfo: any = node.addInfo;
-                delete nodeInfo[this.deleteField];
+                delete nodeInfo[deleteFieldObj];
             }
         }
         const addInfo: any = (this.selectedItem.selectedDiagram.selectedItems.nodes as NodeModel[])[0].addInfo;
@@ -76,18 +76,20 @@ export class CustomProperties {
         const addInfo1: { [key: string]: object } = addInfo as { [key: string]: object };
         const keys: string[] = Object.keys(addInfo1);
         for (let i: number = 0; i < keys.length; i++) {
-            const removeBtnElement: HTMLButtonElement = removeBtnElements[i + 1].children[0] as HTMLButtonElement;
-            const removeButton: Button = new Button({ iconCss: 'sf-icon-Delete', cssClass: keys[i] });
-            removeButton.appendTo(removeBtnElement);
-            removeBtnElement.onclick = this.showConfirmationDialog.bind(this);
+            if (addInfo1[keys[i]]) {
+                const removeBtnElement: HTMLButtonElement = removeBtnElements[i + 1].children[0] as HTMLButtonElement;
+                const removeButton: Button = new Button({ iconCss: 'sf-icon-Delete', cssClass: keys[i] });
+                removeButton.appendTo(removeBtnElement);
+                removeBtnElement.onclick = this.showConfirmationDialog.bind(this);
 
-            const checkboxTooltipElement: HTMLInputElement = removeCheckBoxElements[i + 1].children[0] as HTMLInputElement;
-            const checkboxTooltip: CheckBox = new CheckBox({ checked: Boolean((addInfo1[keys[i]] as { [key: string]: object }).checked), cssClass: keys[i] });
-            checkboxTooltip.change = this.removeField.bind(this);
-            checkboxTooltip.appendTo(checkboxTooltipElement);
+                const checkboxTooltipElement: HTMLInputElement = removeCheckBoxElements[i + 1].children[0] as HTMLInputElement;
+                const checkboxTooltip: CheckBox = new CheckBox({ checked: Boolean((addInfo1[keys[i]] as { [key: string]: object }).checked), cssClass: keys[i] });
+                checkboxTooltip.change = this.removeField.bind(this);
+                checkboxTooltip.appendTo(checkboxTooltipElement);
 
-            (propertyValueElements[i + 1].children[0] as HTMLInputElement).value = (addInfo1[keys[i]] as { [key: string]: object }).value.toString();
-            (propertyValueElements[i + 1].children[0] as HTMLInputElement).onchange = this.valueChange.bind(this);
+                (propertyValueElements[i + 1].children[0] as HTMLInputElement).value = (addInfo1[keys[i]] as { [key: string]: object }).value.toString();
+                (propertyValueElements[i + 1].children[0] as HTMLInputElement).onchange = this.valueChange.bind(this);
+            }
         }
         const propButton: HTMLButtonElement =
             document.getElementsByClassName('db-custom-prop-button')[1] as HTMLButtonElement;
@@ -101,15 +103,15 @@ export class CustomProperties {
             (document.getElementsByClassName('db-custom-prop-info-template')[0] as HTMLDivElement).cloneNode(true) as HTMLDivElement;
         propertyInfo.style.display = '';
         let propertyName: string = key;
-        if (keyValue.type === 'nameField') {
+        if (keyValue && keyValue.type === 'nameField') {
             propertyName = 'Name';
-        } else if (keyValue.type === 'imageField') {
+        } else if (keyValue && keyValue.type === 'imageField') {
             propertyName = 'Image URL';
         }
         propertyInfo.getElementsByClassName('propertyNameDiv')[0].innerHTML = propertyName;
 
         const removeBtnElement: HTMLButtonElement = propertyInfo.getElementsByClassName('btnRemoveProperty')[0] as HTMLButtonElement;
-        if (keyValue.type !== 'bindingField') {
+        if (keyValue && keyValue.type !== 'bindingField') {
             removeBtnElement.style.display = 'None';
         }
         return propertyInfo;
@@ -128,12 +130,14 @@ export class CustomProperties {
 
     private removeField(args: ChangeEventArgs): void {
         const target: HTMLInputElement = (args.event as Event).target as HTMLInputElement;
-        const className: string = ((target.parentElement as HTMLElement).parentElement as HTMLElement).className.replace('e-checkbox-wrapper ', '').trim();
+        const className: string = ((target.parentElement as HTMLElement).parentElement as HTMLElement).className.replace('e-checkbox-wrapper e-wrapper', '').trim();
         for (const selectedNode of  this.selectedItem.selectedDiagram.nodes) {
             const node: Node = selectedNode as Node;
             if (node.id !== 'textNode') {
                 const nodeInfo: any = node.addInfo;
-                nodeInfo[className].checked = args.checked;
+                if (nodeInfo[className]) {
+                    nodeInfo[className].checked = args.checked;
+                }
             }
         }
         let imageField: boolean = false;
@@ -149,7 +153,10 @@ export class CustomProperties {
         if (target.tagName.toLowerCase() === 'span') {
             target = target.parentElement as HTMLElement;
         }
-        this.deleteField = target.className.replace('btnRemoveProperty e-control e-btn ', '').replace(' e-icon-btn', '').trim();
+        this.deleteField = target.className.replace('btnRemoveProperty e-control e-btn e-lib', '').replace(' e-icon-btn', '').trim();
+        if (!deleteFieldObj || this.deleteField) {
+            deleteFieldObj = this.deleteField;
+        }
         const dialog: any = document.getElementById('deleteConfirmationDialog');
         dialog.ej2_instances[0].show();
     }

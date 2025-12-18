@@ -3,27 +3,22 @@ import { MenuItemModel } from '@syncfusion/ej2-navigations';
 
 export class DropDownDataSources {
 
-    public fileMenuItems: ItemModel[] = this.getFileMenuItems();
-    public editMenuItems: ItemModel[] = this.getEditMenuItems();
-    public viewMenuItems: ItemModel[] = this.getViewMenuItems();
-    public arrangeMenuItems: MenuItemModel[] = this.getArrangeMenuItems();
-    public windowMenuItems: ItemModel[] = this.getWindowMenuItems();
     public helpMenuItems: ItemModel[] = this.getHelpMenuItems();
 
-    public fileFormats: Array<{ [key: string]: any }> = [
+    public fileFormats: { [key: string]: any }[] = [
         { text: 'JPG', value: 'JPG' }, { text: 'PNG', value: 'PNG' },
-        { text: 'BMP', value: 'BMP' }, { text: 'SVG', value: 'SVG' }
+        { text: 'SVG', value: 'SVG' }
     ];
 
-    public diagramRegions: Array<{ [key: string]: any }> = [
+    public diagramRegions: { [key: string]: any }[] = [
         { text: 'Content', value: 'Content' }, { text: 'PageSettings', value: 'PageSettings' }
     ];
 
-    public importFormat: Array<{ [key: string]: any }> = [
+    public importFormat: { [key: string]: any }[] = [
         { text: 'CSV', value: 'CSV' }, { text: 'XML', value: 'XML' }, { text: 'JSON', value: 'JSON' }
     ];
 
-    public borderStyles: Array<{ [key: string]: any }> = [
+    public borderStyles: { [key: string]: any }[] = [
         { text: 'None', value: 'None', className: 'ddl-svg-style ddl_linestyle_none' },
         { text: '1,2', value: '1,2', className: 'ddl-svg-style ddl_linestyle_one_two' },
         { text: '3,3', value: '3,3', className: 'ddl-svg-style ddl_linestyle_three_three' },
@@ -31,7 +26,7 @@ export class DropDownDataSources {
         { text: '4,4,1', value: '4,4,1', className: 'ddl-svg-style ddl_linestyle_four_four_one' }
     ];
 
-    public fontFamilyList: Array<{ [key: string]: any }> = [
+    public fontFamilyList: { [key: string]: any }[] = [
         { text: 'Arial', value: 'Arial' },
         { text: 'Aharoni', value: 'Aharoni' },
         { text: 'Bell MT', value: 'Bell MT' },
@@ -41,7 +36,7 @@ export class DropDownDataSources {
         { text: 'Verdana', value: 'Verdana' },
     ];
 
-    public decoratorList: Array<{ [key: string]: any }> = [
+    public decoratorList: { [key: string]: any }[] = [
         { text: 'None', value: 'None' },
         { text: 'Arrow', value: 'Arrow' },
         { text: 'Diamond', value: 'Diamond' },
@@ -55,12 +50,12 @@ export class DropDownDataSources {
         { text: 'DoubleArrow', value: 'DoubleArrow' }
     ];
 
-    public lineTypes: Array<{ [key: string]: any }> = [
+    public lineTypes: { [key: string]: any }[] = [
         { text: 'Straight', value: 'Straight' }, { text: 'Orthogonal', value: 'Orthogonal' },
         { text: 'Bezier', value: 'Bezier' }
     ];
 
-    public gradientDirections: Array<{ [key: string]: any }> = [
+    public gradientDirections: { [key: string]: any }[] = [
         { text: 'BottomToTop', value: 'BottomToTop' }, { text: 'TopToBottom', value: 'TopToBottom' },
         { text: 'RightToLeft', value: 'RightToLeft' }, { text: 'LeftToRight', value: 'LeftToRight' }
     ];
@@ -84,7 +79,7 @@ export class DropDownDataSources {
         { iconCss: 'sf-icon-BringForward', text: 'Bring Forward' },
     ];
 
-    public mindmapLevels: Array<{ [key: string]: any }> = [
+    public mindmapLevels: { [key: string]: any }[] = [
         { text: 'Root', value: 'Level0' }, { text: 'Level1', value: 'Level1' },
         { text: 'Level2', value: 'Level2' }, { text: 'Level3', value: 'Level3' },
         { text: 'Level4', value: 'Level4' }, { text: 'Level5', value: 'Level5' },
@@ -94,18 +89,16 @@ export class DropDownDataSources {
         { text: '400%' }, { text: '300%' }, { text: '200%' }, { text: '150%' },
         { text: '100%' }, { text: '75%' }, { text: '50%' }, { text: '25%' }, { separator: true },
         { text: 'Fit To Screen' }
-        // { separator: true },
-        // { text: 'Custom' },
     ];
 
-    public paperList: Array<{ [key: string]: any }> = [
+    public paperList: { [key: string]: any }[] = [
         { text: 'Letter (8.5 in x 11 in)', value: 'Letter' }, { text: 'Legal (8.5 in x 14 in)', value: 'Legal' },
         { text: 'Tabloid (279 mm x 432 mm)', value: 'Tabloid' }, { text: 'A3 (297 mm x 420 mm)', value: 'A3' },
         { text: 'A4 (210 mm x 297 mm)', value: 'A4' }, { text: 'A5 (148 mm x 210 mm)', value: 'A5' },
         { text: 'A6 (105 mm x 148 mm)', value: 'A6' }, { text: 'Custom', value: 'Custom' },
     ];
 
-    public listViewData: Array<{ [key: string]: any }> = [
+    public listViewData: { [key: string]: any }[] = [
         { text: 'Flow', id: 'flowShapes', checked: true },
         { text: 'Basic', id: 'basicShapes', checked: true },
         { text: 'BPMN', id: 'bpmnShapes', checked: true },
@@ -115,78 +108,73 @@ export class DropDownDataSources {
         { text: 'Floorplan', id: 'floorShapes', checked: false },
     ];
 
-    public getFileMenuItems(): ItemModel[] {
-        const menuItems: ItemModel[] = [
-            { text: 'New' }, { text: 'Open' }, { separator: true },
-            { text: 'Save', iconCss: 'sf-icon-Save' }, { text: 'Save As' },
-            // { text: 'Rename' }, { separator: true },
-            { text: 'Export', iconCss: 'sf-icon-Export' }, { separator: true },
-            { text: 'Print', iconCss: 'sf-icon-Print' }
-        ];
-        return menuItems;
-    }
-
-    public getEditMenuItems(): ItemModel[] {
-        const menuItems: ItemModel[] = [
-            { text: 'Undo', iconCss: 'sf-icon-Undo' }, { text: 'Redo', iconCss: 'sf-icon-Redo' }, { separator: true },
-            { text: 'Cut', iconCss: 'sf-icon-Cut' }, { text: 'Copy', iconCss: 'sf-icon-Copy' },
-            { text: 'Paste', iconCss: 'sf-icon-Paste' }, { text: 'Delete', iconCss: 'sf-icon-Delete' }, { separator: true },
-            { text: 'Duplicate' }, { separator: true },
-            // { text: 'Edit Data' }, 
-            { text: 'Edit Tooltip' }, { separator: true },
-            { text: 'Select All' },
-        ];
-        return menuItems;
-    }
-
-    public getViewMenuItems(): ItemModel[] {
-        const menuItems: ItemModel[] = [
-            { text: 'Zoom In', iconCss: 'sf-icon-ZoomIn' }, { text: 'Zoom Out', iconCss: 'sf-icon-ZoomOut' }, { separator: true },
-            { text: 'Fit To Screen' }, { separator: true },
-            { text: 'Show Rulers' }, { text: 'Show Guides', iconCss: 'sf-icon-Selection' },
-            { text: 'Show Grid', iconCss: 'sf-icon-Selection' }, { separator: true },
-            { text: 'Snap To Grid' }
-        ];
-        return menuItems;
-    }
-
-    public getArrangeMenuItems(): MenuItemModel[] {
-        const menuItems1: MenuItemModel[] = [
-            { text: 'Send To Back', iconCss: 'sf-icon-Sendback' }, { text: 'Bring To Front', iconCss: 'sf-icon-BringFront' },
-            { text: 'Send Backward', iconCss: 'sf-icon-SendBackward' }, { text: 'Bring Forward', iconCss: 'sf-icon-BringForward' },
-            { separator: true },
-            {
-                text: 'Align Objects', items: [
-                    { text: 'Left', iconCss: 'sf-icon-AlignLeft' }, { text: 'Right', iconCss: 'sf-icon-AlignRight' },
-                    { text: 'Center', iconCss: 'sf-icon-AlignHorizontally' }, { text: 'Top', iconCss: 'sf-icon-AilgnTop' },
-                    { text: 'Bottom', iconCss: 'sf-icon-AlignBottom' }, { text: 'Middle', iconCss: 'sf-icon-AlignVertically' }
-                ]
-            },
-            {
-                text: 'Distribute Objects', items: [
-                    { text: 'Horizontally', iconCss: 'sf-icon-DistributeHorizontal' },
-                    { text: 'Vertically', iconCss: 'sf-icon-DistributeVertical' }
-                ]
-            },
-            {
-                text: 'Match Size', items: [
-                    { text: 'Both Width and Height' }, { text: 'Width' }, { text: 'Height' }
-                ]
-            }, { separator: true },
-            { text: 'Lock' }, { text: 'Unlock' }, { separator: true },
-            { text: 'Group' }, { text: 'Ungroup' }
-        ];
-        return menuItems1;
-    }
-
-    public getWindowMenuItems(): ItemModel[] {
-        const menuItems: ItemModel[] = [
-            { text: 'Show Toolbar', iconCss: 'sf-icon-Selection' }, { text: 'Show Stencil', iconCss: 'sf-icon-Selection' },
-            { text: 'Show Properties', iconCss: 'sf-icon-Selection' }, { text: 'Show Layers' },
-            { text: 'Show Pager', iconCss: 'sf-icon-Selection' }, { text: 'Themes' }
-        ];
-        return menuItems;
-    }
+  menuItems = [
+        {
+            text: 'File',
+            items: [
+                { text: 'New', iconCss: 'e-icons e-circle-add' }, { text: 'Open', iconCss: 'e-icons e-folder-open' }, { separator: true },
+                { text: 'Save', iconCss: 'sf-icon-Save' }, { text: 'Save As', iconCss:'e-icons e-save-as' },
+                { text: 'Export', iconCss: 'sf-icon-Export' }, { separator: true },
+                { text: 'Print', iconCss: 'sf-icon-Print' }
+            ]
+        },
+        {
+            text: 'Edit',
+            items: [
+                { text: 'Undo', iconCss: 'sf-icon-Undo' }, { text: 'Redo', iconCss: 'sf-icon-Redo' }, { separator: true },
+                { text: 'Cut', iconCss: 'sf-icon-Cut' }, { text: 'Copy', iconCss: 'sf-icon-Copy' },
+                { text: 'Paste', iconCss: 'sf-icon-Paste' }, { text: 'Delete', iconCss: 'sf-icon-Delete' }, { separator: true },
+                { text: 'Duplicate' }, { separator: true },
+                { text: 'Edit Tooltip' }, { separator: true },
+                { text: 'Select All' },
+            ]
+        },
+        {
+            text: 'View',
+            items: [
+                { text: 'Zoom In', iconCss: 'sf-icon-ZoomIn' }, { text: 'Zoom Out', iconCss: 'sf-icon-ZoomOut' }, { separator: true },
+                { text: 'Fit To Screen' }, { separator: true },
+                { text: 'Show Rulers' }, { text: 'Show Guides', iconCss: 'sf-icon-Selection' },
+                { text: 'Show Grid', iconCss: 'sf-icon-Selection' }, { separator: true },
+                { text: 'Snap To Grid' }
+            ]
+        },
+        {
+            text: 'Arrange',
+            items: [
+                { text: 'Send To Back', iconCss: 'sf-icon-Sendback' }, { text: 'Bring To Front', iconCss: 'sf-icon-BringFront' },
+                { text: 'Send Backward', iconCss: 'sf-icon-SendBackward' }, { text: 'Bring Forward', iconCss: 'sf-icon-BringForward' },
+                { separator: true },
+                {
+                    text: 'Align Objects', items: [
+                        { text: 'Left', iconCss: 'sf-icon-AlignLeft' }, { text: 'Right', iconCss: 'sf-icon-AlignRight' },
+                        { text: 'Center', iconCss: 'sf-icon-AlignHorizontally' }, { text: 'Top', iconCss: 'sf-icon-AilgnTop' },
+                        { text: 'Bottom', iconCss: 'sf-icon-AlignBottom' }, { text: 'Middle', iconCss: 'sf-icon-AlignVertically' }
+                    ]
+                },
+                {
+                    text: 'Distribute Objects', items: [
+                        { text: 'Horizontally', iconCss: 'sf-icon-DistributeHorizontal' },
+                        { text: 'Vertically', iconCss: 'sf-icon-DistributeVertical' }
+                    ]
+                },
+                {
+                    text: 'Match Size', items: [
+                        { text: 'Both Width and Height' }, { text: 'Width' }, { text: 'Height' }
+                    ]
+                }, { separator: true },
+                { text: 'Lock' }, { text: 'Unlock' }, { separator: true },
+                { text: 'Group' }, { text: 'Ungroup' }
+            ]
+        }, {
+            text: 'Window',
+            items: [
+                { text: 'Show Toolbar', iconCss: 'sf-icon-Selection' }, { text: 'Show Stencil', iconCss: 'sf-icon-Selection' },
+                { text: 'Show Properties', iconCss: 'sf-icon-Selection' }, { text: 'Show Layers' },
+                { text: 'Show Pager', iconCss: 'sf-icon-Selection' }, { text: 'Themes' }
+            ]
+        },
+    ];
 
     public getHelpMenuItems(): ItemModel[] {
         const menuItems: ItemModel[] = [

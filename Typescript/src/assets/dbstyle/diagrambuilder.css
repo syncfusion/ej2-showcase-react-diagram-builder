@@ -73,6 +73,8 @@ input, button, select, textarea {
 
 .db-diagram-name-container.db-edit-name #diagramEditable {
     display: block;
+    background:white;
+    color: #000000;
 }
 
 .db-diagram-name {
@@ -137,16 +139,18 @@ input, button, select, textarea {
 
 .sidebar {
     position: absolute;
-    bottom: 0;
-    width: 255px;
+    top: 108px; /* header + menu area */
+    bottom: 72px; /* leave space for fixed footer */
     left: 0px;
-    height: calc(100% - 112px);
+    height: auto;
+    width: 255px;
 }
 
 .main-content {
     margin: 0;
     left:255px;
-    height: calc(100% - 112px);
+    top: 115px; /* header + menu area */
+    bottom: 72px; /* footer height */
     position:absolute;
     width:calc(100% - 255px);
 }
@@ -155,6 +159,7 @@ input, button, select, textarea {
     background-color:#fafafa;
     width:100%;
     height:calc(100% - 28px);
+    margin-top: 10px; /* sets the search shapes text box properly and fully visible*/
 }
 
 .sidebar.show-overview .db-palette-parent {
@@ -640,6 +645,7 @@ input, button, select, textarea {
     float: right;
     color: #999999;
     font-size: 12px;
+    padding-left: 50px; /* Sets the distance between menu item and shortcut code*/
 }
 
 /* Menu Bar Customization - End */
@@ -1306,7 +1312,6 @@ input[type="color"]::-moz-color-swatch {
     height: 28px;
     font-weight: normal;
     text-indent: 5px;
-    border: 1px solid #D5D5D5;
 }
 
 .e-dialog .e-footer-content {

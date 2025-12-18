@@ -5,7 +5,9 @@ import {
     SymbolPaletteComponent, SnapSettingsModel, PageSettingsModel, Keys, DiagramRegions, FileFormats,
     KeyModifiers, CommandModel, IDropEventArgs, Connector, DiagramAction, AlignmentOptions, DiagramTools, ZoomOptions, ShapeAnnotationModel,
     ScrollSettingsModel, SelectorModel, ContextMenuSettingsModel, CommandManagerModel, ConnectorModel, ICollectionChangeEventArgs, NodeConstraints, ConnectorConstraints, ShapeAnnotation, HyperlinkModel,
-    UndoRedo, DiagramContextMenu, Snapping, DataBinding, PrintAndExport, BpmnDiagrams, HierarchicalTree, MindMap as MindMapTree, ConnectorBridging, LayoutAnimation, SymbolPalette
+    UndoRedo, DiagramContextMenu, Snapping, DataBinding, PrintAndExport, BpmnDiagrams, HierarchicalTree, MindMap as MindMapTree, ConnectorBridging, LayoutAnimation, SymbolPalette,
+    PortConstraints,
+    PortVisibility
 } from "@syncfusion/ej2-react-diagrams";
 import {
     Diagram, NodeModel, SnapConstraints,
@@ -31,29 +33,38 @@ import { UploaderComponent } from "@syncfusion/ej2-react-inputs"
 import { DiagramBuilderLayer } from 'src/script/layers';
 import { ListViewComponent } from "@syncfusion/ej2-react-lists";
 import { Palettes } from "src/script/palettes";
-// import * as ReactDOM from 'react-dom';
+
 import { CustomProperties } from "./script/customproperties";
 import { DownloadExampleFiles } from "./script/downloaddata";
 import { OrgChartUtilityMethods } from "./script/orgchart";
-import { PaperSize } from "./script/utilitymethods";
+
 import { SelectedCollection, FieldsMapping, SelectEventArgs } from "@syncfusion/ej2-react-lists";
 import "./font-icons.css";
 import { DropDownListComponent, FieldSettingsModel, MultiSelectComponent } from '@syncfusion/ej2-react-dropdowns';
 import {
     ToolbarComponent, ItemsDirective, ItemDirective, ClickEventArgs, MenuEventArgs as ContextMenuEventArgs,
-    ItemModel as ToolbarItemModel, MenuAnimationSettingsModel, ContextMenuComponent, OpenCloseMenuEventArgs
+    ItemModel as ToolbarItemModel, MenuAnimationSettingsModel, ContextMenuComponent, OpenCloseMenuEventArgs,
+    MenuComponent
 } from '@syncfusion/ej2-react-navigations';
-import "../node_modules/@syncfusion/ej2-react-diagrams/styles/diagram/material.css"
+import "../node_modules/@syncfusion/ej2-diagrams/styles/material.css";
 import "../node_modules/@syncfusion/ej2-popups/styles/material.css";
 import "../node_modules/@syncfusion/ej2-navigations/styles/accordion/material.css";
 import "./assets/index.css";
 import "./assets/db-icons1/style.css";
 import "./assets/dbstyle/diagrambuilder.css";
+import { JSX } from "react";
+import { UtilityMethods } from "./script/utilitymethods";
 
 
 Diagram.Inject(UndoRedo, DiagramContextMenu, Snapping, DataBinding);
 Diagram.Inject(PrintAndExport, BpmnDiagrams, HierarchicalTree, MindMapTree, ConnectorBridging, LayoutAnimation);
 SymbolPalette.Inject(BpmnDiagrams);
+
+window.onresize = function (evt){
+    let diagram = (document.getElementById('diagram') as any).ej2_instances[0];
+    let selectedItem = {selectedDiagram : diagram};
+    UtilityMethods.prototype.updateDiagramViews(selectedItem as any);
+}
 export let hierarchicalTree: object[] = [
     { id: '111', type: 'Native', x: 200, y: 200, width: 100, height: 100, isVisible: true, content: '<g xmlns="http://www.w3.org/2000/svg">	<g transform="translate(1 1)">		<g>			<path style="fill:#61443C;" d="M61.979,435.057c2.645-0.512,5.291-0.853,7.936-1.109c-2.01,1.33-4.472,1.791-6.827,1.28     C62.726,435.13,62.354,435.072,61.979,435.057z"/>			<path style="fill:#61443C;" d="M502.469,502.471h-25.6c0.163-30.757-20.173-57.861-49.749-66.304     c-5.784-1.581-11.753-2.385-17.749-2.389c-2.425-0.028-4.849,0.114-7.253,0.427c1.831-7.63,2.747-15.45,2.731-23.296     c0.377-47.729-34.52-88.418-81.749-95.317c4.274-0.545,8.577-0.83,12.885-0.853c25.285,0.211,49.448,10.466,67.167,28.504     c17.719,18.039,27.539,42.382,27.297,67.666c0.017,7.846-0.9,15.666-2.731,23.296c2.405-0.312,4.829-0.455,7.253-0.427     C472.572,434.123,502.783,464.869,502.469,502.471z"/>		</g>		<path style="fill:#8B685A;" d="M476.869,502.471H7.536c-0.191-32.558,22.574-60.747,54.443-67.413    c0.375,0.015,0.747,0.072,1.109,0.171c2.355,0.511,4.817,0.05,6.827-1.28c1.707-0.085,3.413-0.171,5.12-0.171    c4.59,0,9.166,0.486,13.653,1.451c2.324,0.559,4.775,0.147,6.787-1.141c2.013-1.288,3.414-3.341,3.879-5.685    c7.68-39.706,39.605-70.228,79.616-76.117c4.325-0.616,8.687-0.929,13.056-0.939c13.281-0.016,26.409,2.837,38.485,8.363    c3.917,1.823,7.708,3.904,11.349,6.229c2.039,1.304,4.527,1.705,6.872,1.106c2.345-0.598,4.337-2.142,5.502-4.264    c14.373-25.502,39.733-42.923,68.693-47.189h0.171c47.229,6.899,82.127,47.588,81.749,95.317c0.017,7.846-0.9,15.666-2.731,23.296    c2.405-0.312,4.829-0.455,7.253-0.427c5.996,0.005,11.965,0.808,17.749,2.389C456.696,444.61,477.033,471.713,476.869,502.471    L476.869,502.471z"/>		<path style="fill:#66993E;" d="M502.469,7.537c0,0-6.997,264.96-192.512,252.245c-20.217-1.549-40.166-5.59-59.392-12.032    c-1.365-0.341-2.731-0.853-4.096-1.28c0,0-0.597-2.219-1.451-6.144c-6.656-34.048-25.088-198.997,231.765-230.144    C485.061,9.159,493.595,8.22,502.469,7.537z"/>		<path style="fill:#9ACA5C;" d="M476.784,10.183c-1.28,26.197-16.213,238.165-166.827,249.6    c-20.217-1.549-40.166-5.59-59.392-12.032c-1.365-0.341-2.731-0.853-4.096-1.28c0,0-0.597-2.219-1.451-6.144    C238.363,206.279,219.931,41.329,476.784,10.183z"/>		<path style="fill:#66993E;" d="M206.192,246.727c-0.768,3.925-1.365,6.144-1.365,6.144c-1.365,0.427-2.731,0.939-4.096,1.28    c-21.505,7.427-44.293,10.417-66.987,8.789C21.104,252.103,8.816,94.236,7.621,71.452c-0.085-1.792-0.085-2.731-0.085-2.731    C222.747,86.129,211.653,216.689,206.192,246.727z"/>		<path style="fill:#9ACA5C;" d="M180.336,246.727c-0.768,3.925-1.365,6.144-1.365,6.144c-1.365,0.427-2.731,0.939-4.096,1.28    c-13.351,4.412-27.142,7.359-41.131,8.789C21.104,252.103,8.816,94.236,7.621,71.452    C195.952,96.881,185.541,217.969,180.336,246.727z"/>	</g>	<g>		<path d="M162.136,426.671c3.451-0.001,6.562-2.08,7.882-5.268s0.591-6.858-1.849-9.298l-8.533-8.533    c-3.341-3.281-8.701-3.256-12.012,0.054c-3.311,3.311-3.335,8.671-0.054,12.012l8.533,8.533    C157.701,425.773,159.872,426.673,162.136,426.671L162.136,426.671z"/>		<path d="M292.636,398.57c3.341,3.281,8.701,3.256,12.012-0.054c3.311-3.311,3.335-8.671,0.054-12.012l-8.533-8.533    c-3.341-3.281-8.701-3.256-12.012,0.054s-3.335,8.671-0.054,12.012L292.636,398.57z"/>		<path d="M296.169,454.771c-3.341-3.281-8.701-3.256-12.012,0.054c-3.311,3.311-3.335,8.671-0.054,12.012l8.533,8.533    c3.341,3.281,8.701,3.256,12.012-0.054c3.311-3.311,3.335-8.671,0.054-12.012L296.169,454.771z"/>		<path d="M386.503,475.37c3.341,3.281,8.701,3.256,12.012-0.054c3.311-3.311,3.335-8.671,0.054-12.012l-8.533-8.533    c-3.341-3.281-8.701-3.256-12.012,0.054c-3.311,3.311-3.335,8.671-0.054,12.012L386.503,475.37z"/>		<path d="M204.803,409.604c2.264,0.003,4.435-0.897,6.033-2.5l8.533-8.533c3.281-3.341,3.256-8.701-0.054-12.012    c-3.311-3.311-8.671-3.335-12.012-0.054l-8.533,8.533c-2.44,2.44-3.169,6.11-1.849,9.298    C198.241,407.524,201.352,409.603,204.803,409.604z"/>		<path d="M332.803,443.737c2.264,0.003,4.435-0.897,6.033-2.5l8.533-8.533c3.281-3.341,3.256-8.701-0.054-12.012    c-3.311-3.311-8.671-3.335-12.012-0.054l-8.533,8.533c-2.44,2.44-3.169,6.11-1.849,9.298    C326.241,441.658,329.352,443.737,332.803,443.737z"/>		<path d="M341.336,366.937c2.264,0.003,4.435-0.897,6.033-2.5l8.533-8.533c3.281-3.341,3.256-8.701-0.054-12.012    c-3.311-3.311-8.671-3.335-12.012-0.054l-8.533,8.533c-2.44,2.44-3.169,6.11-1.849,9.298    C334.774,364.858,337.885,366.937,341.336,366.937z"/>		<path d="M164.636,454.771l-8.533,8.533c-2.188,2.149-3.055,5.307-2.27,8.271c0.785,2.965,3.1,5.28,6.065,6.065    c2.965,0.785,6.122-0.082,8.271-2.27l8.533-8.533c3.281-3.341,3.256-8.701-0.054-12.012    C173.337,451.515,167.977,451.49,164.636,454.771L164.636,454.771z"/>		<path d="M232.903,429.171l-8.533,8.533c-2.188,2.149-3.055,5.307-2.27,8.271c0.785,2.965,3.1,5.28,6.065,6.065    c2.965,0.785,6.122-0.082,8.271-2.27l8.533-8.533c3.281-3.341,3.256-8.701-0.054-12.012    C241.604,425.915,236.243,425.89,232.903,429.171L232.903,429.171z"/>		<path d="M384.003,409.604c2.264,0.003,4.435-0.897,6.033-2.5l8.533-8.533c3.281-3.341,3.256-8.701-0.054-12.012    c-3.311-3.311-8.671-3.335-12.012-0.054l-8.533,8.533c-2.44,2.44-3.169,6.11-1.849,9.298    C377.441,407.524,380.552,409.603,384.003,409.604z"/>		<path d="M70.77,463.304l-8.533,8.533c-2.188,2.149-3.055,5.307-2.27,8.271s3.1,5.28,6.065,6.065    c2.965,0.785,6.122-0.082,8.271-2.27l8.533-8.533c3.281-3.341,3.256-8.701-0.054-12.012    C79.47,460.048,74.11,460.024,70.77,463.304L70.77,463.304z"/>		<path d="M121.97,446.238l-8.533,8.533c-2.188,2.149-3.055,5.307-2.27,8.271c0.785,2.965,3.1,5.28,6.065,6.065    c2.965,0.785,6.122-0.082,8.271-2.27l8.533-8.533c3.281-3.341,3.256-8.701-0.054-12.012    C130.67,442.981,125.31,442.957,121.97,446.238L121.97,446.238z"/>		<path d="M202.302,420.638c-1.6-1.601-3.77-2.5-6.033-2.5c-2.263,0-4.433,0.899-6.033,2.5l-8.533,8.533    c-2.178,2.151-3.037,5.304-2.251,8.262c0.786,2.958,3.097,5.269,6.055,6.055c2.958,0.786,6.111-0.073,8.262-2.251l8.533-8.533    c1.601-1.6,2.5-3.77,2.5-6.033C204.802,424.408,203.903,422.237,202.302,420.638L202.302,420.638z"/>		<path d="M210.836,463.304c-3.341-3.281-8.701-3.256-12.012,0.054c-3.311,3.311-3.335,8.671-0.054,12.012l8.533,8.533    c2.149,2.188,5.307,3.055,8.271,2.27c2.965-0.785,5.28-3.1,6.065-6.065c0.785-2.965-0.082-6.122-2.27-8.271L210.836,463.304z"/>		<path d="M343.836,454.771l-8.533,8.533c-2.188,2.149-3.055,5.307-2.27,8.271c0.785,2.965,3.1,5.28,6.065,6.065    c2.965,0.785,6.122-0.082,8.271-2.27l8.533-8.533c3.281-3.341,3.256-8.701-0.054-12.012    C352.537,451.515,347.177,451.49,343.836,454.771L343.836,454.771z"/>		<path d="M429.17,483.904c3.341,3.281,8.701,3.256,12.012-0.054s3.335-8.671,0.054-12.012l-8.533-8.533    c-3.341-3.281-8.701-3.256-12.012,0.054c-3.311,3.311-3.335,8.671-0.054,12.012L429.17,483.904z"/>		<path d="M341.336,401.071c2.264,0.003,4.435-0.897,6.033-2.5l8.533-8.533c3.281-3.341,3.256-8.701-0.054-12.012    s-8.671-3.335-12.012-0.054l-8.533,8.533c-2.44,2.441-3.169,6.11-1.849,9.298C334.774,398.991,337.885,401.07,341.336,401.071z"/>		<path d="M273.069,435.204c2.264,0.003,4.435-0.897,6.033-2.5l8.533-8.533c3.281-3.341,3.256-8.701-0.054-12.012    s-8.671-3.335-12.012-0.054l-8.533,8.533c-2.44,2.44-3.169,6.11-1.849,9.298C266.508,433.124,269.618,435.203,273.069,435.204z"/>		<path d="M253.318,258.138c22.738,7.382,46.448,11.338,70.351,11.737c31.602,0.543,62.581-8.828,88.583-26.796    c94.225-65.725,99.567-227.462,99.75-234.317c0.059-2.421-0.91-4.754-2.667-6.421c-1.751-1.679-4.141-2.52-6.558-2.308    C387.311,9.396,307.586,44.542,265.819,104.5c-28.443,42.151-38.198,94.184-26.956,143.776c-3.411,8.366-6.04,17.03-7.852,25.881    c-4.581-7.691-9.996-14.854-16.147-21.358c8.023-38.158,0.241-77.939-21.57-110.261C160.753,95.829,98.828,68.458,9.228,61.196    c-2.417-0.214-4.808,0.628-6.558,2.308c-1.757,1.667-2.726,4-2.667,6.421c0.142,5.321,4.292,130.929,77.717,182.142    c20.358,14.081,44.617,21.428,69.367,21.008c18.624-0.309,37.097-3.388,54.814-9.138c11.69,12.508,20.523,27.407,25.889,43.665    c0.149,15.133,2.158,30.19,5.982,44.832c-12.842-5.666-26.723-8.595-40.759-8.6c-49.449,0.497-91.788,35.567-101.483,84.058    c-5.094-1.093-10.29-1.641-15.5-1.638c-42.295,0.38-76.303,34.921-76.025,77.217c-0.001,2.263,0.898,4.434,2.499,6.035    c1.6,1.6,3.771,2.499,6.035,2.499h494.933c2.263,0.001,4.434-0.898,6.035-2.499c1.6-1.6,2.499-3.771,2.499-6.035    c0.249-41.103-31.914-75.112-72.967-77.154c0.65-4.78,0.975-9.598,0.975-14.421c0.914-45.674-28.469-86.455-72.083-100.045    c-43.615-13.59-90.962,3.282-116.154,41.391C242.252,322.17,242.793,288.884,253.318,258.138L253.318,258.138z M87.519,238.092    c-55.35-38.567-67.358-129.25-69.833-158.996c78.8,7.921,133.092,32.454,161.458,72.992    c15.333,22.503,22.859,49.414,21.423,76.606c-23.253-35.362-77.83-105.726-162.473-140.577c-2.82-1.165-6.048-0.736-8.466,1.125    s-3.658,4.873-3.252,7.897c0.406,3.024,2.395,5.602,5.218,6.761c89.261,36.751,144.772,117.776,161.392,144.874    C150.795,260.908,115.29,257.451,87.519,238.092z M279.969,114.046c37.6-53.788,109.708-86.113,214.408-96.138    c-2.65,35.375-17.158,159.05-91.892,211.175c-37.438,26.116-85.311,30.57-142.305,13.433    c19.284-32.09,92.484-142.574,212.405-191.954c2.819-1.161,4.805-3.738,5.209-6.76c0.404-3.022-0.835-6.031-3.25-7.892    c-2.415-1.861-5.64-2.292-8.459-1.131C351.388,82.01,279.465,179.805,252.231,222.711    C248.573,184.367,258.381,145.945,279.969,114.046L279.969,114.046z M262.694,368.017c15.097-26.883,43.468-43.587,74.3-43.746    c47.906,0.521,86.353,39.717,85.95,87.625c-0.001,7.188-0.857,14.351-2.55,21.337c-0.67,2.763,0.08,5.677,1.999,7.774    c1.919,2.097,4.757,3.1,7.568,2.676c1.994-0.272,4.005-0.393,6.017-0.362c29.59,0.283,54.467,22.284,58.367,51.617H17.661    c3.899-29.333,28.777-51.334,58.367-51.617c4-0.004,7.989,0.416,11.9,1.254c4.622,0.985,9.447,0.098,13.417-2.467    c3.858-2.519,6.531-6.493,7.408-11.017c7.793-40.473,43.043-69.838,84.258-70.192c16.045-0.002,31.757,4.582,45.283,13.212    c4.01,2.561,8.897,3.358,13.512,2.205C256.422,375.165,260.36,372.163,262.694,368.017L262.694,368.017z"/>	</g></g>' },
     {
@@ -77,8 +88,8 @@ export let drawConnector: () => {};
 export let orderCommand: () => {};
 export let dropElement: () => {};
 export let collectionChange: () => {};
+export let created: () => {};
 export let footTemplate: () => {};
-export let printTemplateChange: () => {};
 export let fileTemplate: () => {};
 export let nodeDefault: () => {};
 export let connectordefault: () => {};
@@ -139,86 +150,87 @@ export let mindMapSrtokeChange: () => {};
 export let mindmapStrokeStyleChange: () => {};
 export let mindmapStrokeWidthChange: () => {};
 export let diagramName: () => {};
+export let arrangeContextMenuOpen: () => {};
+let diagramInstance: any;
 
 class App extends React.Component<{}, {}> {
-    public diagram: DiagramComponent;
-    public symbolpalette: SymbolPaletteComponent;
-    public printDialog: DialogComponent;
-    public exportDialog: DialogComponent;
-    public fileUploadDialog: DialogComponent;
-    public openTemplateDialog: DialogComponent;
-    public saveDialog: DialogComponent;
-    public customPropertyDialog: DialogComponent;
-    public layerDialog: DialogComponent;
-    public tooltipDialog: DialogComponent;
-    public hyperlinkDialog: DialogComponent;
-    public themeDialog: DialogComponent;
-    public deleteConfirmationDialog: DialogComponent;
-    public btnHelpMenu: DropDownButtonComponent;
-    public toolbarEditor: ToolbarComponent;
-    public arrangeContextMenu: ContextMenuComponent;
-    public btnDrawShape: DropDownButtonComponent;
-    public btnDrawConnector: DropDownButtonComponent;
-    public defaultupload: UploaderComponent;
-    public nodeInsert: ToolbarComponent;
-    public fillColor: ColorPickerComponent;
-    public mindmapTextColor: ColorPickerComponent;
-    public opacity: SliderComponent;
-    public strokeWidth: NumericTextBoxComponent;
-    public lineType: DropDownListComponent;
-    public fontSize: NumericTextBoxComponent;
-    public nodeBorder: DropDownListComponent;
-    public lineColor: ColorPickerComponent;
-    public nodeOffsetX: NumericTextBoxComponent;
-    public nodeOffsetY: NumericTextBoxComponent;
-    public lineWidth: NumericTextBoxComponent;
-    public fontFamily: DropDownListComponent;
-    public gradientColor: ColorPickerComponent;
-    public gradient: CheckBoxComponent;
-    public gradientDirection: DropDownListComponent;
-    public width: NumericTextBoxComponent;
-    public connectorOpacity: SliderComponent;
-    public height: NumericTextBoxComponent;
-    public lineStyle: DropDownListComponent;
-    public sourceType: DropDownListComponent;
-    public targetType: DropDownListComponent;
-    public mindMapLevel: DropDownListComponent;
-    public strokeColor: ColorPickerComponent;
-    public mindmapFill: ColorPickerComponent;
-    public mindMapStroke: ColorPickerComponent;
-    public mindmapStrokeStyle: DropDownListComponent;
-    public bridge: CheckBoxComponent;
-    public ttextStyle: ToolbarComponent;
-    public bridgeSize: NumericTextBoxComponent;
-    public sourceSize: NumericTextBoxComponent;
-    public targetSize: NumericTextBoxComponent;
-    public rotate: NumericTextBoxComponent
-    public colorPicker: ColorPickerComponent;
-    public tooltip: TooltipComponent;
-    public aspectRatio: CheckBoxComponent;
-    public fontColor: ColorPickerComponent;
-    public btnDownloadFile: ButtonComponent;
-    public ddlTextPosition: DropDownListComponent;
-    public mindmapStrokeWidth: NumericTextBoxComponent;
-    public mindmapFontSize: NumericTextBoxComponent;
-    public moreShapesList: ListViewComponent;
+    public diagram!: DiagramComponent;
+    public symbolpalette!: SymbolPaletteComponent;
+    public exportDialog!: DialogComponent;
+    public fileUploadDialog!: DialogComponent;
+    public openTemplateDialog!: DialogComponent;
+    public saveDialog!: DialogComponent;
+    public customPropertyDialog!: DialogComponent;
+    public layerDialog!: DialogComponent;
+    public tooltipDialog!: DialogComponent;
+    public hyperlinkDialog!: DialogComponent;
+    public themeDialog!: DialogComponent;
+    public deleteConfirmationDialog!: DialogComponent;
+    public btnHelpMenu!: DropDownButtonComponent;
+    public toolbarEditor!: ToolbarComponent;
+    public arrangeContextMenu!: ContextMenuComponent;
+    public btnDrawShape!: DropDownButtonComponent;
+    public btnDrawConnector!: DropDownButtonComponent;
+    public defaultupload!: UploaderComponent;
+    public nodeInsert!: ToolbarComponent;
+    public fillColor!: ColorPickerComponent;
+    public mindmapTextColor!: ColorPickerComponent;
+    public opacity!: SliderComponent;
+    public strokeWidth!: NumericTextBoxComponent;
+    public lineType!: DropDownListComponent;
+    public fontSize!: NumericTextBoxComponent;
+    public nodeBorder!: DropDownListComponent;
+    public lineColor!: ColorPickerComponent;
+    public nodeOffsetX!: NumericTextBoxComponent;
+    public nodeOffsetY!: NumericTextBoxComponent;
+    public lineWidth!: NumericTextBoxComponent;
+    public fontFamily!: DropDownListComponent;
+    public gradientColor!: ColorPickerComponent;
+    public gradient!: CheckBoxComponent;
+    public gradientDirection!: DropDownListComponent;
+    public width!: NumericTextBoxComponent;
+    public connectorOpacity!: SliderComponent;
+    public height!: NumericTextBoxComponent;
+    public lineStyle!: DropDownListComponent;
+    public sourceType!: DropDownListComponent;
+    public targetType!: DropDownListComponent;
+    public mindMapLevel!: DropDownListComponent;
+    public strokeColor!: ColorPickerComponent;
+    public mindmapFill!: ColorPickerComponent;
+    public mindMapStroke!: ColorPickerComponent;
+    public mindmapStrokeStyle!: DropDownListComponent;
+    public bridge!: CheckBoxComponent;
+    public ttextStyle!: ToolbarComponent;
+    public bridgeSize!: NumericTextBoxComponent;
+    public sourceSize!: NumericTextBoxComponent;
+    public targetSize!: NumericTextBoxComponent;
+    public rotate!: NumericTextBoxComponent
+    public colorPicker!: ColorPickerComponent;
+    public tooltip!: TooltipComponent;
+    public aspectRatio!: CheckBoxComponent;
+    public fontColor!: ColorPickerComponent;
+    public btnDownloadFile!: ButtonComponent;
+    public ddlTextPosition!: DropDownListComponent;
+    public mindmapStrokeWidth!: NumericTextBoxComponent;
+    public mindmapFontSize!: NumericTextBoxComponent;
+    public mindMapFontFamily!: DropDownListComponent;
+    public moreShapesList!: ListViewComponent;
     public animationSettings: MenuAnimationSettingsModel = { effect: 'None' };
     public dropdownListFields: FieldSettingsModel = { text: 'text', value: 'value' };
     public dialogAnimationSettings: AnimationSettingsModel = { effect: 'None' };
     public themesdialogPosition: PositionDataModel = { X: 'right', Y: 112 };
 
-    public moreShapesDialog: DialogComponent;
+    public moreShapesDialog!: DialogComponent;
     public zoomMenuItems: ItemModel[] = [
         { text: '400%' }, { text: '300%' }, { text: '200%' }, { text: '150%' },
         { text: '100%' }, { text: '75%' }, { text: '50%' }, { text: '25%' }, { separator: true },
         { text: 'Fit To Screen' }
-        // { separator: true },
-        // { text: 'Custom' },
+       
     ];
     public fileMenuItems: ItemModel[] = this.getFileMenuItems();
     public selectedItem: SelectorViewModel = new SelectorViewModel();
     public page: PageCreation = new PageCreation(this.selectedItem);
-    public scrollSettings: ScrollSettingsModel = { canAutoScroll: true, scrollLimit: 'Infinity', minZoom: 0.25, maxZoom: 30 };
+    public scrollSettings: ScrollSettingsModel = { canAutoScroll: true, scrollLimit: 'Infinity', minZoom: 0.25, maxZoom: 30,padding: { left: 100, right: 100}};
     public selectedItems: SelectorModel = { constraints: SelectorConstraints.All & ~SelectorConstraints.ToolTip };
     public commandManager: CommandManagerModel = this.getCommandSettings();
     public dropDownDataSources: DropDownDataSources = new DropDownDataSources();
@@ -229,10 +241,10 @@ class App extends React.Component<{}, {}> {
     public getCustomTool = this.customTool.getTool.bind(this);
     public orgChartPropertyBinding: OrgChartPropertyBinding = new OrgChartPropertyBinding(this.selectedItem);
     public customProperty: CustomProperties = new CustomProperties(this.selectedItem, this.customPropertyDialog);
-    public downloadFile: DownloadExampleFiles;
-    public fontOpacity: SliderComponent;
-    public mindmapOpacity: SliderComponent;
-    public mindmapOpacityText: SliderComponent;
+    public downloadFile!: DownloadExampleFiles;
+    public fontOpacity!: SliderComponent;
+    public mindmapOpacity!: SliderComponent;
+    public mindmapOpacityText!: SliderComponent;
     public exportingButtons: any = this.getDialogButtons('export');
     public printingButtons: object[] = this.getDialogButtons('print');
     public saveButtons: object[] = this.getDialogButtons('save');
@@ -243,15 +255,15 @@ class App extends React.Component<{}, {}> {
     public uploadButtons: any = this.getUploadButtons();
     public dlgTarget: HTMLElement = document.body;
     public dialogVisibility: boolean = false;
-    public overview: Overview;
-    public isModalDialog: boolean = false;
+    public overview!: Overview;
+    public isModalDialog: boolean = true;
     public diagramLayer: DiagramBuilderLayer = new DiagramBuilderLayer(this.selectedItem, this.layerDialog);
 
-    // public event :UtilityMethods = new UtilityMethods();
+  
 
     public diagramThemes: DiagramTheme = new DiagramTheme(this.selectedItem);
     public listViewFields: FieldsMapping = { isChecked: 'checked' };
-    public layerFooterTemplate: string = this.diagramLayer.getLayerBottomPanel();
+    public layerFooterTemplate: string = this.getLayerBottomPanel();
 
     public contextMenuSettings: ContextMenuSettingsModel = {
         show: true,
@@ -260,20 +272,10 @@ class App extends React.Component<{}, {}> {
     public diagramEvents: DiagramClientSideEvents = new DiagramClientSideEvents(this.selectedItem, this.page);
 
 
-    public snapSettings: SnapSettingsModel = {
-        horizontalGridlines: {
-            lineIntervals: [1, 9, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75],
-            lineColor: '#EEEEEE'
-        },
-        verticalGridlines: {
-            lineIntervals: [1, 9, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75, 0.25, 9.75],
-            lineColor: '#EEEEEE'
-        },
-        constraints: (SnapConstraints.All & ~SnapConstraints.SnapToLines)
-    };
+    public snapSettings: SnapSettingsModel = UtilityMethods.prototype.getSnapSettings();
 
     public pageSettings: PageSettingsModel = {
-        background: { color: 'white' }, width: 816, height: 1056, multiplePage: true, margin: { left: 5, top: 5 },
+        background: { color: 'white' }, width: 816, height: 1056, multiplePage: false, margin: { left: 5, top: 5 },
         orientation: 'Landscape'
     };
     public path: object = {
@@ -296,8 +298,9 @@ class App extends React.Component<{}, {}> {
         orderCommand = this.orderCommandsChange.bind(this);
         dropElement = this.drop.bind(this);
         collectionChange = this.collectionChange.bind(this);
+        created = this.created.bind(this);
         footTemplate = this.footerTemplate.bind(this);
-        printTemplateChange = this.printTemplate.bind(this);
+    
         fileTemplate = this.fileTemplate.bind(this);
         nodeDefault = this.setNodeDefaults.bind(this);
         connectordefault = this.setConnectorDefaults.bind(this);
@@ -357,8 +360,8 @@ class App extends React.Component<{}, {}> {
         mindmapStrokeWidthChange = this.mindmapStrokewidthChangeEvent.bind(this);
         contextMenuClickEvent = this.contextMenuClick.bind(this);
         diagramName = this.diagramNameChange.bind(this);
+        arrangeContextMenuOpen = this.arrangeContextMenuOpen.bind(this);
     }
-
     public nodeBorderItemTemplate(data: any): JSX.Element {
         return (
             <div className='db-ddl-template-style'><span className={data.className}/></div>
@@ -399,7 +402,7 @@ class App extends React.Component<{}, {}> {
         const menuItems: ItemModel[] = [
             { text: 'New' }, { text: 'Open' }, { separator: true },
             { text: 'Save', iconCss: 'sf-icon-Save' }, { text: 'Save As' },
-            // { text: 'Rename' }, { separator: true },
+          
             { text: 'Export', iconCss: 'sf-icon-Export' }, { separator: true },
             { text: 'Print', iconCss: 'sf-icon-Print' }
         ];
@@ -433,12 +436,11 @@ class App extends React.Component<{}, {}> {
         (document.getElementById('btnHideToolbar') as HTMLElement).onclick = this.hideMenuBar.bind(this);
         (document.getElementById('diagramContainerDiv') as HTMLElement).onmouseleave = this.diagramThemes.setNodeOldStyles.bind(this.diagramThemes);
         document.onmouseover = this.menumouseover.bind(this);
-
+        (document.getElementsByClassName('diagrambuilder-container')[0] as HTMLDivElement).style.display = '';
         const context: any = this;
-        setTimeout(() => { context.loadPage(); }, 2000);
+        setTimeout(() => { context.loadPage(); }, 100);
         setInterval(() => { context.savePage(); }, 2000);
 
-        // window.onbeforeunload = this.closeWindow.bind(this);
     }
     public overviewSpanClick(args: React.MouseEvent<Element>): void {
         const target: HTMLElement = args.target as HTMLElement;
@@ -454,7 +456,7 @@ class App extends React.Component<{}, {}> {
     }
 
     public loadPage(): void {
-        (document.getElementsByClassName('diagrambuilder-container')[0] as HTMLDivElement).style.display = '';
+        this.selectedItem.selectedDiagram.refresh();
         this.selectedItem.selectedDiagram.updateViewPort();
         this.overview = new Overview({ width: '255px', height: '200px', sourceID: 'diagram' });
         this.overview.appendTo('#overview');
@@ -494,64 +496,29 @@ class App extends React.Component<{}, {}> {
         this.selectedItem.mindmapSettings.strokeWidth = this.mindmapStrokeWidth as any;
         this.selectedItem.mindmapSettings.opacity = this.mindmapOpacity as any;
         this.selectedItem.mindmapSettings.textOpacity = this.mindmapOpacityText as any;
-        this.selectedItem.mindmapSettings.fontFamily = this.ddlTextPosition as any;
+        this.selectedItem.mindmapSettings.fontFamily = this.mindMapFontFamily as any;
         this.selectedItem.mindmapSettings.fontSize = this.mindmapFontSize as any;
         this.selectedItem.mindmapSettings.fontColor = this.mindmapTextColor as any;
 
         document.getElementsByClassName('sidebar')[0].className = 'sidebar';
-        if (window.location.search.length === 0) {
+        /// <summary>
+        /// Removed the following condition as it caused rendering issues in free tools when query strings were present.
+        /// The original purpose of this condition is unclear, so it has been commented out for now.
+        /// </summary>
+        // if (window.location.search.length === 0) {
             this.selectedItem.uniqueId = this.selectedItem.randomIdGenerator();
             (document.getElementsByClassName('sb-content-overlay')[0] as HTMLDivElement).style.display = 'none';
             this.openTemplateDialog.show();
             this.selectedItem.utilityMethods.getDefaultDiagramTemplates1(this.selectedItem);
-            // this.openTemplateDialog.content = this.selectedItem.utilityMethods.tempDialog.content;
-            // this.openTemplateDialog.content = this.openTemplateDialog.content;
             this.openTemplateDialog.content = this.selectedItem.utilityMethods.getDefaultDiagramTemplates1(this.selectedItem);
-
-            // const evt :MouseEvent =undefined;
-
-
-            // this.selectedItem.utilityMethods.generateDiagram(this.selectedItem, evt: MouseEvent);
-
             this.diagram.layers[0].addInfo = { 'name': 'Layer0' }
-        } else {
-            // let dataValue: string = window.location.search.split('?id=')[1];
-            // let ajax: Ajax = new Ajax('https://ej2services.syncfusion.com/development/web-services/api/Diagram/LoadJson', 'POST', true, 'application/json');
-            // let datastring: string = JSON.stringify({
-            //     DiagramName: dataValue,
-            // });
-            // ajax.send(datastring).then();
-            // ajax.onSuccess = (data: string): void => {
-            //     this.selectedItem.preventSelectionChange = true;
-            //     this.page.loadPage(data);
-            //     this.selectedItem.isTemplateLoad = true;
-            //     if (this.selectedItem.diagramType === 'MindMap') {
-            //         MindMapUtilityMethods.selectedItem = this.selectedItem;
-            //         let mindMapObject: MindMap = new MindMap(this.selectedItem);
-            //         mindMapObject.createMindMap(false);
-            //     } else if (this.selectedItem.diagramType === 'OrgChart') {
-            //         OrgChartUtilityMethods.selectedItem = this.selectedItem;
-            //         let orgChartObject: OrgChartData = new OrgChartData(this.selectedItem);
-            //         orgChartObject.createOrgChart(false);
-            //     }
-            //     this.page.loadDiagramSettings();
-            //     this.selectedItem.isTemplateLoad = false;
-            //     this.selectedItem.preventSelectionChange = false;
-            //     (document.getElementsByClassName('sb-content-overlay')[0] as HTMLDivElement).style.display = 'none';
-            // };
-            // ajax.onFailure = (args: string): void => {
-            //     (document.getElementsByClassName('sb-content-overlay')[0] as HTMLDivElement).style.display = 'none';
-            // };
-            // ajax.onError = (args: Event): Object => {
-            //     (document.getElementsByClassName('sb-content-overlay')[0] as HTMLDivElement).style.display = 'none';
-            //     return null;
-            // };
-        }
+        // } 
+        
         this.selectedItem.exportSettings.fileName = (document.getElementById('diagramName') as HTMLElement).innerHTML;
     }
 
     public savePage(): void {
-        // this.page.loadJson();
+       
     }
 
     public getDialogButtons(dialogType: string): object[] {
@@ -560,11 +527,6 @@ class App extends React.Component<{}, {}> {
             case 'export':
                 buttons.push({
                     click: this.btnExportClick.bind(this), buttonModel: { content: 'Export', cssClass: 'e-flat e-db-primary', isPrimary: true }
-                });
-                break;
-            case 'print':
-                buttons.push({
-                    click: this.btnPrintClick.bind(this), buttonModel: { content: 'Print', cssClass: 'e-flat e-db-primary', isPrimary: true }
                 });
                 break;
             case 'save':
@@ -607,27 +569,29 @@ class App extends React.Component<{}, {}> {
         const commandType: string = (args.item.text as string).replace(/[' ']/g, '');
         switch (commandType.toLowerCase()) {
             case 'new':
-                CommonKeyboardCommands.newDiagram();
+                (document.getElementById('diagramName') as any).innerHTML = 'Untitled Diagram';
+                let zoomCurrentValue = (document.getElementById("btnZoomIncrement") as any).ej2_instances[0];
+                zoomCurrentValue.content = '100%';
+                this.selectedItem.utilityMethods.resetZoomTo100(diagram);
+                let openTemplateDialog = (document.getElementById("openTemplateDialog") as any).ej2_instances[0];
+                openTemplateDialog.show();
                 break;
             case 'open':
                 CommonKeyboardCommands.openUploadBox(true, '.json');
                 break;
             case 'save':
-                CommonKeyboardCommands.download(this.page.savePage(), (document.getElementById('diagramName') as HTMLElement).innerHTML);
+                CommonKeyboardCommands.download(this.page.savePage(), (document.getElementById('diagramName') as HTMLElement).innerHTML || 'Diagram');
                 break;
             case 'saveas':
-                (document.getElementById('saveFileName') as HTMLInputElement).value = (document.getElementById('diagramName') as HTMLElement).innerHTML;
+                (document.getElementById('saveFileName') as HTMLInputElement).value = (document.getElementById('diagramName') as HTMLElement).innerHTML || 'Diagram';
                 this.saveDialog.show();
                 break;
             case 'print':
-                this.selectedItem.printSettings.pageHeight = this.selectedItem.pageSettings.pageHeight;
-                this.selectedItem.printSettings.pageWidth = this.selectedItem.pageSettings.pageWidth;
-                this.selectedItem.printSettings.paperSize = this.selectedItem.pageSettings.paperSize;
-                this.selectedItem.printSettings.isPortrait = this.selectedItem.pageSettings.isPortrait;
-                this.selectedItem.printSettings.isLandscape = !this.selectedItem.pageSettings.isPortrait;
-                this.printDialog.show();
+                this.btnPrintClick();
                 break;
             case 'export':
+                var filename = this.fileName();
+                ( document.getElementById('exportfileName') as any).value = filename || 'Diagram';
                 this.exportDialog.show();
                 break;
             case 'showguides':
@@ -694,34 +658,83 @@ class App extends React.Component<{}, {}> {
                 this.selectedItem.utilityMethods.hideElements('hide-pager', this.selectedItem.selectedDiagram);
                 args.item.iconCss = args.item.iconCss ? '' : 'sf-icon-Selection';
                 break;
+                 case 'left':
+        case 'right':
+        case 'top':
+        case 'bottom':
+        case 'middle':
+        case 'center':
+        case 'horizontally':
+        case 'vertically':
+        case 'width':
+        case 'height':
+        case 'bothwidthandheight':
+        case 'sendtoback':
+        case 'bringtofront':
+        case 'bringforward':
+        case 'sendbackward':
+        case 'lock':
+        case 'unlock':
+        case 'group':
+        case 'ungroup':
+        case 'duplicate':
+            this.contextMenuClick(args);
+            break;
+        case 'undo':
+            if(this.selectedItem.diagramType === 'MindMap' || this.selectedItem.diagramType === 'OrgChart') {
+                this.layoutUndoRedo(diagram, 'undo');
+            } else {
+                this.undo();
+            }
+            break;
+        case 'redo':
+             if(this.selectedItem.diagramType === 'MindMap' || this.selectedItem.diagramType === 'OrgChart') {
+                this.layoutUndoRedo(diagram, 'redo');
+            } else {
+                this.redo();
+            }
+            break;
             default:
                 this.executeEditMenu(diagram, commandType);
                 break;
         }
         diagram.dataBind();
     }
+    public layoutUndoRedo(diagram: Diagram, type: string) {
+        let prevCount: number; let curCount: number;
+        prevCount = diagram.nodes.length;
+        if (type === 'undo') {
+            this.undo();
+        } else {
+            this.redo();
+        }
+        curCount = diagram.nodes.length;
+        if (prevCount !== curCount) {
+            diagram.doLayout();
+        }
+    }
     public getLayerBottomPanel(): string {
-
-        const bottomPanel: string = '<div class="db-layer-bottom-panel">' +
-            '<div class="row" style="margin-top: 6px;">' +
-            '<div class="col-xs-2">' +
-            '<button id="btnAdd" style="right:16px;position:absolute"></button>' +
-            '</div>' +
-            '<div class="col-xs-2">' +
-            '<button id="btnDuplicate" style="right:14px;position:absolute"></button>' +
-            '</div>' +
-            '<div class="col-xs-2">' +
-            '<button id="btnRemove" style="right:12px;position:absolute"></button>' +
-            '</div>' +
-            '<div class="col-xs-2">' +
-            '<button id="btnCloseLayer" style="right:10px;position:absolute"></button>' +
-            '</div>' +
-            // '<div class="col-xs-2" style="padding-left:0px">' +
-            // '<button id="btnSelection" style="width:100%" ></button>' +
-            // '</div>' +
-            '</div>' +
-            '</div>';
+        const bottomPanel =`
+            <div class="db-layer-bottom-panel">
+                <div class="row" style="margin-top: 6px;">
+                    <div class="col-xs-2">
+                        <button id="btnAdd" style="right:16px;position:absolute"></button>
+                    </div>
+                    <div class="col-xs-2">
+                        <button id="btnDuplicate" style="right:14px;position:absolute"></button>
+                    </div>
+                    <div class="col-xs-2">
+                        <button id="btnRemove" style="right:12px;position:absolute"></button>
+                    </div>
+                    <div class="col-xs-2">
+                        <button id="btnCloseLayer" style="right:10px;position:absolute"></button>
+                    </div>
+                </div>
+            </div>`;
         return bottomPanel;
+    }
+    public fileName() {
+        return (document.getElementById('diagramName') as any).innerHTML;
     }
     public getUploadButtons(): object[] {
         const buttons: object[] = [];
@@ -784,7 +797,7 @@ class App extends React.Component<{}, {}> {
             };
             registerBrowseEvent = true;
         }
-        // this.selectedItem.orgDataSettings.extensionType = '.csv';
+       
         CommonKeyboardCommands.isOpen = false;
         defaultUpload.clearAll();
         const uploadDialogContent: any = document.getElementById('uploadDialogContent');
@@ -839,7 +852,7 @@ class App extends React.Component<{}, {}> {
         const shortCutText: string = this.getShortCutKey(args.item.text as string);
         if (shortCutText) {
             const shortCutSpan: HTMLElement = createElement('span');
-            // const text: string = args.item.text as string;
+           
             shortCutSpan.textContent = shortCutText;
             shortCutSpan.style.pointerEvents = 'none';
             args.element.appendChild(shortCutSpan);
@@ -961,7 +974,7 @@ class App extends React.Component<{}, {}> {
             <div id="moreShapesDialogContent">
                 <div className="row">
                     <div className="col-xs-3 temp-left-pane">
-                        <ListViewComponent ref={moreShapesList => (this.moreShapesList as ListViewComponent) = (moreShapesList as ListViewComponent)} id='moreShapesList' dataSource={this.dropDownDataSources.listViewData}
+                        <ListViewComponent ref={(moreShapesList:ListViewComponent) => (this.moreShapesList as ListViewComponent) = (moreShapesList as ListViewComponent)} id='moreShapesList' dataSource={this.dropDownDataSources.listViewData}
                             fields={this.listViewFields} showCheckBox={true} select={this.listViewSelectionChange} />
                     </div>
                     <div className="col-xs-9 diagramTemplates temp-right-pane" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
@@ -972,13 +985,13 @@ class App extends React.Component<{}, {}> {
         );
     }
 
-    public saveTemplate(): JSX.Element {
+    public saveTemplate(): React.JSX.Element {
         return (
             <div id="saveDialogContent">
                 <div className="row">
                     <div className="row">File Name</div>
                     <div className="row db-dialog-child-prop-row">
-                        <input type="text" id="saveFileName" value="Diagram1" />
+                        <input type="text" id="saveFileName"/>
                     </div>
                 </div>
             </div>
@@ -1002,21 +1015,12 @@ class App extends React.Component<{}, {}> {
                             Format
                     </div>
                         <div className="row db-dialog-child-prop-row">
-                            <DropDownListComponent id="exportFormat" ref={dropdown => (this.ddlTextPosition as DropDownListComponent) = (dropdown as DropDownListComponent)}
+                            <DropDownListComponent id="exportFormat" ref={(dropdown:DropDownListComponent) => (this.ddlTextPosition as DropDownListComponent) = (dropdown as DropDownListComponent)}
                                 value={this.selectedItem.exportSettings.format} dataSource={this.dropDownDataSources.fileFormats}
                                 fields={this.dropdownListFields} />
 
                         </div>
                     </div>
-                    <div className="col-xs-6 db-col-right">
-                        <div className="row">
-                            Region
-                    </div>
-                        <div className="row db-dialog-child-prop-row">
-                            <DropDownListComponent ref={dropdown => (this.ddlTextPosition as DropDownListComponent) = (dropdown as DropDownListComponent)} id="exportRegion" value={this.selectedItem.exportSettings.region} dataSource={this.dropDownDataSources.diagramRegions}
-                                fields={this.dropdownListFields} />
-                        </div>
-                    </div >
                 </div >
             </div >
         );
@@ -1052,7 +1056,7 @@ class App extends React.Component<{}, {}> {
         }
     }
     public setImage(event: ProgressEvent): void {
-        // (document.getElementsByClassName('sb-content-overlay')[0] as HTMLDivElement).style.display = 'none';
+       
         const node: NodeModel = (this.selectedItem.selectedDiagram.selectedItems.nodes as NodeModel[])[0];
         const imageSource = (event.target as FileReader).result as string;
         node.shape = { type: 'Image', source: imageSource, align: 'None' };
@@ -1070,63 +1074,6 @@ class App extends React.Component<{}, {}> {
 
     public onUploadFileSelected(args: { [key: string]: any }): void {
         (document.getElementsByClassName('sb-content-overlay')[0] as HTMLDivElement).style.display = '';
-    }
-    public printTemplate(): JSX.Element {
-        return (
-            <div id="printDialogContent">
-                <div className="row">
-                    <div className="row">
-                        Region
-                </div>
-                    <div className="row db-dialog-child-prop-row">
-                        <DropDownListComponent ref={dropdown => (this.ddlTextPosition as DropDownListComponent) = (dropdown as DropDownListComponent)} value={this.selectedItem.printSettings.region} dataSource={this.dropDownDataSources.diagramRegions}
-                            fields={this.dropdownListFields} />
-                    </div>
-                </div>
-                <div className="row db-dialog-prop-row">
-                    <div className="row">
-                        Print Settings
-                </div>
-                    <div className="row db-dialog-child-prop-row">
-                        <DropDownListComponent ref={dropdown => (this.ddlTextPosition as DropDownListComponent) = (dropdown as DropDownListComponent)} dataSource={this.dropDownDataSources.paperList} fields={this.dropdownListFields}
-                            value={this.selectedItem.pageSettings.paperSize} />
-                    </div>
-                </div >
-                <div id="printCustomSize" className="row db-dialog-prop-row" style={{ display: "none", height: "28px" }}>
-                    <div className="col-xs-6 db-col-left">
-                        <div className="db-text-container">
-                            <div className="db-text">
-                                <span>W</span>
-                            </div>
-                            <div className="db-text-input">
-                                <NumericTextBoxComponent id="printPageWidth" min={100} step={1} format="n0" value={this.selectedItem.printSettings.pageWidth} />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-xs-6 db-col-right">
-                        <div className="db-text-container">
-                            <div className="db-text">
-                                <span>H</span>
-                            </div>
-                            <div className="db-text-input">
-                                <NumericTextBoxComponent id="printPageHeight" min={100} step={1} format="n0" value={this.selectedItem.printSettings.pageHeight} />
-                            </div>
-                        </div>
-                    </div >
-                </div >
-                <div id="printOrientation" className="row db-dialog-prop-row" style={{ height: "28px", padding: "5px 0px" }}>
-                    <div className="col-xs-3 db-prop-col-style" style={{ marginRight: "8px" }}>
-                        <RadioButtonComponent id='printPortrait' label="Portrait" name="printSettings" checked={this.selectedItem.printSettings.isPortrait} />
-                    </div>
-                    <div className="col-xs-3 db-prop-col-style">
-                        <RadioButtonComponent id='printLandscape' label="Landscape" name="printSettings" checked={this.selectedItem.printSettings.isLandscape} />
-                    </div >
-                </div >
-                <div className="row db-dialog-prop-row" style={{ marginTop: "16px" }}>
-                    <CheckBoxComponent id='printMultiplePage' label="Scale to fit 1 page" checked={this.selectedItem.printSettings.multiplePage} />
-                </div >
-            </div >
-        );
     }
 
     public fileTemplate(): JSX.Element {
@@ -1181,7 +1128,7 @@ class App extends React.Component<{}, {}> {
                                     <u>Browse</u>
                                 </a>
                             </span>
-                            <UploaderComponent ref={defaultupload => (this.defaultupload as UploaderComponent) = (defaultupload as UploaderComponent)} id='defaultfileupload' asyncSettings={this.path} success={uploadChange} failure={this.onUploadFailure}
+                            <UploaderComponent ref={(defaultupload: UploaderComponent | null)  => (this.defaultupload as UploaderComponent) = (defaultupload as UploaderComponent)} id='defaultfileupload' asyncSettings={this.path} success={uploadChange} failure={this.onUploadFailure}
                                 progress={this.onUploadFileSelected} allowedExtensions={this.selectedItem.orgDataSettings.extensionType} />
                         </div>
                     </div >
@@ -1195,7 +1142,7 @@ class App extends React.Component<{}, {}> {
                             <div className='db-info-style db-employee-id' />
                         </div>
                         <div className="row db-dialog-child-prop-row">
-                            <DropDownListComponent ref={dropdown => (this.ddlTextPosition as DropDownListComponent) = (dropdown as DropDownListComponent)} id="employeeId" change={this.orgChartPropertyBinding.orgDropDownChange.bind(this.orgChartPropertyBinding)} dataSource={this.selectedItem.orgDataSettings.dataSourceColumns}
+                            <DropDownListComponent ref={(dropdown: DropDownListComponent | null) => (this.ddlTextPosition as DropDownListComponent) = (dropdown as DropDownListComponent)} id="employeeId" change={this.orgChartPropertyBinding.orgDropDownChange.bind(this.orgChartPropertyBinding)} dataSource={this.selectedItem.orgDataSettings.dataSourceColumns}
                                 fields={this.dropdownListFields} />
                         </div>
                     </div>
@@ -1207,7 +1154,7 @@ class App extends React.Component<{}, {}> {
                             <div className='db-info-style db-supervisor-id' />
                         </div>
                         <div className="row db-dialog-child-prop-row">
-                            <DropDownListComponent ref={dropdown => (this.ddlTextPosition as DropDownListComponent) = (dropdown as DropDownListComponent)} id="superVisorId" change={this.orgChartPropertyBinding.orgDropDownChange.bind(this.orgChartPropertyBinding)} dataSource={this.selectedItem.orgDataSettings.dataSourceColumns}
+                            <DropDownListComponent ref={(dropdown: DropDownListComponent ) => (this.ddlTextPosition as DropDownListComponent) = (dropdown as DropDownListComponent)} id="superVisorId" change={this.orgChartPropertyBinding.orgDropDownChange.bind(this.orgChartPropertyBinding)} dataSource={this.selectedItem.orgDataSettings.dataSourceColumns}
                                 fields={this.dropdownListFields} />
 
                         </div>
@@ -1222,7 +1169,7 @@ class App extends React.Component<{}, {}> {
                             <div className='db-info-style db-nameField-id' />
                         </div>
                         <div className="row db-dialog-child-prop-row">
-                            <DropDownListComponent ref={dropdown => (this.ddlTextPosition as DropDownListComponent) = (dropdown as DropDownListComponent)} id="orgNameField" change={this.orgChartPropertyBinding.orgDropDownChange.bind(this.orgChartPropertyBinding)}
+                            <DropDownListComponent ref={(dropdown: DropDownListComponent ) => (this.ddlTextPosition as DropDownListComponent) = (dropdown as DropDownListComponent)} id="orgNameField" change={this.orgChartPropertyBinding.orgDropDownChange.bind(this.orgChartPropertyBinding)}
                                 dataSource={this.selectedItem.orgDataSettings.dataSourceColumns} fields={this.dropdownListFields} />
 
                         </div>
@@ -1247,7 +1194,7 @@ class App extends React.Component<{}, {}> {
                             <div className='db-info-style db-imageField-id' />
                         </div>
                         <div className="row db-dialog-child-prop-row">
-                            <DropDownListComponent ref={dropdown => (this.ddlTextPosition as DropDownListComponent) = (dropdown as DropDownListComponent)} id="orgImageField" change={this.orgChartPropertyBinding.orgDropDownChange.bind(this.orgChartPropertyBinding)} dataSource={this.selectedItem.orgDataSettings.dataSourceColumns}
+                            <DropDownListComponent ref={(dropdown: DropDownListComponent | null) => (this.ddlTextPosition as DropDownListComponent) = (dropdown as DropDownListComponent)} id="orgImageField" change={this.orgChartPropertyBinding.orgDropDownChange.bind(this.orgChartPropertyBinding)} dataSource={this.selectedItem.orgDataSettings.dataSourceColumns}
                                 fields={this.dropdownListFields} />
                         </div>
                     </div >
@@ -1394,6 +1341,10 @@ class App extends React.Component<{}, {}> {
             }
         }
     }
+
+    public created(args: any): void {
+        diagramInstance = this.selectedItem.selectedDiagram;
+    }
     public getCommandSettings(): CommandManagerModel {
         const commandManager: CommandManagerModel = {
             commands: [
@@ -1489,18 +1440,25 @@ class App extends React.Component<{}, {}> {
     public diagramNameChange(): void {
         (document.getElementById('diagramName') as HTMLElement).innerHTML = (document.getElementById('diagramEditable') as HTMLInputElement).value;
         document.getElementsByClassName('db-diagram-name-container')[0].classList.remove('db-edit-name');
-        this.selectedItem.exportSettings.fileName = (document.getElementById('diagramName') as HTMLElement).innerHTML;
     }
     public toolbarEditorClick(args: ClickEventArgs): void {
         const diagram: Diagram = this.selectedItem.selectedDiagram;
         const commandType: string = (args.item.tooltipText as string).replace(/[' ']/g, '').toLowerCase();
         switch (commandType) {
             case 'undo':
-                this.undo();
-                break;
+                if (this.selectedItem.diagramType === 'MindMap' || this.selectedItem.diagramType === 'OrgChart') {
+                    this.layoutUndoRedo(diagram, 'undo');
+                } else {
+                    this.undo();
+                }
+            break;
             case 'redo':
+             if(this.selectedItem.diagramType === 'MindMap' || this.selectedItem.diagramType === 'OrgChart') {
+                this.layoutUndoRedo(diagram, 'redo');
+            } else {
                 this.redo();
-                break;
+            }
+            break;
             case 'zoomin(ctrl++)':
                 diagram.zoomTo({ type: 'ZoomIn', zoomFactor: 0.2 });
                 this.selectedItem.scrollSettings.currentZoom = (diagram.scrollSettings.currentZoom as number * 100).toFixed() + '%';
@@ -1577,8 +1535,8 @@ class App extends React.Component<{}, {}> {
     }
 
     public showHideLayers(): void {
-        const btnWindow: any = document.getElementById('btnWindowMenu');
-        const iconCss: string = btnWindow.ej2_instances[0].items[3].iconCss;
+        var btnWindow = (document.getElementById('diagram-menu') as any).ej2_instances[0].items[4];
+        var iconCss = btnWindow.items[3].iconCss;
         if (!this.initLayerPanel) {
             this.diagramLayer.initLayerBottomPanel();
             this.initLayerPanel = true;
@@ -1589,18 +1547,18 @@ class App extends React.Component<{}, {}> {
             this.diagramLayer.getLayerDialogContent();
             this.layerDialog.show();
         }
-        btnWindow.ej2_instances[0].items[3].iconCss = iconCss ? '' : 'sf-icon-Selection';
+        btnWindow.items[3].iconCss = iconCss ? '' : 'sf-icon-Selection';
     }
 
     public showHideThemes(): void {
-        const btnWindow: any = document.getElementById('btnWindowMenu');
-        const iconCss: string = btnWindow.ej2_instances[0].items[5].iconCss;
+        var btnWindow =(document.getElementById('diagram-menu') as any).ej2_instances[0].items[4];
+        var iconCss = btnWindow.items[5].iconCss;
         if (iconCss) {
             this.themeDialog.hide();
         } else {
             this.themeDialog.show();
         }
-        btnWindow.ej2_instances[0].items[5].iconCss = iconCss ? '' : 'sf-icon-Selection';
+        btnWindow.items[5].iconCss = iconCss ? '' : 'sf-icon-Selection';
     }
     public removeSelectedToolbarItem(): void {
         for (const value of this.toolbarEditor.items) {
@@ -1626,43 +1584,94 @@ class App extends React.Component<{}, {}> {
     }
 
     public zoomChange(args: MenuEventArgs): void {
+        const zoomCurrent: any = (document.getElementById("btnZoomIncrement")as HTMLElement);
+        const zoomCurrentValue = zoomCurrent.ej2_instances[0];
         const diagram: Diagram = this.selectedItem.selectedDiagram;
-
+        var currentZoom: any = diagram.scrollSettings.currentZoom;
         if (args.item.text === 'Fit To Screen') {
             this.selectedItem.scrollSettings.currentZoom = 'Fit ...';
             diagram.fitToPage({ mode: 'Page', region: 'Content', margin: { left: 0, top: 0, right: 0, bottom: 0 } });
         } else {
-            const currentZoom: number = diagram.scrollSettings.currentZoom as number;
+            let currentZoom: number = diagram.scrollSettings.currentZoom as number;
             const zoom: ZoomOptions = {};
             switch (args.item.text) {
                 case '400%':
-                    zoom.zoomFactor = (4 / currentZoom) - 1;
+                    if (currentZoom === 4) {
+                        currentZoom = 0;
+                        zoom.zoomFactor = (4 / currentZoom) - 1;
+                    }
+                    else {
+                        zoom.zoomFactor = (4 / currentZoom) - 1;
+                    }
                     break;
                 case '300%':
-                    zoom.zoomFactor = (3 / currentZoom) - 1;
+                    if (currentZoom === 3) {
+                        currentZoom = 0;
+                        zoom.zoomFactor = (3 / currentZoom) - 1;
+                    }
+                    else {
+                        zoom.zoomFactor = (3 / currentZoom) - 1;
+                    }
                     break;
                 case '200%':
-                    zoom.zoomFactor = (2 / currentZoom) - 1;
+                    if (currentZoom === 2) {
+                        currentZoom = 0;
+                        zoom.zoomFactor = (2 / currentZoom) - 1;
+                    }
+                    else {
+                        zoom.zoomFactor = (2 / currentZoom) - 1;
+                    }
                     break;
                 case '150%':
-                    zoom.zoomFactor = (1.5 / currentZoom) - 1;
+                    if (currentZoom === 1.5) {
+                        currentZoom = 0;
+                        zoom.zoomFactor = (1.5 / currentZoom) - 1;
+                    }
+                    else {
+                        zoom.zoomFactor = (1.5 / currentZoom) - 1;
+                    }
                     break;
                 case '100%':
-                    zoom.zoomFactor = (1 / currentZoom) - 1;
+                    if (currentZoom === 1) {
+                        currentZoom = 0;
+                        zoom.zoomFactor = (1 / currentZoom) - 1;
+                    }
+                    else {
+                        zoom.zoomFactor = (1 / currentZoom) - 1;
+                    }
                     break;
                 case '75%':
-                    zoom.zoomFactor = (0.75 / currentZoom) - 1;
+                    if (currentZoom === 0.75) {
+                        currentZoom = 0;
+                        zoom.zoomFactor = (0.75 / currentZoom) - 1;
+                    }
+                    else {
+                        zoom.zoomFactor = (0.75 / currentZoom) - 1;
+                    }
                     break;
                 case '50%':
-                    zoom.zoomFactor = (0.5 / currentZoom) - 1;
+                    if (currentZoom === 0.5) {
+                        currentZoom = 0;
+                        zoom.zoomFactor = (0.5 / currentZoom) - 1;
+                    }
+                    else {
+                        zoom.zoomFactor = (0.5 / currentZoom) - 1;
+                    }
                     break;
                 case '25%':
-                    zoom.zoomFactor = (0.25 / currentZoom) - 1;
+                    if (currentZoom === 0.25) {
+                        currentZoom = 0;
+                        zoom.zoomFactor = (0.25 / currentZoom) - 1;
+                    }
+                    else {
+                        zoom.zoomFactor = (0.25 / currentZoom) - 1;
+                    }
                     break;
             }
             this.selectedItem.scrollSettings.currentZoom = args.item.text as string;
             diagram.zoomTo(zoom);
         }
+        zoomCurrentValue.content = Math.round(diagram.scrollSettings.currentZoom * 100) + ' %';
     }
 
     public drawShapeChange(args: MenuEventArgs): void {
@@ -1805,12 +1814,15 @@ class App extends React.Component<{}, {}> {
             case 'ungroup':
                 this.ungroup();
                 break;
+            case 'duplicate':
+                CommonKeyboardCommands.duplicateSelectedItems();
+                break;
         }
     }
     public zoomTemplate(): JSX.Element {
         return (
             <div id="template_toolbar">
-                <DropDownButtonComponent id="btnZoomIncrement" items={this.zoomMenuItems} content={this.selectedItem.scrollSettings.currentZoom}
+                <DropDownButtonComponent id="btnZoomIncrement" items={this.dropDownDataSources.zoomMenuItems} content={this.selectedItem.scrollSettings.currentZoom}
                     select={zoomchange} />
             </div>
         );
@@ -1839,7 +1851,7 @@ class App extends React.Component<{}, {}> {
             </div>
         );
     }
-    // let offsetX: NumericTextBoxComponent = new NumericTextBoxComponent();
+  
     public offsetX(args: any) {
 
         if (args.isInteracted as any) {
@@ -1969,12 +1981,16 @@ class App extends React.Component<{}, {}> {
 
     }
     public mindmapOpacityChangeEvent(args: any) {
-        (this.selectedItem.mindmapSettings.opacity as any).value = args.value;
-        this.selectedItem.mindMapPropertyChange({ propertyName: 'opacity', propertyValue: args });
+        if (args.isInteracted) {
+            (this.selectedItem.mindmapSettings.opacity as any).value = args.value;
+            this.selectedItem.mindMapPropertyChange({ propertyName: 'opacity', propertyValue: args });
+        }
     }
     public mindmapFontOpacityChangeEvent(args: any) {
-        (this.selectedItem.mindmapSettings.opacity as any).value = args.value;
-        this.selectedItem.mindMapPropertyChange({propertyName: 'textOpacity', propertyValue: args});
+        if (args.isInteracted) {
+            (this.selectedItem.mindmapSettings.textOpacity as any).value = args.value;
+            this.selectedItem.mindMapPropertyChange({ propertyName: 'textOpacity', propertyValue: args });
+        }
     }
     public diagramContextMenuOpen(args: DiagramBeforeMenuOpenEventArgs): void {
         const diagram: Diagram = this.selectedItem.selectedDiagram;
@@ -2013,23 +2029,26 @@ class App extends React.Component<{}, {}> {
         this.selectedItem.mindMapPropertyChange({ propertyName: 'strokeWidth', propertyValue: args });
     }
     public mindmapFontSizeChangeEvent(args: any) {
-        (this.selectedItem.mindmapSettings.fontSize as any).value = args.value;
-        this.selectedItem.mindMapPropertyChange({ propertyName: 'fontSize', propertyValue: args });
+        if (args.isInteracted) {
+            (this.selectedItem.mindmapSettings.fontSize as any).value = args.value;
+            this.selectedItem.mindMapPropertyChange({ propertyName: 'fontSize', propertyValue: args });
+        }
     }
     public mindmapFontfamilyTextEvent(args: any) {
-        (this.selectedItem.mindmapSettings.fontFamily as any).value = args.value;
-        this.selectedItem.mindMapPropertyChange({propertyName: 'fontFamily', propertyValue: args});
+        if (args.isInteracted) {
+            (this.selectedItem.mindmapSettings.fontFamily as any).value = args.value;
+            this.selectedItem.mindMapPropertyChange({ propertyName: 'fontFamily', propertyValue: args });
+        }
     }
     public mindmapFontColorChangeEvent(args: any) {
         (this.selectedItem.mindmapSettings.fontColor as any).value = args.currentValue.hex;
         this.selectedItem.mindMapPropertyChange({propertyName: 'fontColor', propertyValue: args});
     }
-
     public render() {
         return (
             <div>
-                <ContextMenuComponent id='arrangeContextMenu' ref={arrangeContextMenu => (this.arrangeContextMenu) = (arrangeContextMenu as ContextMenuComponent)} animationSettings={this.animationSettings} items={this.dropDownDataSources.arrangeMenuItems}
-                    onOpen={contextMenuOpenChange} cssClass="arrangeMenu" beforeItemRender={beforItem}
+                <ContextMenuComponent id='arrangeContextMenu' ref={(arrangeContextMenu: ContextMenuComponent | null) => { this.arrangeContextMenu = arrangeContextMenu as ContextMenuComponent; }} animationSettings={this.animationSettings} items={this.dropDownDataSources.arrangeMenuItems}
+                    onOpen={arrangeContextMenuOpen} cssClass="arrangeMenu" beforeItemRender={beforItem}
                     select={contextMenuClickEvent} beforeClose={() => this.arrangeMenuBeforeClose} />
                 <div className="diagrambuilder-container" style={{display:"none"}}>
                     <div className='header navbar'>
@@ -2040,54 +2059,31 @@ class App extends React.Component<{}, {}> {
                                     textOverflow: "ellipse", whiteSpace: "nowrap"
                                 }} onClick={this.renameDiagram}>
                                     Untitled Diagram
-                            </span>
-                                <input id='diagramEditable' type="text" className="db-diagram-name"
-                                    onFocus={diagramName} />
+                                </span>
+                                <input id='diagramEditable' type="text" className="db-diagram-name" onKeyDown={this.diagramNameKeyDown} onBlur={this.diagramNameChange} />
+                                <span id='diagramreport' className="db-diagram-name db-save-text" style={{ float: "right" }} />
 
                                 <span id='diagramreport' className="db-diagram-name db-save-text" />
                             </div>
-                            <div className='db-menu-container'>
-                                <div className="db-menu-style">
-                                    < DropDownButtonComponent id="btnFileMenu" cssClass={"db-dropdown-menu"} content="File"
-                                        items={this.dropDownDataSources.fileMenuItems} beforeItemRender={beforItem} beforeOpen={beforeOpen}
-                                        beforeClose={beforeClose} select={menuclick}
-                                    />
-                                </div>
-                                <div className="db-menu-style">
-                                    < DropDownButtonComponent id="btnEditMenu" cssClass={"db-dropdown-menu"} content="Edit"
-                                        items={this.dropDownDataSources.editMenuItems} beforeItemRender={beforItem} beforeOpen={beforeOpen}
-                                        beforeClose={beforeClose} select={menuclick}
-                                    />
-                                </div>
-                                <div className="db-menu-style">
-                                    < DropDownButtonComponent id="btnViewMenu" cssClass={"db-dropdown-menu"} content="View"
-                                        items={this.dropDownDataSources.viewMenuItems} beforeItemRender={beforItem} beforeOpen={beforeOpen}
-                                        beforeClose={beforeClose} select={menuclick}
-                                    />
-                                </div>
-                                <div className="db-menu-style">
-                                    < DropDownButtonComponent id="btnArrangeMenu" cssClass={"db-dropdown-menu"} content="Arrange"
-                                        target='.e-contextmenu-wrapper.arrangeMenu' items={this.dropDownDataSources.arrangeMenuItems} beforeItemRender={beforItem} beforeOpen={beforeOpen}
-                                        beforeClose={beforeClose} select={menuclick}
-                                    />
-                                </div>
-                                <div className="db-menu-style">
-                                    < DropDownButtonComponent id="btnWindowMenu" cssClass={"db-dropdown-menu"} content="Window"
-                                        items={this.dropDownDataSources.windowMenuItems} beforeItemRender={beforItem} beforeOpen={beforeOpen}
-                                        beforeClose={beforeClose} select={menuclick}
-                                    />
-                                </div>
-                                <div className="db-menu-style" style={{ display: "none" }}>
-                                    < DropDownButtonComponent id="btnHelpMenu" cssClass={"db-dropdown-menu"} content="Help"
-                                        items={this.dropDownDataSources.helpMenuItems} beforeItemRender={beforItem} beforeOpen={beforeOpen}
-                                        beforeClose={beforeClose} select={menuclick}
-                                    />
-                                </div>
-                            </div>
+                            <div className="diagram-menu-control">
+              <div className='menu-control'  style={{display: 'flex', justifyContent: 'space-between'}}>
+                <MenuComponent
+                  id="diagram-menu"
+                  items={this.dropDownDataSources.menuItems}
+                  select={menuclick}
+                  beforeOpen={beforeOpen}
+                  beforeClose={beforeClose}
+                  beforeItemRender={beforItem}
+                ></MenuComponent>
+                <div className="promotion-text">
+                    <img style={{marginRight:'7px', filter: 'brightness(0) invert(1)'}} src={require('./assets/dbstyle/common_images/Syncfusion_Logo.svg')} />Powered by&nbsp;<a style={{textDecoration: 'none', color:'#fff30f'}} href="https://www.syncfusion.com/react-components/react-diagram?tag=es-freetools-diagram-builder-sample-ft" target="_blank">Syncfusion Diagram Component</a>
+                </div>
+              </div>
+            </div>
                         </div>
                         <div className='db-toolbar-editor'>
                             <div className='db-toolbar-container'>
-                                <ToolbarComponent ref={toolbar => (this.toolbarEditor) = (toolbar as ToolbarComponent)} id='toolbarEditor' overflowMode='Scrollable' clicked={tooledit}>
+                                <ToolbarComponent ref={(toolbar: ToolbarComponent | null) => {this.toolbarEditor = toolbar as ToolbarComponent}} id='toolbarEditor' overflowMode='Scrollable' clicked={tooledit}>
                                     <ItemsDirective>
                                         <ItemDirective prefixIcon="sf-icon-Undo tb-icons" tooltipText="Undo" cssClass="tb-item-start tb-item-undo" />
                                         <ItemDirective prefixIcon="sf-icon-Redo tb-icons" tooltipText="Redo" cssClass="tb-item-end tb-item-redo" />
@@ -2135,7 +2131,7 @@ class App extends React.Component<{}, {}> {
                     <div className='row content'>
                         <div className='sidebar show-overview'>
                             <div className="db-palette-parent">
-                                <SymbolPaletteComponent ref={symbolpalette => (this.symbolpalette) = (symbolpalette as SymbolPaletteComponent)} id="symbolpalette" width="100%" height="100%" symbolHeight={50} symbolWidth={50}
+                                <SymbolPaletteComponent ref={(symbolpalette: SymbolPaletteComponent | null) => {(this.symbolpalette) = (symbolpalette as SymbolPaletteComponent)}} id="symbolpalette" width="100%" height="100%" symbolHeight={50} symbolWidth={50}
                                     expandMode={this.palettes.expandMode} palettes={this.palettes.palettes} enableSearch={this.palettes.enableSearch}
                                     symbolPreview={this.palettes.symbolPreview} symbolMargin={this.palettes.symbolMargin} getSymbolInfo={this.palettes.getSymbolInfo}
                                     getNodeDefaults={this.palettes.setPaletteNodeDefaults}
@@ -2154,17 +2150,19 @@ class App extends React.Component<{}, {}> {
                         <div className='main-content' role='main'>
                             <div className="db-diagram-container">
                                 <div id="diagramContainerDiv" className='db-current-diagram-container'>
-                                    <DiagramComponent ref={diagram => ((this.diagram as DiagramComponent) = diagram as DiagramComponent)} id="diagram" width={"100%"} height={"100%"}
+                                    <DiagramComponent ref={(diagram: DiagramComponent) => {((this.diagram as DiagramComponent) = diagram as DiagramComponent)}} id="diagram" width={"100%"} height={"100%"}
                                         snapSettings={this.snapSettings} pageSettings={this.pageSettings} scrollSettings={this.scrollSettings}
                                         selectedItems={this.selectedItems} getNodeDefaults={nodeDefault} getConnectorDefaults={connectordefault}
                                         commandManager={this.commandManager} backgroundColor="transparent"
                                         contextMenuSettings={this.contextMenuSettings}
                                         selectionChange={this.diagramEvents.selectionChange.bind(this.diagramEvents)}
+                                        load={this.diagramEvents.diagramLoad.bind(this.diagramEvents)}
                                         positionChange={this.diagramEvents.nodePositionChange.bind(this.diagramEvents)}
                                         sizeChange={this.diagramEvents.nodeSizeChange.bind(this.diagramEvents)} rotateChange={this.diagramEvents.nodeRotationChange.bind(this.diagramEvents)}
                                         contextMenuOpen={contextMenuchange} contextMenuClick={this.diagramEvents.diagramContextMenuClick.bind(this.diagramEvents)}
                                         dragEnter={this.diagramEvents.dragEnter.bind(this.diagramEvents)} historyChange={this.diagramEvents.historyChange.bind(this.diagramEvents)} scrollChange={this.diagramEvents.scrollChange.bind(this.diagramEvents)}
                                         collectionChange={collectionChange}
+                                        created={created}
                                         drop={dropElement}
                                         getCustomTool={this.getCustomTool}
                                         textEdit={this.diagramEvents.textEdit.bind(this.diagramEvents)}
@@ -2181,7 +2179,7 @@ class App extends React.Component<{}, {}> {
                                             Page Settings
                                                 </div>
                                         <div className="row db-prop-row">
-                                            <DropDownListComponent ref={dropdown => (this.ddlTextPosition as DropDownListComponent) = (dropdown as DropDownListComponent)} dataSource={this.dropDownDataSources.paperList}
+                                            <DropDownListComponent ref={(dropdown: DropDownListComponent | null) => {(this.ddlTextPosition as DropDownListComponent) = (dropdown as DropDownListComponent)}} dataSource={this.dropDownDataSources.paperList}
                                                 change={this.diagramPropertyBinding.paperListChange.bind(this.diagramPropertyBinding)}
                                                 fields={this.dropdownListFields} value={this.selectedItem.pageSettings.paperSize}
                                             />
@@ -2224,7 +2222,7 @@ class App extends React.Component<{}, {}> {
                                             <div className="col-xs-6 db-col-left">
                                                 <div className="db-color-container">
                                                     <div className="db-color-input">
-                                                        <ColorPickerComponent ref={colorPicker => (this.colorPicker as ColorPickerComponent) = (colorPicker as ColorPickerComponent)} mode="Palette" value={this.selectedItem.pageSettings.backgroundColor}
+                                                        <ColorPickerComponent ref={(colorPicker: ColorPickerComponent | null) => {(this.colorPicker as ColorPickerComponent) = (colorPicker as ColorPickerComponent)}} mode="Palette" value={this.selectedItem.pageSettings.backgroundColor}
                                                             change={this.diagramPropertyBinding.pageBackgroundChange1.bind(this.diagramPropertyBinding)} />
                                                     </div>
                                                     <div className="db-color-btn">
@@ -2250,8 +2248,8 @@ class App extends React.Component<{}, {}> {
                                                             <span>X</span>
                                                         </div>
                                                         <div className="db-text-input">
-                                                            <NumericTextBoxComponent ref={nodeOffsetX => ((this.nodeOffsetX as NumericTextBoxComponent) = nodeOffsetX as NumericTextBoxComponent)} id="nodeOffsetX" format="n0"
-                                                                // value={this.selectedItem.nodeProperties.offsetX} 
+                                                            <NumericTextBoxComponent ref={(nodeOffsetX: NumericTextBoxComponent | null) => {((this.nodeOffsetX as NumericTextBoxComponent) = nodeOffsetX as NumericTextBoxComponent)}} id="nodeOffsetX" format="n0" min={1} max={2000}
+                                                                // value={this.selectedItem.nodeProperties.offsetX}
                                                                 change={offsetChange} />
                                                         </div>
                                                     </div>
@@ -2262,8 +2260,8 @@ class App extends React.Component<{}, {}> {
                                                             <span>Y</span>
                                                         </div>
                                                         <div className="db-text-input">
-                                                            <NumericTextBoxComponent ref={nodeOffsetY => ((this.nodeOffsetY as NumericTextBoxComponent) = nodeOffsetY as NumericTextBoxComponent)} id="nodeOffsetY" format="n0"
-                                                                // value={this.selectedItem.nodeProperties.offsetY} 
+                                                            <NumericTextBoxComponent ref={(nodeOffsetY: NumericTextBoxComponent | null) => {((this.nodeOffsetY as NumericTextBoxComponent) = nodeOffsetY as NumericTextBoxComponent)}} id="nodeOffsetY" format="n0" min={1} max={2000}
+                                                                // value={this.selectedItem.nodeProperties.offsetY}
                                                                 change={offsetYchnage} />
                                                         </div>
                                                     </div>
@@ -2276,7 +2274,7 @@ class App extends React.Component<{}, {}> {
                                                             <span>W</span>
                                                         </div>
                                                         <div className="db-text-input">
-                                                            <NumericTextBoxComponent ref={width => ((this.width as NumericTextBoxComponent) = width as NumericTextBoxComponent)} id="nodeWidth" min={1} format="n0"
+                                                            <NumericTextBoxComponent ref={(width: NumericTextBoxComponent) => {((this.width as NumericTextBoxComponent) = width as NumericTextBoxComponent)}} id="nodeWidth" min={1} format="n0" max={2000}
                                                                 // value={this.selectedItem.nodeProperties.width}
                                                                 change={nodeWidthChange} />
                                                         </div>
@@ -2288,8 +2286,8 @@ class App extends React.Component<{}, {}> {
                                                             <span>H</span>
                                                         </div>
                                                         <div className="db-text-input">
-                                                            <NumericTextBoxComponent ref={height => ((this.height as NumericTextBoxComponent) = height as NumericTextBoxComponent)} id="nodeHeight" min={1} format="n0"
-                                                                // value={this.selectedItem.nodeProperties.height} 
+                                                            <NumericTextBoxComponent ref={ (height: NumericTextBoxComponent)=> {((this.height as NumericTextBoxComponent) = height as NumericTextBoxComponent)}} id="nodeHeight" min={1} format="n0" max={2000}
+                                                                // value={this.selectedItem.nodeProperties.height}
                                                                 change={nodeHeightChange} />
                                                         </div>
                                                     </div>
@@ -2297,7 +2295,7 @@ class App extends React.Component<{}, {}> {
                                             </div>
                                             <div className="row db-prop-row">
                                                 <div className="col-xs-6 db-col-left">
-                                                    <CheckBoxComponent ref={aspectRatio => ((this.aspectRatio as CheckBoxComponent) = aspectRatio as CheckBoxComponent)}
+                                                    <CheckBoxComponent ref={(aspectRatio: CheckBoxComponent)  => {((this.aspectRatio as CheckBoxComponent) = aspectRatio as CheckBoxComponent)}}
                                                         id='aspectRatio' label="Aspect Ratio" checked={this.selectedItem.nodeProperties.aspectRatio} change={aspectRatioValue} />
                                                 </div>
                                             </div>
@@ -2313,7 +2311,7 @@ class App extends React.Component<{}, {}> {
                                                             <ButtonComponent iconCss='sf-icon-Rotate1 tb-icons' />
                                                         </div>
                                                         <div className="db-text-input">
-                                                            <NumericTextBoxComponent ref={rotate => ((this.rotate as NumericTextBoxComponent) = rotate as NumericTextBoxComponent)} id="nodeRotateAngle" format="n0"
+                                                            <NumericTextBoxComponent ref={(rotate: NumericTextBoxComponent) => {((this.rotate as NumericTextBoxComponent) = rotate as NumericTextBoxComponent)}} id="nodeRotateAngle" format="n0" min={-360} max={360}
                                                                 // value={this.selectedItem.nodeProperties.rotateAngle}
                                                                 change={rotationChange} />
                                                         </div>
@@ -2325,7 +2323,7 @@ class App extends React.Component<{}, {}> {
                                                 Insert</div>
                                             <div className="row db-prop-row">
                                                 <div className="col-xs-6 db-col-left">
-                                                    <ToolbarComponent ref={nodeInsert => ((this.nodeInsert as ToolbarComponent) = nodeInsert as ToolbarComponent)} id='toolbarNodeInsert' overflowMode='Scrollable'
+                                                    <ToolbarComponent ref={(nodeInsert: ToolbarComponent) => {((this.nodeInsert as ToolbarComponent) = nodeInsert as ToolbarComponent)}} id='toolbarNodeInsert' overflowMode='Scrollable'
                                                         clicked={toolbarNodeInsert} >
                                                         <ItemsDirective>
                                                             <ItemDirective prefixIcon="sf-icon-InsertLink tb-icons" tooltipText="Insert Link" cssClass="tb-item-start" />
@@ -2345,7 +2343,7 @@ class App extends React.Component<{}, {}> {
                                                     <div className="col-xs-6 db-col-left">
                                                         <div className="db-color-container">
                                                             <div className="db-color-input">
-                                                                <ColorPickerComponent ref={fillColor => ((this.fillColor as ColorPickerComponent) = fillColor as ColorPickerComponent)} type="color" mode="Palette" value={this.selectedItem.nodeProperties.fillColor}
+                                                                <ColorPickerComponent ref={(fillColor: ColorPickerComponent) => {((this.fillColor as ColorPickerComponent) = fillColor as ColorPickerComponent)}} type="color" mode="Palette" value={this.selectedItem.nodeProperties.fillColor}
                                                                     change={nodeFillColor} id="nodeFillColor" />
                                                             </div>
                                                             <div className="db-color-btn">
@@ -2356,18 +2354,18 @@ class App extends React.Component<{}, {}> {
                                                 </div>
                                                 <div id='gradientStyle' className="row db-prop-row db-gradient-style-hide">
                                                     <div className="col-xs-4 db-col-left">
-                                                        <CheckBoxComponent ref={gradient => ((this.gradient as CheckBoxComponent) = gradient as CheckBoxComponent)} id='gradient' label="Gradient" checked={this.selectedItem.nodeProperties.gradient}
+                                                        <CheckBoxComponent ref={(gradient: CheckBoxComponent) => {((this.gradient as CheckBoxComponent) = gradient as CheckBoxComponent)}} id='gradient' label="Gradient" checked={this.selectedItem.nodeProperties.gradient}
                                                             change={gradientChange} />
                                                     </div>
                                                     <div className="col-xs-4 db-col-center">
-                                                        <DropDownListComponent ref={gradientDirection => (this.gradientDirection as DropDownListComponent) = (gradientDirection as DropDownListComponent)}
+                                                        <DropDownListComponent ref={(gradientDirection: DropDownListComponent) => {(this.gradientDirection as DropDownListComponent) = (gradientDirection as DropDownListComponent)}}
                                                             value={this.selectedItem.nodeProperties.gradientDirection} dataSource={this.dropDownDataSources.gradientDirections}
                                                             fields={this.dropdownListFields} popupHeight={"200px"} change={gradientDirectionChange} />
                                                     </div>
                                                     <div className="col-xs-4 db-col-right">
                                                         <div className="db-color-container">
                                                             <div className="db-color-input">
-                                                                <ColorPickerComponent type="color" mode="Palette" ref={gradientColor => (this.gradientColor as ColorPickerComponent) = (gradientColor as ColorPickerComponent)}
+                                                                <ColorPickerComponent type="color" mode="Palette" ref={(gradientColor: ColorPickerComponent) => {(this.gradientColor as ColorPickerComponent) = (gradientColor as ColorPickerComponent)}}
                                                                     value={this.selectedItem.nodeProperties.gradientColor} change={gradientColorChange} />
                                                             </div>
                                                             <div className="db-color-btn">
@@ -2396,7 +2394,7 @@ class App extends React.Component<{}, {}> {
                                                     <div className="col-xs-4 db-col-left">
                                                         <div className="db-color-container">
                                                             <div className="db-color-input">
-                                                                <ColorPickerComponent id="nodeStrokeColor" ref={strokeColor => (this.strokeColor as ColorPickerComponent) = (strokeColor as ColorPickerComponent)}
+                                                                <ColorPickerComponent id="nodeStrokeColor" ref={(strokeColor: ColorPickerComponent) => {(this.strokeColor as ColorPickerComponent) = (strokeColor as ColorPickerComponent)}}
                                                                     type="color" mode="Palette" value={this.selectedItem.nodeProperties.strokeColor} change={strokeColorChange} />
                                                             </div>
                                                             <div className="db-color-btn">
@@ -2406,12 +2404,12 @@ class App extends React.Component<{}, {}> {
                                                     </div>
 
                                                     <div className="col-xs-4 db-col-center">
-                                                        <DropDownListComponent ref={nodeBorder => (this.nodeBorder as DropDownListComponent) = (nodeBorder as DropDownListComponent)} id="nodeBorderStyle" value={this.selectedItem.nodeProperties.strokeStyle}
+                                                        <DropDownListComponent ref={(nodeBorder: DropDownListComponent) => {(this.nodeBorder as DropDownListComponent) = (nodeBorder as DropDownListComponent)}} id="nodeBorderStyle" value={this.selectedItem.nodeProperties.strokeStyle}
                                                             dataSource={this.dropDownDataSources.borderStyles} popupWidth={"160px"} fields={this.dropdownListFields} change={nodeBorderChange} itemTemplate={this.nodeBorderItemTemplate} valueTemplate={this.nodeBorderValueTemplate} />
                                                     </div>
                                                     <div className="col-xs-4 db-col-right">
-                                                        <NumericTextBoxComponent ref={strokeWidth => (this.strokeWidth as NumericTextBoxComponent) = (strokeWidth as NumericTextBoxComponent)}
-                                                            id="nodeStrokeWidth" min={0} step={0.5} value={this.selectedItem.nodeProperties.strokeWidth} change={strokeWidthChange} />
+                                                        <NumericTextBoxComponent ref={(strokeWidth: NumericTextBoxComponent) => {(this.strokeWidth as NumericTextBoxComponent) = (strokeWidth as NumericTextBoxComponent)}}
+                                                            id="nodeStrokeWidth" min={0.1} max={100} step={0.5} value={this.selectedItem.nodeProperties.strokeWidth} change={strokeWidthChange} />
                                                     </div>
                                                 </div>
                                                 <div className="row db-prop-row">
@@ -2419,7 +2417,7 @@ class App extends React.Component<{}, {}> {
                                                         <span className="db-prop-text-style">Opacity</span>
                                                     </div>
                                                     <div className="col-xs-8 db-col-left" style={{ paddingRight: "10px" }}>
-                                                        <SliderComponent ref={opacity => (this.opacity as SliderComponent) = (opacity as SliderComponent)}
+                                                        <SliderComponent ref={(opacity: SliderComponent) => {(this.opacity as SliderComponent) = (opacity as SliderComponent)}}
                                                             value={this.selectedItem.nodeProperties.opacity} min={0} max={100} step={10} type='MinRange' change={opacityChange} />
                                                     </div>
                                                     <div className="col-xs-2 db-col-right">
@@ -2440,7 +2438,7 @@ class App extends React.Component<{}, {}> {
                                         </div>
                                         <div className="row">
                                             <div className="col-xs-6 db-col-left">
-                                                <DropDownListComponent ref={lineType => (this.lineType as DropDownListComponent) = (lineType as DropDownListComponent)}
+                                                <DropDownListComponent ref={(lineType: DropDownListComponent) => {(this.lineType as DropDownListComponent) = (lineType as DropDownListComponent)}}
                                                     value={this.selectedItem.connectorProperties.lineType} dataSource={this.dropDownDataSources.lineTypes}
                                                     fields={this.dropdownListFields} change={lineTypeChange} />
                                             </div>
@@ -2449,7 +2447,7 @@ class App extends React.Component<{}, {}> {
                                             <div className="col-xs-6 db-col-left">
                                                 <div className="db-color-container">
                                                     <div className="db-color-input">
-                                                        <ColorPickerComponent ref={lineColor => (this.lineColor as ColorPickerComponent) = (lineColor as ColorPickerComponent)} mode="Palette" type="color"
+                                                        <ColorPickerComponent ref={(lineColor: ColorPickerComponent)  => {(this.lineColor as ColorPickerComponent) = (lineColor as ColorPickerComponent)}} mode="Palette" type="color"
                                                             id="lineColor" value={this.selectedItem.connectorProperties.lineColor} change={lineColorChange} />
                                                     </div>
                                                     <div className="db-color-btn">
@@ -2468,11 +2466,11 @@ class App extends React.Component<{}, {}> {
                                         </div>
                                         <div className="row">
                                             <div className="col-xs-8 db-col-left">
-                                                <DropDownListComponent ref={lineStyle => (this.lineStyle as DropDownListComponent) = (lineStyle as DropDownListComponent)} id="lineStyle" value={this.selectedItem.connectorProperties.lineStyle}
+                                                <DropDownListComponent ref={(lineStyle: DropDownListComponent) => {(this.lineStyle as DropDownListComponent) = (lineStyle as DropDownListComponent)}} id="lineStyle" value={this.selectedItem.connectorProperties.lineStyle}
                                                     dataSource={this.dropDownDataSources.borderStyles} fields={this.dropdownListFields} itemTemplate={this.lineItemTemplate} valueTemplate={this.lineValueTemplate} change={lineStyleChange} />
                                             </div>
                                             <div className="col-xs-4 db-col-right">
-                                                <NumericTextBoxComponent min={0.5} step={0.5} ref={lineWidth => (this.lineWidth as NumericTextBoxComponent) = (lineWidth as NumericTextBoxComponent)}
+                                                <NumericTextBoxComponent min={0.5} max={100} step={0.5} ref={(lineWidth: NumericTextBoxComponent) => {(this.lineWidth as NumericTextBoxComponent) = (lineWidth as NumericTextBoxComponent)}}
                                                     value={this.selectedItem.connectorProperties.lineWidth} change={lineWidthChange} />
                                             </div>
                                         </div>
@@ -2486,12 +2484,12 @@ class App extends React.Component<{}, {}> {
                                         </div>
                                         <div className="row">
                                             <div className="col-xs-8 db-col-left">
-                                                <DropDownListComponent ref={sourceType => (this.sourceType as DropDownListComponent) = (sourceType as DropDownListComponent)}
+                                                <DropDownListComponent ref={(sourceType: DropDownListComponent) => {(this.sourceType as DropDownListComponent) = (sourceType as DropDownListComponent)}}
                                                     value={this.selectedItem.connectorProperties.sourceType} dataSource={this.dropDownDataSources.decoratorList}
                                                     fields={this.dropdownListFields} change={sourceTypeChange} />
                                             </div>
                                             <div className="col-xs-4 db-col-right">
-                                                <NumericTextBoxComponent ref={sourceSize => (this.sourceSize as NumericTextBoxComponent) = (sourceSize as NumericTextBoxComponent)} min={1} step={1} value={this.selectedItem.connectorProperties.sourceSize}
+                                                <NumericTextBoxComponent ref={(sourceSize: NumericTextBoxComponent) => {(this.sourceSize as NumericTextBoxComponent) = (sourceSize as NumericTextBoxComponent)}} min={1}  max={100} step={1} value={this.selectedItem.connectorProperties.sourceSize}
                                                     change={sourceSizeChange} />
                                             </div>
                                         </div>
@@ -2505,23 +2503,23 @@ class App extends React.Component<{}, {}> {
                                         </div>
                                         <div className="row">
                                             <div className="col-xs-8 db-col-left">
-                                                <DropDownListComponent ref={targetType => (this.targetType as DropDownListComponent) = (targetType as DropDownListComponent)}
+                                                <DropDownListComponent ref={(targetType: DropDownListComponent) => {(this.targetType as DropDownListComponent) = (targetType as DropDownListComponent)}}
                                                     value={this.selectedItem.connectorProperties.targetType} dataSource={this.dropDownDataSources.decoratorList}
                                                     fields={this.dropdownListFields} change={targetTypeChange} />
                                             </div>
                                             <div className="col-xs-4 db-col-right">
-                                                <NumericTextBoxComponent ref={targetSize => (this.targetSize as NumericTextBoxComponent) = (targetSize as NumericTextBoxComponent)} min={1} step={1} value={this.selectedItem.connectorProperties.targetSize}
+                                                <NumericTextBoxComponent ref={(targetSize: NumericTextBoxComponent) => {(this.targetSize as NumericTextBoxComponent) = (targetSize as NumericTextBoxComponent)}} min={2} max={100} step={1} value={this.selectedItem.connectorProperties.targetSize}
                                                     change={targetSizeChange} />
                                             </div>
                                         </div>
                                         <div className="row db-prop-row">
                                             <div className="col-xs-8 db-col-left" style={{ marginTop: "5px" }}>
-                                                <CheckBoxComponent ref={bridge => (this.bridge as CheckBoxComponent) = (bridge as CheckBoxComponent)} id='lineJump'
+                                                <CheckBoxComponent ref={(bridge: CheckBoxComponent) => {(this.bridge as CheckBoxComponent) = (bridge as CheckBoxComponent)}} id='lineJump'
                                                     label="Bridging" checked={this.selectedItem.connectorProperties.lineJump} change={bridgeChange} />
                                             </div>
                                             <div className="col-xs-4 db-col-right" id="lineJumpSizeDiv" style={{ display: "none" }}>
-                                                <NumericTextBoxComponent ref={bridgeSize => (this.bridgeSize as NumericTextBoxComponent) = (bridgeSize as NumericTextBoxComponent)}
-                                                    min={1} step={1} value={this.selectedItem.connectorProperties.lineJumpSize} change={bridgeSizeChange} />
+                                                <NumericTextBoxComponent ref={(bridgeSize: NumericTextBoxComponent)  => {(this.bridgeSize as NumericTextBoxComponent) = (bridgeSize as NumericTextBoxComponent)}}
+                                                    min={5} max={100} step={1} value={this.selectedItem.connectorProperties.lineJumpSize} change={bridgeSizeChange} />
                                             </div>
                                         </div>
                                         <div className="row db-prop-row">
@@ -2529,7 +2527,7 @@ class App extends React.Component<{}, {}> {
                                                 <span className="db-prop-text-style">Opacity</span>
                                             </div>
                                             <div className="col-xs-8 db-col-left" style={{ paddingRight: "10px" }}>
-                                                <SliderComponent id='default' ref={connectorOpacity => (this.connectorOpacity as SliderComponent) = (connectorOpacity as SliderComponent)}
+                                                <SliderComponent id='default' ref={(connectorOpacity: SliderComponent) => {(this.connectorOpacity as SliderComponent) = (connectorOpacity as SliderComponent)}}
                                                     value={this.selectedItem.connectorProperties.opacity} min={0} max={100} step={10} type='MinRange' change={connectorOpacityChange} />
                                             </div>
                                             <div className="col-xs-2 db-col-right">
@@ -2544,22 +2542,22 @@ class App extends React.Component<{}, {}> {
                                         </div>
                                         <div className="row db-prop-row">
                                             <div className="col-xs-8 db-col-left">
-                                                <DropDownListComponent ref={fontFamily => (this.fontFamily as DropDownListComponent) = (fontFamily as DropDownListComponent)} dataSource={this.dropDownDataSources.fontFamilyList}
+                                                <DropDownListComponent ref={(fontFamily:DropDownListComponent ) => {(this.fontFamily as DropDownListComponent) = (fontFamily as DropDownListComponent)}} dataSource={this.dropDownDataSources.fontFamilyList}
                                                     fields={this.dropdownListFields} change={fontFamilyChange} />
                                             </div>
                                             <div className="col-xs-4 db-col-right">
-                                                <NumericTextBoxComponent min={1} ref={fontSize => (this.fontSize as NumericTextBoxComponent) = (fontSize as NumericTextBoxComponent)} step={1} value={this.selectedItem.textProperties.fontSize} change={fontSizeChange} />
+                                                <NumericTextBoxComponent min={5} max={100} ref={(fontSize:NumericTextBoxComponent ) => {(this.fontSize as NumericTextBoxComponent) = (fontSize as NumericTextBoxComponent)}} step={1} value={this.selectedItem.textProperties.fontSize} change={fontSizeChange} />
                                             </div>
                                         </div>
                                         <div className="row db-prop-row">
                                             <div className="col-xs-6 db-col-left" id="textPositionDiv">
-                                                <DropDownListComponent ref={dropdown => (this.ddlTextPosition as DropDownListComponent) = (dropdown as DropDownListComponent)} dataSource={this.selectedItem.textProperties.textPositionDataSource} index={4}
+                                                <DropDownListComponent ref={(dropdown:DropDownListComponent ) => {(this.ddlTextPosition as DropDownListComponent) = (dropdown as DropDownListComponent)}} dataSource={this.selectedItem.textProperties.textPositionDataSource} index={4}
                                                     fields={this.dropdownListFields} change={this.diagramPropertyBinding.textPositionChange.bind(this.diagramPropertyBinding)} />
                                             </div>
                                             <div className="col-xs-6 db-col-right" id="textColorDiv">
                                                 <div className="db-color-container">
                                                     <div className="db-color-input">
-                                                        <ColorPickerComponent ref={fontColor => (this.fontColor as ColorPickerComponent) = (fontColor as ColorPickerComponent)} mode="Palette" type="color" value={this.selectedItem.textProperties.fontColor} change={fontColorChange} />
+                                                        <ColorPickerComponent ref={(fontColor:ColorPickerComponent ) => {(this.fontColor as ColorPickerComponent) = (fontColor as ColorPickerComponent)}} mode="Palette" type="color" value={this.selectedItem.textProperties.fontColor} change={fontColorChange} />
                                                     </div>
                                                     <div className="db-color-btn">
                                                         <ButtonComponent iconCss='sf-icon-ColorPickers tb-icons' />
@@ -2578,7 +2576,7 @@ class App extends React.Component<{}, {}> {
                                                 </ToolbarComponent>
                                             </div>
                                             <div className="col-xs-6 db-col-right">
-                                                <ToolbarComponent id='toolbarTextSubAlignment' overflowMode='Scrollable' clicked={this.diagramPropertyBinding.toolbarTextSubAlignChange.bind(this.diagramPropertyBinding)}>
+                                                <ToolbarComponent id='toolbarTextSubAlignment' overflowMode='MultiRow' clicked={this.diagramPropertyBinding.toolbarTextSubAlignChange.bind(this.diagramPropertyBinding)}>
                                                     <ItemsDirective>
                                                         <ItemDirective prefixIcon="sf-icon-ParaAlignLeft tb-icons" tooltipText="Align Text Left" cssClass="tb-item-start" />
                                                         <ItemDirective prefixIcon="sf-icon-ParaAlignCenter tb-icons" tooltipText="Align Text Center" cssClass="tb-item-middle" />
@@ -2588,23 +2586,23 @@ class App extends React.Component<{}, {}> {
                                             </div>
                                         </div>
                                         <div className="row db-prop-row" id='toolbarTextAlignmentDiv'>
-                                            <ToolbarComponent id='toolbarTextAlignment' ref={toolbarTextAlignment => (toolbarTextAlignment as ToolbarComponent) = (toolbarTextAlignment as ToolbarComponent)} overflowMode='Scrollable' clicked={this.diagramPropertyBinding.toolbarTextAlignChange.bind(this.diagramPropertyBinding)} >
+                                            <ToolbarComponent id='toolbarTextAlignment' ref={(toolbarTextAlignment: ToolbarComponent) => {(toolbarTextAlignment as ToolbarComponent) = (toolbarTextAlignment as ToolbarComponent)}} overflowMode='MultiRow' clicked={this.diagramPropertyBinding.toolbarTextAlignChange.bind(this.diagramPropertyBinding)} >
                                             <ItemsDirective>
-                                                <ItemDirective prefixIcon="sf-icon-TextLeft tb-icons" tooltipText="Align Right" cssClass="tb-item-start" />
+                                                <ItemDirective prefixIcon="sf-icon-TextLeft tb-icons" tooltipText="Align Left" cssClass="tb-item-start" />
                                                 <ItemDirective prefixIcon="sf-icon-TextVerticalCenter tb-icons" tooltipText="Align Center" cssClass="tb-item-middle" />
-                                                <ItemDirective prefixIcon="sf-icon-TextRight tb-icons" tooltipText="Align Left" cssClass="tb-item-middle" />
-                                                <ItemDirective prefixIcon="sf-icon-TextTop tb-icons" tooltipText="Align Bottom" cssClass="tb-item-middle" />
+                                                <ItemDirective prefixIcon="sf-icon-TextRight tb-icons" tooltipText="Align Right" cssClass="tb-item-middle" />
+                                                <ItemDirective prefixIcon="sf-icon-TextTop tb-icons" tooltipText="Align Top" cssClass="tb-item-middle" />
                                                 <ItemDirective prefixIcon="sf-icon-TextHorizontalCenter tb-icons" tooltipText="Align Middle" cssClass="tb-item-middle" />
-                                                <ItemDirective prefixIcon="sf-icon-TextBottom tb-icons" tooltipText="Align Top" cssClass="tb-item-end" />
+                                                <ItemDirective prefixIcon="sf-icon-TextBottom tb-icons" tooltipText="Align Bottom" cssClass="tb-item-end" />
                                             </ItemsDirective>
                                             </ToolbarComponent>
                                         </div>
-                                        <div className="row db-prop-row">
+                                        <div className="row db-prop-row"  id="textOpacityProp">
                                             <div className="col-xs-2 db-col-right db-prop-text-style" style={{ paddingTop: "6px" }}>
                                                 <span className="db-prop-text-style">Opacity</span>
                                             </div>
                                             <div className="col-xs-8 db-col-left" style={{ paddingRight: "10px" }}>
-                                                <SliderComponent ref={fontOpacity => (this.fontOpacity as SliderComponent) = (fontOpacity as SliderComponent)} value={this.selectedItem.textProperties.opacity} min={0} max={100} step={10} type='MinRange' change={fontOpacityChange} />
+                                                <SliderComponent ref={(fontOpacity: SliderComponent) => {(this.fontOpacity as SliderComponent) = (fontOpacity as SliderComponent)}} value={this.selectedItem.textProperties.opacity} min={0} max={100} step={10} type='MinRange' change={fontOpacityChange} />
                                             </div>
                                             <div className="col-xs-2 db-col-right">
                                                 <input id='textOpacityText' type="text" value={this.selectedItem.textProperties.opacityText} readOnly={true} className="db-readonly-input" />
@@ -2638,7 +2636,7 @@ class App extends React.Component<{}, {}> {
                                                 </div>
                                     <div className="row db-prop-row">
                                         <div className="col-xs-6 db-col-left">
-                                            <DropDownListComponent ref={mindMapLevel => (this.mindMapLevel as DropDownListComponent) = (mindMapLevel as DropDownListComponent)}
+                                            <DropDownListComponent ref={(mindMapLevel: DropDownListComponent) => {(this.mindMapLevel as DropDownListComponent) = (mindMapLevel as DropDownListComponent)}}
                                                 id="mindMapLevels" value={this.selectedItem.mindmapSettings.levelType} dataSource={this.dropDownDataSources.mindmapLevels}
                                                 fields={this.dropdownListFields} change={mindMapLavelChange} />
                                         </div>
@@ -2647,7 +2645,7 @@ class App extends React.Component<{}, {}> {
                                         <div className="col-xs-6 db-col-left">
                                             <div className="db-color-container">
                                                 <div className="db-color-input">
-                                                    <ColorPickerComponent ref={mindmapFill => (this.mindmapFill as ColorPickerComponent) = (mindmapFill as ColorPickerComponent)}
+                                                    <ColorPickerComponent ref={(mindmapFill: ColorPickerComponent) =>{ (this.mindmapFill as ColorPickerComponent) = (mindmapFill as ColorPickerComponent)}}
                                                         mode="Palette" id='mindmapFill' type="color" value={this.selectedItem.mindmapSettings.fill} change={mindmapFillColor} />
                                                 </div>
                                                 <div className="db-color-btn">
@@ -2660,7 +2658,7 @@ class App extends React.Component<{}, {}> {
                                         <div className="col-xs-4 db-col-left">
                                             <div className="db-color-container">
                                                 <div className="db-color-input">
-                                                    <ColorPickerComponent ref={mindMapStroke => (this.mindMapStroke as ColorPickerComponent) = (mindMapStroke as ColorPickerComponent)} id='mindmapStroke' mode="Palette" value={this.selectedItem.mindmapSettings.stroke}
+                                                    <ColorPickerComponent ref={(mindMapStroke: ColorPickerComponent) => {(this.mindMapStroke as ColorPickerComponent) = (mindMapStroke as ColorPickerComponent)}} id='mindmapStroke' mode="Palette" value={this.selectedItem.mindmapSettings.stroke}
                                                         type="color" change={mindMapSrtokeChange} />
                                                 </div>
                                                 <div className="db-color-btn">
@@ -2669,12 +2667,12 @@ class App extends React.Component<{}, {}> {
                                             </div>
                                         </div>
                                         <div className="col-xs-4 db-col-center">
-                                            <DropDownListComponent ref={mindmapStrokeStyle => (this.mindmapStrokeStyle as DropDownListComponent) = (mindmapStrokeStyle as DropDownListComponent)} value={this.selectedItem.mindmapSettings.strokeStyle} dataSource={this.dropDownDataSources.borderStyles}
+                                            <DropDownListComponent ref={(mindmapStrokeStyle: DropDownListComponent) => {(this.mindmapStrokeStyle as DropDownListComponent) = (mindmapStrokeStyle as DropDownListComponent)}} value={this.selectedItem.mindmapSettings.strokeStyle} dataSource={this.dropDownDataSources.borderStyles}
                                                 fields={this.dropdownListFields} itemTemplate={this.mindmapItemTemplate} valueTemplate={this.mindmapValueTemplate}  change={mindmapStrokeStyleChange} />
                                         </div>
                                         <div className="col-xs-4 db-col-right">
-                                            <NumericTextBoxComponent ref={mindmapStrokeWidth => (this.mindmapStrokeWidth as NumericTextBoxComponent) = (mindmapStrokeWidth as NumericTextBoxComponent)}
-                                                id="mindmapStrokeWidth" min={0.5} step={0.5} value={this.selectedItem.mindmapSettings.strokeWidth} change={mindmapStrokeWidthChange} />
+                                            <NumericTextBoxComponent ref={(mindmapStrokeWidth: NumericTextBoxComponent) => {(this.mindmapStrokeWidth as NumericTextBoxComponent) = (mindmapStrokeWidth as NumericTextBoxComponent)}}
+                                                id="mindmapStrokeWidth" min={0.5} max={50} step={0.5} value={this.selectedItem.mindmapSettings.strokeWidth} change={mindmapStrokeWidthChange} />
                                         </div>
                                     </div>
                                     <div className="row db-prop-row">
@@ -2682,7 +2680,7 @@ class App extends React.Component<{}, {}> {
                                             <span className="db-prop-text-style">Opacity</span>
                                         </div>
                                         <div className="col-xs-8 db-col-left" style={{ paddingRight: "10px" }}>
-                                            <SliderComponent ref={mindmapOpacity => (this.mindmapOpacity as SliderComponent) = (mindmapOpacity as SliderComponent)} value={this.selectedItem.mindmapSettings.opacity} min={0} max={100} step={10} type='MinRange' change={mindmapOpacityChange} />
+                                            <SliderComponent ref={(mindmapOpacity: SliderComponent) => {(this.mindmapOpacity as SliderComponent) = (mindmapOpacity as SliderComponent)}} value={this.selectedItem.mindmapSettings.opacity} min={0} max={100} step={10} type='MinRange' change={mindmapOpacityChange} />
                                         </div>
                                         <div className="col-xs-2 db-col-right">
                                             <input type="text" id="mindmapOpacityText" value={this.selectedItem.mindmapSettings.opacityText} readOnly={true} className="db-readonly-input" />
@@ -2693,16 +2691,16 @@ class App extends React.Component<{}, {}> {
                                                 </div>
                                     <div className="row db-prop-row">
                                         <div className="col-xs-8 db-col-left">
-                                            <DropDownListComponent ref={dropdown => (this.ddlTextPosition as DropDownListComponent) = (dropdown as DropDownListComponent)} dataSource={this.dropDownDataSources.fontFamilyList} value={this.selectedItem.mindmapSettings.fontFamily}
+                                            <DropDownListComponent ref={(dropdown: DropDownListComponent) => {(this.mindMapFontFamily as DropDownListComponent) = (dropdown as DropDownListComponent)}} dataSource={this.dropDownDataSources.fontFamilyList} value={this.selectedItem.mindmapSettings.fontFamily}
                                                 fields={this.dropdownListFields} change={mindmapFontfamilyText} />
                                         </div>
                                         <div className="col-xs-4 db-col-right">
-                                            <NumericTextBoxComponent ref={mindmapFontSize => (this.mindmapFontSize as NumericTextBoxComponent) = (mindmapFontSize as NumericTextBoxComponent)} min={1} step={1} value={this.selectedItem.mindmapSettings.fontSize} change={mindmapFontSizeChange} />
+                                            <NumericTextBoxComponent ref={(mindmapFontSize: NumericTextBoxComponent) => {(this.mindmapFontSize as NumericTextBoxComponent) = (mindmapFontSize as NumericTextBoxComponent)}} min={5} max={100} step={1} value={this.selectedItem.mindmapSettings.fontSize} change={mindmapFontSizeChange} />
                                         </div>
                                     </div>
                                     <div className="row db-prop-row">
                                         <div className="col-xs-6 db-col-left">
-                                            <ToolbarComponent overflowMode='Scrollable' clicked={this.mindmapPropertyBinding.mindmapTextStyleChange.bind(this.mindmapPropertyBinding)}>
+                                            <ToolbarComponent id="mindmapTextStyleToolbar" overflowMode='MultiRow' clicked={this.mindmapPropertyBinding.mindmapTextStyleChange.bind(this.mindmapPropertyBinding)}>
                                                 <ItemsDirective>
                                                     <ItemDirective prefixIcon="sf-icon-Bold tb-icons" tooltipText="Bold" cssClass="tb-item-start" />
                                                     <ItemDirective prefixIcon="sf-icon-Italic tb-icons" tooltipText="Italic" cssClass="tb-item-middle" />
@@ -2713,7 +2711,7 @@ class App extends React.Component<{}, {}> {
                                         <div className="col-xs-6 db-col-right" id="textColorDiv">
                                             <div className="db-color-container">
                                                 <div className="db-color-input">
-                                                    <ColorPickerComponent id='mindmapTextColor' ref={mindmapTextColor => (this.mindmapTextColor as ColorPickerComponent) = (mindmapTextColor as ColorPickerComponent)} mode="Palette" type="color" value={this.selectedItem.mindmapSettings.fontColor} change={mindmapFontColorChange} />
+                                                    <ColorPickerComponent id='mindmapTextColor' ref={(mindmapTextColor: ColorPickerComponent) => {(this.mindmapTextColor as ColorPickerComponent) = (mindmapTextColor as ColorPickerComponent)}} mode="Palette" type="color" value={this.selectedItem.mindmapSettings.fontColor} change={mindmapFontColorChange} />
                                                 </div>
                                                 <div className="db-color-btn">
                                                     <ButtonComponent iconCss='sf-icon-ColorPickers tb-icons' />
@@ -2726,10 +2724,10 @@ class App extends React.Component<{}, {}> {
                                             <span className="db-prop-text-style">Opacity</span>
                                         </div>
                                         <div className="col-xs-8 db-col-left" style={{ paddingRight: "10px" }}>
-                                            <SliderComponent ref={mindmapOpacityText => (this.mindmapOpacityText as SliderComponent) = (mindmapOpacityText as SliderComponent)} value={this.selectedItem.mindmapSettings.textOpacity} min={0} max={100} step={10} type='MinRange' change={mindmapFontOpacityChange} />
+                                            <SliderComponent ref={(mindmapOpacityText: SliderComponent) => {(this.mindmapOpacityText as SliderComponent) = (mindmapOpacityText as SliderComponent)}} value={this.selectedItem.mindmapSettings.textOpacity} min={0} max={100} step={10} type='MinRange' change={mindmapFontOpacityChange} />
                                         </div>
                                         <div className="col-xs-2 db-col-right">
-                                            <input id='mindmapOpacitySliderText' type="text" value={this.selectedItem.mindmapSettings.opacityText} readOnly={true} className="db-readonly-input" />
+                                            <input id='mindmapOpacitySliderText' type="text" value={this.selectedItem.mindmapSettings.textOpacityText} readOnly={true} className="db-readonly-input" />
                                         </div>
                                     </div>
                                 </div>
@@ -2755,14 +2753,14 @@ class App extends React.Component<{}, {}> {
                                     </div>
                                     <div className="row">
                                         <div className="col-xs-6 db-col-left">
-                                            <NumericTextBoxComponent id="orgHorizontalSpacing" min={25} step={1} format="n0" value={50} change={this.orgChartPropertyBinding.orgChartSpacingChange.bind(this.orgChartPropertyBinding)} />
+                                            <NumericTextBoxComponent id="orgHorizontalSpacing" min={25} max={300} step={1} format="n0" value={50} change={this.orgChartPropertyBinding.orgChartSpacingChange.bind(this.orgChartPropertyBinding)} />
                                         </div>
                                         <div className="col-xs-6 db-col-right">
-                                            <NumericTextBoxComponent id="orgVerticalSpacing" min={25} step={1} format="n0" value={50} change={this.orgChartPropertyBinding.orgChartSpacingChange.bind(this.orgChartPropertyBinding)} />
+                                            <NumericTextBoxComponent id="orgVerticalSpacing" min={25} max={300} step={1} format="n0" value={50} change={this.orgChartPropertyBinding.orgChartSpacingChange.bind(this.orgChartPropertyBinding)} />
                                         </div>
                                     </div>
                                     <div className="row db-prop-row">
-                                        <ToolbarComponent id='orgChartAlignment' overflowMode='Scrollable' clicked={this.orgChartPropertyBinding.orgChartAligmentChange.bind(this.orgChartPropertyBinding)}>
+                                        <ToolbarComponent id='orgChartAlignment' overflowMode='MultiRow' clicked={this.orgChartPropertyBinding.orgChartAligmentChange.bind(this.orgChartPropertyBinding)}>
                                             <ItemsDirective>
                                                 <ItemDirective prefixIcon="sf-icon-TextLeft tb-icons" tooltipText="Align Left" cssClass="tb-item-start" />
                                                 <ItemDirective prefixIcon="sf-icon-TextHorizontalCenter tb-icons" tooltipText="Align Center" cssClass="tb-item-middle" />
@@ -2826,15 +2824,12 @@ class App extends React.Component<{}, {}> {
                         </div >
                     </div >
                 </div>
-                <DialogComponent ref={dialog => (this.exportDialog as DialogComponent) = (dialog as DialogComponent)} id="exportDialog" width={"400px"} header='Export Diagram' target={this.dlgTarget}
+                <Footer />
+                <DialogComponent ref={(dialog: DialogComponent) => {(this.exportDialog as DialogComponent) = (dialog as DialogComponent)}} id="exportDialog" width={"400px"} header='Export Diagram' target={this.dlgTarget}
                     isModal={true} animationSettings={this.dialogAnimationSettings} buttons={this.exportingButtons} showCloseIcon= {true}
                     content={footTemplate} visible={this.dialogVisibility} />
 
-                <DialogComponent id="printDialog" ref={dialog => (this.printDialog as DialogComponent) = (dialog as DialogComponent)} width={"335px"} header='Print Diagram' target={this.dlgTarget}
-                    isModal={true} animationSettings={this.dialogAnimationSettings} buttons={this.printingButtons}
-                    content={printTemplateChange} visible={this.dialogVisibility} />
-
-                <DialogComponent id="fileUploadDialog" ref={dialog => (this.fileUploadDialog as DialogComponent) = (dialog as DialogComponent)} width={"500px"} height={"485px"} header='Upload File' target={this.dlgTarget}
+                <DialogComponent id="fileUploadDialog" ref={(dialog: DialogComponent) => {(this.fileUploadDialog as DialogComponent) = (dialog as DialogComponent)}} width={"500px"} height={"485px"} header='Upload File' target={this.dlgTarget}
                     isModal={true} animationSettings={this.dialogAnimationSettings} buttons={this.uploadButtons} showCloseIcon={true} allowDragging={true}
                     visible={this.dialogVisibility} content={fileTemplate} />
 
@@ -2863,16 +2858,16 @@ class App extends React.Component<{}, {}> {
 
                     </div>
                 </div>
-                <DialogComponent id="openTemplateDialog" ref={openTemplateDialog => (this.openTemplateDialog as DialogComponent) = (openTemplateDialog as DialogComponent)} width={"695px"} height="470px" header='Create New Diagram' target={this.dlgTarget}
+                <DialogComponent id="openTemplateDialog" ref={(openTemplateDialog: DialogComponent) => {(this.openTemplateDialog as DialogComponent) = (openTemplateDialog as DialogComponent)}} width={"695px"} height="470px" header='Create New Diagram' target={this.dlgTarget}
                     isModal={true} animationSettings={this.dialogAnimationSettings} showCloseIcon={true} allowDragging={true} visible={this.dialogVisibility} />
-                <DialogComponent id="saveDialog" ref={saveDialog => (this.saveDialog as DialogComponent) = (saveDialog as DialogComponent)} width={"335px"} header='Save Diagram' target={this.dlgTarget} isModal={true}
+                <DialogComponent id="saveDialog" ref={(saveDialog: DialogComponent) => {(this.saveDialog as DialogComponent) = (saveDialog as DialogComponent)}} width={"335px"} header='Save Diagram' target={this.dlgTarget} isModal={true}
                     showCloseIcon={true} allowDragging={true} animationSettings={this.dialogAnimationSettings} visible={this.dialogVisibility} buttons={this.saveButtons} content={saveTemplate} />
-                <DialogComponent id="moreShapesDialog" ref={moreShapesDialog => (this.moreShapesDialog as DialogComponent) = (moreShapesDialog as DialogComponent)} width={"695px"} height={"470px"} header='Shapes' target={this.dlgTarget} isModal={true} animationSettings={this.dialogAnimationSettings} showCloseIcon={true} allowDragging={true}
+                <DialogComponent id="moreShapesDialog" ref={(moreShapesDialog: DialogComponent) => {(this.moreShapesDialog as DialogComponent) = (moreShapesDialog as DialogComponent)}} width={"695px"} height={"470px"} header='Shapes' target={this.dlgTarget} isModal={true} animationSettings={this.dialogAnimationSettings} showCloseIcon={true} allowDragging={true}
                     buttons={this.moreShapesButtons} visible={this.dialogVisibility} content={moreShapeTemplate} />
 
-                <DialogComponent id="tooltipDialog" ref={tooltipDialog => (this.tooltipDialog as DialogComponent) = (tooltipDialog as DialogComponent)} width={"335px"} header='Edit Tooltip' target={this.dlgTarget} isModal={true} animationSettings={this.dialogAnimationSettings}
+                <DialogComponent id="tooltipDialog" ref={(tooltipDialog: DialogComponent) => {(this.tooltipDialog as DialogComponent) = (tooltipDialog as DialogComponent)}} width={"335px"} header='Edit Tooltip' target={this.dlgTarget} isModal={true} animationSettings={this.dialogAnimationSettings}
                     visible={this.dialogVisibility} showCloseIcon={true} content={this.tootipTemplate} buttons={this.tooltipButtons} />
-                <DialogComponent id="hyperlinkDialog" ref={hyperlinkDialog => (this.hyperlinkDialog as DialogComponent) = (hyperlinkDialog as DialogComponent)} width={"400px"} header='Insert Link' target={this.dlgTarget} isModal={true}
+                <DialogComponent id="hyperlinkDialog" ref={(hyperlinkDialog: DialogComponent) => {(this.hyperlinkDialog as DialogComponent) = (hyperlinkDialog as DialogComponent)}} width={"400px"} header='Insert Link' target={this.dlgTarget} isModal={true}
                     visible={this.dialogVisibility} animationSettings={this.dialogAnimationSettings} showCloseIcon={true} buttons={this.hyperlinkButtons}
                     content={hyperLinkTemplate} />
                 <div className="db-custom-prop-template" style={{ display: "none" }}>
@@ -2907,7 +2902,7 @@ class App extends React.Component<{}, {}> {
                 </div>
                 <DialogComponent id="customPropertyDialog" width={"500px"} header='Additional Information' target={this.dlgTarget}
                     isModal={this.isModalDialog} animationSettings={this.dialogAnimationSettings} allowDragging={true} showCloseIcon={true}
-                    visible={this.dialogVisibility} ref={customPropertyDialog => (this.customPropertyDialog as DialogComponent) = (customPropertyDialog as DialogComponent)} />
+                    visible={this.dialogVisibility} ref={(customPropertyDialog: DialogComponent) => {(this.customPropertyDialog as DialogComponent) = (customPropertyDialog as DialogComponent)}} />
 
                 <div className="db-layer-template" style={{ display: "none" }}>
                     <div className="row">
@@ -2921,28 +2916,28 @@ class App extends React.Component<{}, {}> {
                         <div className="db-layer-content-btn">
                             <button className="db-layer-visible" />
                         </div>
-                        <button className="db-layer-order-first" />
-                    </div>
-                    <div className="db-layer-content-btn">
-                        <button className="db-layer-order-second" />
-
+                        
                     </div>
                 </div>
-                <DialogComponent id="layerDialog" ref={layerDialog => (this.layerDialog as DialogComponent) = (layerDialog as DialogComponent)} width={"300px"} height={"400px"} header='Layers' target={this.dlgTarget}
+                <DialogComponent id="layerDialog" ref={(layerDialog: DialogComponent) => {(this.layerDialog as DialogComponent) = (layerDialog as DialogComponent)}} width={"300px"} height={"400px"} header='Layers' target={this.dlgTarget}
                     isModal={this.isModalDialog} animationSettings={this.dialogAnimationSettings} allowDragging={true}
-                    visible={this.dialogVisibility} content={this.layerFooterTemplate} />
+                    visible={this.dialogVisibility} footerTemplate={this.layerFooterTemplate} />
 
-                <DialogComponent id="themeDialog" ref={themeDialog => (this.themeDialog as DialogComponent) = (themeDialog as DialogComponent)} width={"174px"} header='Themes' target={this.dlgTarget} isModal={this.isModalDialog}
+                <DialogComponent id="themeDialog" ref={(themeDialog: DialogComponent) => {(this.themeDialog as DialogComponent) = (themeDialog as DialogComponent)}} width={"174px"} header='Themes' target={this.dlgTarget} isModal={this.isModalDialog}
                     animationSettings={this.dialogAnimationSettings} allowDragging={true} visible={this.dialogVisibility} showCloseIcon={true}
-                    position={this.themesdialogPosition} created={themeDialogTemplate} content={this.themeTemplate} />
+                    position={this.themesdialogPosition} created={themeDialogTemplate} close={this.closeThemeDialog} content={this.themeTemplate} />
 
-                <DialogComponent id="deleteConfirmationDialog" ref={deleteConfirmationDialog => (this.deleteConfirmationDialog as DialogComponent) = (deleteConfirmationDialog as DialogComponent)} width={"400px"} header='Delete Field' target={this.dlgTarget}
+                <DialogComponent id="deleteConfirmationDialog" ref={(deleteConfirmationDialog: DialogComponent) => {(this.deleteConfirmationDialog as DialogComponent) = (deleteConfirmationDialog as DialogComponent)}} width={"400px"} header='Delete Field' target={this.dlgTarget}
                     isModal={true} animationSettings={this.dialogAnimationSettings} visible={this.dialogVisibility} showCloseIcon={true}
                     buttons={this.deleteConfirmationButtons} content={this.deleteConformationTemplate} />
             </div >
         );
 
     }
+    private closeThemeDialog(args:any) {
+    var btnWindow = (document.getElementById('diagram-menu')as any).ej2_instances[0].items[4];
+    btnWindow.items[5].iconCss = '';
+}
     private sendToBack(): void {
         this.selectedItem.isModified = true;
         this.selectedItem.selectedDiagram.sendToBack();
@@ -2954,13 +2949,12 @@ class App extends React.Component<{}, {}> {
 
     private copyObjects(): void {
         this.selectedItem.pasteData = CommonKeyboardCommands.cloneSelectedItems();
+        this.selectedItem.selectedDiagram.copy();
     }
 
     private pasteObjects(): void {
         const diagram: Diagram = this.selectedItem.selectedDiagram;
-        if (this.selectedItem.pasteData.length > 0) {
-            diagram.paste(this.selectedItem.pasteData);
-        }
+        diagram.paste();
     }
 
     private bringToFront(): void {
@@ -2971,6 +2965,10 @@ class App extends React.Component<{}, {}> {
     private group(): void {
         this.selectedItem.isModified = true;
         this.selectedItem.selectedDiagram.group();
+        let diagram: any = this.selectedItem.selectedDiagram;
+        let selectedItems: any = diagram.selectedItems.nodes?.concat(diagram.selectedItems.connectors);
+        const utility = new UtilityMethods();
+        utility.enableToolbarItems(selectedItems);
     }
 
     private ungroup(): void {
@@ -2983,7 +2981,7 @@ class App extends React.Component<{}, {}> {
         for (const value of (diagram.selectedItems.nodes as NodeModel[])) {
             const node: NodeModel = value;
             if ((node.constraints as NodeConstraints) & NodeConstraints.Drag) {
-                node.constraints = NodeConstraints.PointerEvents | NodeConstraints.Select;
+                node.constraints = NodeConstraints.PointerEvents | NodeConstraints.Select | NodeConstraints.ReadOnly;;
             } else {
                 node.constraints = NodeConstraints.Default;
             }
@@ -2991,7 +2989,7 @@ class App extends React.Component<{}, {}> {
         for (const item of (diagram.selectedItems.connectors as ConnectorModel[])) {
             const connector: ConnectorModel = item;
             if ((connector.constraints as ConnectorConstraints) & ConnectorConstraints.Drag) {
-                connector.constraints = ConnectorConstraints.PointerEvents | ConnectorConstraints.Select;
+                connector.constraints = ConnectorConstraints.PointerEvents | ConnectorConstraints.Select | ConnectorConstraints.ReadOnly;
             } else {
                 connector.constraints = ConnectorConstraints.Default;
             }
@@ -3018,55 +3016,33 @@ class App extends React.Component<{}, {}> {
         this.selectedItem.isModified = true;
         this.selectedItem.selectedDiagram.selectAll();
     }
-    // private distribute(value: any): void {
-    //     this.selectedItem.isModified = true;
-    //     this.selectedItem.selectedDiagram.distribute(value);
-    // }
+   
     private canExecute(): boolean {
         return true;
     }
     private generateDiagram(): void {
         this.selectedItem.selectedDiagram = this.diagram;
-        // this.diagram.layers[0].addInfo = { 'name': 'Layer0' };
+       
     }
     private btnExportClick(): void {
         const diagram: Diagram = this.selectedItem.selectedDiagram;
-        diagram.exportDiagram({
-            fileName: this.selectedItem.exportSettings.fileName,
-            format: this.selectedItem.exportSettings.format as FileFormats,
-            region: this.selectedItem.exportSettings.region as DiagramRegions
-        });
+        var format:any = document.getElementById("exportFormat")
+        var exportFormat = format.value;
+        var fileName: any= document.getElementById('exportfileName')
+         diagram.exportDiagram({
+             fileName: fileName.value,
+             format:exportFormat,
+             region: 'Content',
+             multiplePage: diagram.pageSettings.multiplePage,
+         });
         this.exportDialog.hide();
     }
 
     private btnPrintClick(): void {
-        let pageWidth: number = this.selectedItem.printSettings.pageWidth;
-        let pageHeight: number = this.selectedItem.printSettings.pageHeight;
-        const paperSize: PaperSize = this.selectedItem.utilityMethods.getPaperSize(this.selectedItem.printSettings.paperSize);
-        if (paperSize.pageHeight && paperSize.pageWidth) {
-            pageWidth = paperSize.pageWidth;
-            pageHeight = paperSize.pageHeight;
-        }
-        if (this.selectedItem.pageSettings.isPortrait) {
-            if (pageWidth > pageHeight) {
-                const temp: number = pageWidth;
-                pageWidth = pageHeight;
-                pageHeight = temp;
-            }
-        } else {
-            if (pageHeight > pageWidth) {
-                const temp: number = pageHeight;
-                pageHeight = pageWidth;
-                pageWidth = temp;
-            }
-        }
         const diagram: Diagram = this.selectedItem.selectedDiagram;
         diagram.print({
-            "region": this.selectedItem.printSettings.region as DiagramRegions, "pageHeight": pageHeight, "pageWidth": pageWidth,
-            "multiplePage": !this.selectedItem.printSettings.multiplePage,
-            "pageOrientation": this.selectedItem.printSettings.isPortrait ? 'Portrait' : 'Landscape'
+            "region": 'Content',
         });
-        this.printDialog.hide();
     }
 
     private btnTooltip(): void {
@@ -3121,9 +3097,6 @@ class App extends React.Component<{}, {}> {
         switch (key) {
             case 'exportDialog':
                 this.exportDialog.hide();
-                break;
-            case 'printDialog':
-                this.printDialog.hide();
                 break;
             case 'saveDialog':
                 this.saveDialog.hide();
@@ -3202,45 +3175,43 @@ class App extends React.Component<{}, {}> {
         (document.getElementById('shapePreviewImage') as HTMLImageElement).src =  require('./assets/dbstyle/shapes_images/' + args.text.toLowerCase() + '.png');
     }
 
-    // private closeWindow(evt: BeforeUnloadEvent): BeforeUnloadEvent {
-    //     const value :any = null;
-    //     const message: string = 'Are you sure you want to close?';
-    //     if (evt && this.selectedItem.isModified) {
-    //         evt.returnValue = message;
-    //         return evt;
-    //     }
-    //     return value;
-    // }
 };
-
-
-
-
-// class CloneTool extends MoveTool {
-//   public mouseDown(args: MouseEventArgs): void {
-//     alert("Clone user handle is clicked")
-//   }
-// }
-
-// class SettingsTool extends MoveTool {
-//   public mouseDown(args: MouseEventArgs): void {
-//     alert("Settings user handle is clicked")
-//   }
-// }
-
-// function getTool(action: string): ToolBase | null {
-//   let tool: ToolBase;
-//   if (action === "clone") {
-//     tool = new CloneTool(diagramInstance.commandHandler);
-//     return tool;
-//   } else if (action === "settings") {
-//     tool = new SettingsTool(diagramInstance.commandHandler);
-//     return tool;
-//   }
-//   return null;
-// }
-
-
-
+const Footer: React.FC = () => {
+    return (
+        <div className="footer">
+            <div className="footer-container">
+                <div className="diagram-icon">
+                    <img
+                        className="footer-logo"
+                        src={require('./assets/dbstyle/common_images/Diagram_Component.svg')}
+                    />
+                </div>
+                <div className="footer-content">
+                    <div className="title">
+                        <span>
+                            Want interactive diagramming in your app?
+                        </span>
+                        <span><strong className='main-title'> Try our Diagram Component</strong> — build, connect, and customize!</span>
+                    </div>
+                    <div className="buttons">
+                        <button
+                            type="button"
+                            className="e-trial-btn e-btn e-primary e-icons"
+                            onClick={() => window.open('https://www.syncfusion.com/downloads/react?tag=es-freetools-diagram-builder-sample-ads-trial', '_blank')}
+                        >
+                        </button>
+                        <button
+                            type="button"
+                            className="e-demo-btn e-btn"
+                            onClick={() => window.open('https://www.syncfusion.com/request-demo?tag=es-freetools-diagram-builder-sample-ads-demo', '_blank')}
+                        >
+                            Request Demo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
 export default App;
 
