@@ -15,6 +15,7 @@
     "jsx-no-lambda": [
       false
     ],
+    "array-type": false,
     "no-bitwise": false,
     "no-duplicate-case": false,
     "max-classes-per-file": [
